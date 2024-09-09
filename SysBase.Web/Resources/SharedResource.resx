@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+<resheader name="resmimetype"><value>text/microsoft-resx</value></resheader><resheader name="version"><value>1.3</value></resheader><resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader><data name="admin.Dark"><value>Dark</value></data>
+  <data name="admin.Light"><value>Light</value></data>
+  <data name="admin.Default"><value>Default</value></data>
+  <data name="admin.Bildirimler"><value>Notifications</value></data>
+  <data name="admin.Tümü Okundu"><value>All Read</value></data>
+  <data name="admin.Profil"><value>Profile</value></data>
+  <data name="admin.Ayarlar"><value>Settings</value></data>
+  <data name="admin.Profil Güncelle"><value>Update Profile</value></data>
+  <data name="admin.Şifre Değiştir"><value>Change Password</value></data>
+  <data name="admin.Çıkış"><value>Exit</value></data>
+  <data name="admin.Copyright"><value>Copyright</value></data>
+  <data name="admin.Kayıt Başarılı"><value>Registration Successful</value></data>
+  <data name="admin.Kayıt Hatası"><value>Registration Error</value></data>
+  <data name="admin.Yeni Ekle Düzenle"><value>Add Edit New</value></data>
+  <data name="admin.Site Url"><value>Site Url</value></data>
+  <data name="admin.Site Name"><value>Site Name</value></data>
+  <data name="admin.Title"><value>Title</value></data>
+  <data name="admin.Phone"><value>Phone</value></data>
+  <data name="admin.Address"><value>Address</value></data>
+  <data name="admin.Mail"><value>Mail</value></data>
+  <data name="admin.Mail Password"><value>Mail Password</value></data>
+  <data name="admin.Mail Title"><value>Mail Title</value></data>
+  <data name="admin.Mail Host"><value>Mail Host</value></data>
+  <data name="admin.Mail Port"><value>Mail Port</value></data>
+  <data name="admin.Mail Security"><value>Mail Security</value></data>
+  <data name="admin.Log"><value>Log</value></data>
+  <data name="admin.Aktif"><value>Active</value></data>
+  <data name="admin.Ip Control"><value>Ip Control</value></data>
+  <data name="admin.Allowed IP List"><value>Allowed IP List</value></data>
+  <data name="admin.Recaptcha Type"><value>Recaptcha Type</value></data>
+  <data name="admin.Recaptcha Public Key"><value>Recaptcha Public Key</value></data>
+  <data name="admin.Recaptcha Private Key"><value>Recaptcha Private Key</value></data>
+  <data name="admin.License Company Name"><value>License Company Name</value></data>
+  <data name="admin.License Url"><value>License Url</value></data>
+  <data name="admin.Made Company Name"><value>Made Company Name</value></data>
+  <data name="admin.Default Language"><value>Default Language</value></data>
+  <data name="admin.Admin Language"><value>Admin Language</value></data>
+  <data name="admin.Language Show"><value>Language Show</value></data>
+  <data name="admin.Admin Language Show"><value>Admin Language Show</value></data>
+  <data name="admin.Language Version"><value>Language Version</value></data>
+  <data name="admin.Language Key Auto Register"><value>Language Key Auto Register</value></data>
+  <data name="admin.Admin Language Key Auto Register"><value>Admin Language Key Auto Register</value></data>
+  <data name="admin.Assets Version"><value>Assets Version</value></data>
+  <data name="admin.Image Base Url"><value>Image Base Url</value></data>
+  <data name="admin.Facebook"><value>Facebook</value></data>
+  <data name="admin.Twitter"><value>Twitter</value></data>
+  <data name="admin.Instagram"><value>Instagram</value></data>
+  <data name="admin.Linkedin"><value>Linkedin</value></data>
+  <data name="admin.Youtube"><value>Youtube</value></data>
+  <data name="admin.Kayıt"><value>Registration</value></data>
+  <data name="admin.Yeni Ekle"><value>Add New</value></data>
+  <data name="admin.Listele"><value>List</value></data>
+  <data name="admin.Dil Adı"><value>Language Name</value></data>
+  <data name="admin.Dil Görseli"><value>Language Visualisation</value></data>
+  <data name="admin.Durum"><value>Status</value></data>
+  <data name="admin.Admin Durum"><value>Admin Status</value></data>
+  <data name="admin.Dil Değerleri"><value>Language Values</value></data>
+  <data name="admin.Dil Kodu"><value>Language Code</value></data>
+  <data name="admin.Dil Değeri"><value>Language Value</value></data>
+  <data name="admin.Güncelle"><value>Update</value></data>
+  <data name="admin.Dil Kodları"><value>Language Codes</value></data>
+  <data name="admin.ID"><value>ID</value></data>
+  <data name="admin.İşlemler"><value>Transactions</value></data>
+  <data name="admin.Sil"><value>Delete</value></data>
+  <data name="admin.Adı"><value>Name</value></data>
+  <data name="admin.Kodu"><value>Code</value></data>
+  <data name="admin.Görsel"><value>Image</value></data>
+  <data name="admin.Kayit Tarihi"><value>Registration Date</value></data>
+  <data name="admin.Düzenle"><value>Edit</value></data>
+  <data name="admin.Satır"><value>Line</value></data>
+  <data name="admin.Sayfada Gösterilecek Satir Sayısı"><value>Number of lines to be displayed on the page</value></data>
+  <data name="admin.Kopyala"><value>Copy</value></data>
+  <data name="admin.Excel"><value>Excel</value></data>
+  <data name="admin.Pdf"><value>Pdf</value></data>
+  <data name="admin.Yazdır"><value>Print</value></data>
+  <data name="admin.Gizle"><value>Hide</value></data>
+  <data name="admin.Kişi"><value>Person</value></data>
+  <data name="admin.Konu"><value>Subject</value></data>
+  <data name="admin.Mesaj"><value>Message</value></data>
+  <data name="admin.Okunma Tarihi"><value>Read Date</value></data>
+  <data name="admin.Seçiniz"><value>Select</value></data>
+  <data name="admin.Type"><value>Type</value></data>
+  <data name="admin.Silindi"><value>Deleted</value></data>
+  <data name="admin.Görünür"><value>Visible</value></data>
+  <data name="admin.Kullanıcı"><value>User</value></data>
+  <data name="admin.Okunma Sayısı"><value>Number of Reads</value></data>
+  <data name="admin.Açıklama"><value>Description</value></data>
+  <data name="admin.Yayın Tarihi"><value>Publication Date</value></data>
+  <data name="admin.Tipi"><value>Type</value></data>
+  <data name="admin.Bildirim Listele"><value>List Notification</value></data>
+  <data name="admin.Bildirim Ekle"><value>Add Notification</value></data>
+  <data name="admin.Tek Seferlik"><value>One Time Only</value></data>
+  <data name="admin.Aylık"><value>Monthly</value></data>
+  <data name="admin.Haftalık"><value>Weekly</value></data>
+  <data name="admin.Günlük"><value>Diary</value></data>
+  <data name="admin.Saatlik"><value>Seeds</value></data>
+  <data name="admin.Kayıt Tarihi"><value>Kayıt Tarihi</value></data>
+  <data name="admin.Güncelleme Başarılı"><value>Update Successful</value></data>
+  <data name="admin.Sayfa Listele"><value>List Page</value></data>
+  <data name="admin.Sayfa Ekle"><value>Add Page</value></data>
+  <data name="admin.Dil Keyler"><value>Language Keys</value></data>
+  <data name="admin.Dil Ve Değerler"><value>Language and Values</value></data>
+  <data name="admin.Dil Ekle"><value>Add Language</value></data>
+  <data name="admin.Kullanıcı Listele"><value>List User</value></data>
+  <data name="admin.Kullanıcı Ekle"><value>Add User</value></data>
+  <data name="admin.Sayfalar"><value>Pages</value></data>
+  <data name="admin.Panel Dilleri"><value>Panel Languages</value></data>
+  <data name="admin.Site Dilleri"><value>Site Languages</value></data>
+  <data name="admin.Kullanıcılar"><value>Users</value></data>
+  <data name="admin.Ad Soyad"><value>Name Surname</value></data>
+  <data name="admin.Soyadı"><value>Surname</value></data>
+  <data name="admin.Şifre Üret"><value>Generate Password</value></data>
+  <data name="admin.Şifre Tekrar"><value>Password Again</value></data>
+  <data name="admin.Dışarı Aktar"><value>Export</value></data>
+  <data name="admin.Silme"><value>Deletion</value></data>
+  <data name="admin.Düzenleme"><value>Regulation</value></data>
+  <data name="admin.Ekleme"><value>Addition</value></data>
+  <data name="admin.Listeleme"><value>Listing</value></data>
+  <data name="admin.Tümü"><value>All</value></data>
+  <data name="admin.Bildirim Durum"><value>Notification Status</value></data>
+  <data name="admin.Şifre"><value>Password</value></data>
+  <data name="admin.Email"><value>Email</value></data>
+  <data name="admin.Soyad"><value>Surname</value></data>
+  <data name="admin.Ad"><value>Ad</value></data>
+  <data name="admin.Kapat"><value>Close</value></data>
+  <data name="admin.Pasif"><value>Passive</value></data>
+  <data name="admin.Detay"><value>Detail</value></data>
+  <data name="admin.İçerik"><value>Content</value></data>
+  <data name="admin.Slug"><value>Slug</value></data>
+  <data name="admin.Başlık"><value>Title</value></data>
+  <data name="admin.Footer Görünürlük"><value>Footer Visibility</value></data>
+  <data name="admin.Sırası"><value>Sequence</value></data>
+  <data name="admin.Okunmadı"><value>Not read</value></data>
+  <data name="admin.Okundu"><value>Read out</value></data>
+  <data name="admin.Yeni Ekle Düzenle"><value>Add Edit New</value></data>
+  <data name="admin.Durumu"><value>Status</value></data>
+  <data name="admin.ReleaseDate"><value>Release Date</value></data>
+  <data name="admin.Role Listele"><value>Role List</value></data>
+  <data name="admin.Role Ekle"><value>Add Role</value></data>
+  <data name="admin.Roleler"><value>Roles</value></data>
+  <data name="admin.Ek Menu Yetkileri Manuel Verilidir"><value>Additional Menu Authorisations are Manual</value></data>
+  <data name="admin.Yetki Şablonları"><value>Authorisation Templates</value></data>
+  <data name="admin.Menü Erişim Yetkiniz Bulunmamaktadır."><value>You are not authorised to access the menu.</value></data>
+  </root>

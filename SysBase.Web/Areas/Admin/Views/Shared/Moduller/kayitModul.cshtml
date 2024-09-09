@@ -1,0 +1,221 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ form-element ] start -->
+            <div class="col-sm-12">
+                <!-- HTML Input Types -->
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <div class="btn-group" role="group" aria-label="button groups">
+                            @if (Model.MenuPermission?.Add)
+                            {
+                                <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
+                            }
+                            @if (Model.MenuPermission?.List)
+                            {
+                                <button type="button" onclick="GetPage('0','@listUrl');" class="btn btn-light-primary">@Localizer["admin.Listele"]</button>
+                            }
+                        </div>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Name" class="form-label">@Localizer["admin.Ad"]</label>
+                                    <input class="form-control" type="text" name="Name" id="Name" value="@Model.AppUser?.Name" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="SurName" class="form-label">@Localizer["admin.Soyad"]</label>
+                                    <input class="form-control" type="text" name="SurName" id="SurName" value="@Model.AppUser?.SurName" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Email" class="form-label">@Localizer["admin.Email"]</label>
+                                    <input class="form-control" type="email" name="Email" id="Email" value="@Model.AppUser?.Email" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="PasswordHash" class="form-label">Password</label>
+                                    <input class="form-control" type="password" name="PasswordHash" id="PasswordHash" @(Model.AppUser == null ? "required" : "") autocomplete="new-password" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <button type="button" class="btn btn-shadow btn-warning mr-1 mt-4" onclick="SifreUret('PasswordHash');"><i class="fas fa-user-lock"></i> @Localizer["admin.Şifre Üret"]</button>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.AppUser?.Status == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="customCheck1" class="form-label">Radios</label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault11" value="1" />
+                                            <label clas s="form-check-label" for="flexRadioDefault11"> Default radio </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault12" value="2" checked />
+                                            <label class="form-check-label" for="flexRadioDefault12"> Default checked radio </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="choices-single-default" class="form-label">Select</label>
+                                    <select class="form-control" data-trigger name="choices-single-default" id="choices-single-default">
+                                        <option value="">@Localizer["admin.Seçiniz"]</option>
+                                        <option value="Choice 1">Choice 1</option>
+                                        <option value="Choice 2">Choice 2</option>
+                                        <option value="Choice 3">Choice 3</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="AdminLanguageId" class="form-label">@Localizer["admin.Admin Language"]</label>
+                                    <select class="select2 form-control block" name="AdminLanguageId" id="AdminLanguageId" required>
+                                        @foreach (Language item in Model.Languages)
+                                        {
+                                            if (item.Id == Model.Config?.AdminLanguageId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-12 col-sm-12">
+                                    <label for="UserId" class="form-label">@Localizer["admin.Kullanıcılar"]</label>
+                                    <select class="select2 form-control block" name="userIdValue" id="userIdValue" multiple>
+                                        @foreach (var appUser in Model.AppUsers)
+                                        {
+                                            var isSelected = Model.SelectedUserIds.Contains(appUser.Id);
+                                            if (isSelected)
+                                            {
+                                                <option value="@appUser.Id" selected>@appUser.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@appUser.Id">@appUser.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-3 col-sm-10">
+                                    <label for="Image" class="form-label">@Localizer["admin.Dil Görseli"] (160x110px-png)</label>
+                                    <input class="form-control" type="file" name="Image" id="Image" />
+                                </div>
+                                <div class="mb-3 col-md-1 col-sm-2">
+                                    @if (Model.Language?.Image != null)
+                                    {
+                                        <a href="Images/@Model.Language?.Image" target="_blank"><img src="Images/@Model.Language?.Image" style="height:75px" /></a>
+                                    }
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-multi-input-file" class="form-label">Multi Files</label>
+                                    <input class="form-control" type="file" id="demo-multi-input-file" multiple />
+                                    <small>Try selecting more than one file when browsing for files.</small>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-URL-input" class="form-label">URL</label>
+                                    <input class="form-control" type="url" value="https://validator.w3.org/" id="demo-URL-input" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-search-input" class="form-label">Search</label>
+                                    <input class="form-control" type="search" value="Best Admin Template" id="demo-search-input" />
+                                    <small>a search field behaves like a regular text field</small>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-datetime-local" class="form-label">Date Time Local</label>
+                                    <input class="form-control" type="datetime-local" value="2021-12-31T04:03:20" id="demo-datetime-local" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-date-only" class="form-label">Date only</label>
+                                    <input class="form-control" type="date" value="2021-12-31" id="demo-date-only" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-time-only" class="form-label">Time only</label>
+                                    <input class="form-control" type="time" value="04:03:20" id="demo-time-only" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-month-only" class="form-label">Month only</label>
+                                    <input class="form-control" type="month" value="2021-12" id="demo-month-only" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-week-only" class="form-label">Week only</label>
+                                    <input class="form-control" type="week" value="2021-W41" id="demo-week-only" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="demo-color-input" class="form-label">Color</label>
+                                    <input class="form-control form-control-color-picker" type="color" value="#5052FC" id="demo-color-input" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <input type="hidden" name="Id" value="@Model.AppUser?.Id">
+                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- [ form-element ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</section>
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<script type="text/javascript">
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+</script>

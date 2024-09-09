@@ -1,0 +1,260 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ form-element ] start -->
+            <div class="col-sm-12">
+                <!-- HTML Input Types -->
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="SiteUrl" class="form-label">@Localizer["admin.Site Url"]</label>
+                                    <input class="form-control" type="text" name="SiteUrl" id="SiteUrl" value="@Model.Config?.SiteUrl" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="SiteName" class="form-label">@Localizer["admin.Site Name"]</label>
+                                    <input class="form-control" type="text" name="SiteName" id="SiteName" value="@Model.Config?.SiteName" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Title" class="form-label">@Localizer["admin.Title"]</label>
+                                    <input class="form-control" type="text" name="Title" id="Title" value="@Model.Config?.Title" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Phone" class="form-label">@Localizer["admin.Phone"]</label>
+                                    <input class="form-control" type="text" name="Phone" id="Phone" value="@Model.Config?.Phone" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Address" class="form-label">@Localizer["admin.Address"]</label>
+                                    <input class="form-control" type="text" name="Address" id="Address" value="@Model.Config?.Address" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Mail" class="form-label">@Localizer["admin.Mail"]</label>
+                                    <input class="form-control" type="text" name="Mail" id="Mail" value="@Model.Config?.Mail" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MailPassword" class="form-label">@Localizer["admin.Mail Password"]</label>
+                                    <input class="form-control" type="text" name="MailPassword" id="MailPassword" value="@Model.Config?.MailPassword" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MailTitle" class="form-label">@Localizer["admin.Mail Title"]</label>
+                                    <input class="form-control" type="text" name="MailTitle" id="MailTitle" value="@Model.Config?.MailTitle" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MailHost" class="form-label">@Localizer["admin.Mail Host"]</label>
+                                    <input class="form-control" type="text" name="MailHost" id="MailHost" value="@Model.Config?.MailHost" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MailPort" class="form-label">@Localizer["admin.Mail Port"]</label>
+                                    <input class="form-control" type="text" name="MailPort" id="MailPort" value="@Model.Config?.MailPort" placeholder="SSL/TLS" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MailSecurity" class="form-label">@Localizer["admin.Mail Security"]</label>
+                                    <input class="form-control" type="text" name="MailSecurity" id="MailSecurity" value="@Model.Config?.MailSecurity" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Log" class="form-label">@Localizer["admin.Log"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Log" id="Log" value="True" @(Model.Config?.Log == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Log">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="IpControl" class="form-label">@Localizer["admin.Ip Control"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="IpControl" id="IpControl" value="True" @(Model.Config?.IpControl == true ? "checked" : "") />
+                                        <label class="form-check-label" for="IpControl">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="AllowedIPList" class="form-label">@Localizer["admin.Allowed IP List"]</label>
+                                    <input class="form-control" type="text" name="AllowedIPList" id="AllowedIPList" value="@Model.Config?.AllowedIPList" placeholder="1:S2, 2:S3, 3:CloudFLare" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="RecaptchaType" class="form-label">@Localizer["admin.Recaptcha Type"]</label>
+                                    <input class="form-control" type="text" name="RecaptchaType" id="RecaptchaType" value="@Model.Config?.RecaptchaType" placeholder="hem public hem private dolu ise aktiftir" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="RecaptchaPublicKey" class="form-label">@Localizer["admin.Recaptcha Public Key"]</label>
+                                    <input class="form-control" type="text" name="RecaptchaPublicKey" id="RecaptchaPublicKey" value="@Model.Config?.RecaptchaPublicKey" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="RecaptchaPrivateKey" class="form-label">@Localizer["admin.Recaptcha Private Key"]</label>
+                                    <input class="form-control" type="text" name="RecaptchaPrivateKey" id="RecaptchaPrivateKey" value="@Model.Config?.RecaptchaPrivateKey" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LicenseCompanyName" class="form-label">@Localizer["admin.License Company Name"]</label>
+                                    <input class="form-control" type="text" name="LicenseCompanyName" id="LicenseCompanyName" value="@Model.Config?.LicenseCompanyName" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MadeCompanyName" class="form-label">@Localizer["admin.Made Company Name"]</label>
+                                    <input class="form-control" type="text" name="MadeCompanyName" id="MadeCompanyName" value="@Model.Config?.MadeCompanyName" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="DefaultLanguageId" class="form-label">@Localizer["admin.Default Language"]</label>
+                                    <select class="select2 form-control block" name="DefaultLanguageId" id="DefaultLanguageId" required>
+                                        @foreach (Language item in Model.Languages)
+                                        {
+                                            if (item.Id == Model.Config?.DefaultLanguageId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="AdminLanguageId" class="form-label">@Localizer["admin.Admin Language"]</label>
+                                    <select class="select2 form-control block" name="AdminLanguageId" id="AdminLanguageId" required>
+                                        @foreach (Language item in Model.Languages)
+                                        {
+                                            if (item.Id == Model.Config?.AdminLanguageId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LicenseUrl" class="form-label">@Localizer["admin.License Url"]</label>
+                                    <input class="form-control" type="text" name="LicenseUrl" id="LicenseUrl" value="@Model.Config?.LicenseUrl" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LanguageShow" class="form-label">@Localizer["admin.Language Show"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="LanguageShow" id="LanguageShow" value="True" @(Model.Config?.LanguageShow == true ? "checked" : "") />
+                                        <label class="form-check-label" for="IpControl">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="AdminLanguageShow" class="form-label">@Localizer["admin.Admin Language Show"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="AdminLanguageShow" id="AdminLanguageShow" value="True" @(Model.Config?.AdminLanguageShow == true ? "checked" : "") />
+                                        <label class="form-check-label" for="IpControl">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LanguageVersion" class="form-label">@Localizer["admin.Language Version"]</label>
+                                    <input class="form-control" type="number" name="LanguageVersion" id="LanguageVersion" value="@Model.Config?.LanguageVersion" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LanguageKeyAutoRegister" class="form-label">@Localizer["admin.Language Key Auto Register"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="LanguageKeyAutoRegister" id="LanguageKeyAutoRegister" value="True" @(Model.Config?.LanguageKeyAutoRegister == true ? "checked" : "") />
+                                        <label class="form-check-label" for="IpControl">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="AdminLanguageKeyAutoRegister" class="form-label">@Localizer["admin.Admin Language Key Auto Register"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="AdminLanguageKeyAutoRegister" id="AdminLanguageKeyAutoRegister" value="True" @(Model.Config?.AdminLanguageKeyAutoRegister == true ? "checked" : "") />
+                                        <label class="form-check-label" for="IpControl">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="AssetsVersion" class="form-label">@Localizer["admin.Assets Version"]</label>
+                                    <input class="form-control" type="number" name="AssetsVersion" id="AssetsVersion" value="@Model.Config?.AssetsVersion" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="ImageBaseUrl" class="form-label">@Localizer["admin.Image Base Url"]</label>
+                                    <input class="form-control" type="text" name="ImageBaseUrl" id="ImageBaseUrl" value="@Model.Config?.ImageBaseUrl" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Facebook" class="form-label">@Localizer["admin.Facebook"]</label>
+                                    <input class="form-control" type="text" name="Facebook" id="Facebook" value="@Model.Config?.Facebook" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Twitter" class="form-label">@Localizer["admin.Twitter"]</label>
+                                    <input class="form-control" type="text" name="Twitter" id="Twitter" value="@Model.Config?.Twitter" autocomplete="off" />
+                                </div>
+                                 <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Instagram" class="form-label">@Localizer["admin.Instagram"]</label>
+                                    <input class="form-control" type="text" name="Instagram" id="Instagram" value="@Model.Config?.Instagram" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Linkedin" class="form-label">@Localizer["admin.Linkedin"]</label>
+                                    <input class="form-control" type="text" name="Linkedin" id="Linkedin" value="@Model.Config?.Linkedin" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Youtube" class="form-label">@Localizer["admin.Youtube"]</label>
+                                    <input class="form-control" type="text" name="Youtube" id="Youtube" value="@Model.Config?.Youtube" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <input type="hidden" name="Id" value="@Model.Config?.Id">
+                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- [ form-element ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</section>
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<script type="text/javascript">
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="text-center">
+    <h1 class="display-4">@Localizer["title"]</h1>
+    <h1 class="display-4">@Localizer["title-panel"]</h1>
+    <a href="/Home/s/SetLang?lng=tr&returnUrl=@Context.Request.Path">Türkçe</a>
+    <a href="/Home/s/SetLang?lng=en&returnUrl=@Context.Request.Path">English</a>
+</div>

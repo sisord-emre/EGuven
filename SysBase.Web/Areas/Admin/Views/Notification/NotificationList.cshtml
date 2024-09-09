@@ -1,0 +1,45 @@
+﻿@foreach (Notification item in Model.Notifications)
+{
+    DateTime releaseDate = item.ReleaseDate; // item.ReleaseDate datetime2
+    TimeSpan timeDifference = DateTime.Now - releaseDate;
+
+    string timeAgo;
+
+    if (timeDifference.TotalDays >= 1)
+    {
+        timeAgo = $"{(int)timeDifference.TotalDays} days ago";
+    }
+    else if (timeDifference.TotalHours >= 1)
+    {
+        timeAgo = $"{(int)timeDifference.TotalHours} hours ago";
+    }
+    else if (timeDifference.TotalMinutes >= 1)
+    {
+        timeAgo = $"{(int)timeDifference.TotalMinutes} min ago";
+    }
+    else
+    {
+        timeAgo = "just now";
+    }
+    <a href="javascript:NotificationSingleRead(@item.Id)">
+        <div class="card mb-2">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <svg class="pc-icon text-primary">
+                            <use xlink:href="#custom-layer"></use>
+                        </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <span class="float-end text-sm text-muted">@timeAgo</span>
+                        <h5 class="text-body mb-2">@item.Subject</h5>
+                        <p class="mb-0">
+                            @item.Contents
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+ 
+}

@@ -1,0 +1,13 @@
+﻿@using SysBase.Web
+@using SysBase.Web.Models
+@using SysBase.Core.Models
+@using SysBase.Core.DTOs
+@using SysBase.Web.Areas.Admin.Models;
+//dil bilgisi
+@using Microsoft.Extensions.Localization
+@using SysBase.Web.Resources
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IHtmlLocalizer<SharedResource> Localizer 
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+//!dil bilgisi
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

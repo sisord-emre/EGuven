@@ -1,0 +1,66 @@
+﻿@model List<Menu>
+@{
+    List<MenuPermission> menuPermissions = (List<MenuPermission>)ViewBag.MenuPermission;
+}
+@foreach (Menu item in Model)
+{
+    List<Menu> subMenus = Model.Where(x => x.UpMenuId == item.Id).ToList();
+    if (item.UpMenuId == 0)
+    {
+        bool menuYetki = false;
+        bool listYetki = false;
+        bool addYetki = false;
+        foreach (MenuPermission menuPermission in menuPermissions)
+        {
+            if (menuPermission.MenuId == item.Id)
+            {
+                if (menuPermission.Add)
+                {
+                    menuYetki = true;
+                    addYetki = true;
+                }
+                if (menuPermission.List)
+                {
+                    menuYetki = true;
+                    listYetki = true;
+                }
+                break;
+            }
+        }
+        if (menuYetki)
+        {
+            <li class="pc-item pc-hasmenu">
+                @if (subMenus.Count == 1)
+                {
+                    <a href="@item.Page" oncontextmenu="return false;" onclick="GetPage('@subMenus[0].UpMenuId','@subMenus[0].Page')" class="pc-link">
+                        <i class="@item.Icon"></i>
+                        <span class="pc-mtext">@Localizer["admin."+item.Name]</span>
+                    </a>
+                }
+                else
+                {
+                    <a href="@item.Page" oncontextmenu="return false;" class="pc-link">
+                        <i class="@item.Icon"></i>
+                        <span class="pc-mtext">@Localizer["admin."+item.Name]</span>
+                        @if (subMenus.Count > 1)
+                        {
+                            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+                        }
+                    </a>
+                }
+                @if (subMenus.Count > 1)
+                {
+                    <ul class="pc-submenu">
+                        @foreach (Menu subItem in subMenus)
+                        {
+                            if ((subItem.Type == 1 && addYetki) || (subItem.Type == 2 && listYetki))
+                            {
+                                <li class="pc-item pointer"><a class="pc-link tekliMenu" oncontextmenu="return false;" onclick="GetPage('@subItem.UpMenuId','@subItem.Page')">@Localizer["admin."+subItem.Name]</a></li>
+                            }
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    }
+}

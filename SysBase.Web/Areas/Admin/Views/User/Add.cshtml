@@ -1,0 +1,319 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+    List<MenuPermission> menuPermissions = new List<MenuPermission>();
+    if (Model.AppUser != null)
+    {
+        if (Model.AppUser.MenuPermissions != null)
+        {
+            menuPermissions = JsonConvert.DeserializeObject<List<MenuPermission>>(Model.AppUser?.MenuPermissions);
+        }
+    }
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ form-element ] start -->
+            <div class="col-sm-12">
+                <!-- HTML Input Types -->
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <div class="btn-group" role="group" aria-label="button groups">
+                            @if (Model.MenuPermission?.Add)
+                            {
+                                <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
+                            }
+                            @if (Model.MenuPermission?.List)
+                            {
+                                <button type="button" onclick="GetPage('0','@listUrl');" class="btn btn-light-primary">@Localizer["admin.Listele"]</button>
+                            }
+                        </div>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Name" class="form-label">@Localizer["admin.Ad"]</label>
+                                    <input class="form-control" type="text" name="Name" id="Name" value="@Model.AppUser?.Name" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="SurName" class="form-label">@Localizer["admin.Soyad"]</label>
+                                    <input class="form-control" type="text" name="SurName" id="SurName" value="@Model.AppUser?.SurName" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Email" class="form-label">@Localizer["admin.Email"]</label>
+                                    <input class="form-control" type="email" name="Email" id="Email" value="@Model.AppUser?.Email" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="PasswordHash" class="form-label">@Localizer["admin.Şifre"]</label>
+                                    <input class="form-control" type="password" name="PasswordHash" id="PasswordHash" @(Model.AppUser == null ? "required" : "") autocomplete="new-password" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <button type="button" class="btn btn-shadow btn-warning mr-1 mt-4" onclick="SifreUret('PasswordHash');"><i class="fas fa-user-lock"></i> @Localizer["admin.Şifre Üret"]</button>
+                                </div>
+                                @if (Model.AppRoles.Count > 0)
+                                {
+                                    <div class="mb-3 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="userIdValue">@Localizer["admin.Yetki Şablonları"] <small>(@Localizer["admin.Ek Menu Yetkileri Manuel Verilidir"].)</small></label>
+                                            <select class="select2 form-control block" name="userIdValue" id="userIdValue" multiple onchange="MenuYetkiSecim()">
+                                                @foreach (var query in Model.AppRoles)
+                                                {
+                                                    var isSelected = Model.SelectedAppRoleIds.Contains(query.Name);
+                                                    if (isSelected)
+                                                    {
+                                                        <option value="@query.Id" selected>@query.Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@query.Id">@query.Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    @foreach (var item in Model.AppRoles)
+                                    {
+                                        <input type="hidden" id="authorisationType_@item.Id" value="@item.MenuPermissions" />
+                                    }
+                                }
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="NotificationStatus" class="form-label">@Localizer["admin.Bildirim Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="NotificationStatus" id="NotificationStatus" value="True" @(Model.AppUser?.NotificationStatus == true ? "checked" : "") />
+                                        <label class="form-check-label" for="NotificationStatus">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.AppUser?.Status == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                               
+                                <div class="row">
+                                    <div class="row skin skin-square" id="authorisationsDiv">
+                                    @foreach (Menu item in Model.Menus)
+                                    {
+                                        string allCheck = "";
+                                        string listCheck = "";
+                                        string addCheck = "";
+                                        string editCheck = "";
+                                        string deleteCheck = "";
+                                        string exportCheck = "";
+                                        foreach (MenuPermission menuPermission in menuPermissions)
+                                        {
+                                            if (menuPermission.MenuId == item.Id)
+                                            {
+                                                if (menuPermission.List)
+                                                {
+                                                    listCheck = "checked";
+                                                }
+                                                if (menuPermission.Add)
+                                                {
+                                                    addCheck = "checked";
+                                                }
+                                                if (menuPermission.Edit)
+                                                {
+                                                    editCheck = "checked";
+                                                }
+                                                if (menuPermission.Delete)
+                                                {
+                                                    deleteCheck = "checked";
+                                                }
+                                                if (menuPermission.Export)
+                                                {
+                                                    exportCheck = "checked";
+                                                }
+                                                if (menuPermission.List && menuPermission.Add && menuPermission.Edit && menuPermission.Delete && menuPermission.Export)
+                                                {
+                                                    allCheck = "checked";
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        <div class="col-md-4 col-sm-6" style="padding-top: 10px;">
+                                            <p><b>@Localizer["admin."+item.Name]</b></p>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="all_@item.Id" id="all_@item.Id" value="True" @allCheck />
+                                                <label class="form-check-label" for="all_@item.Id">@Localizer["admin.Tümü"]</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="List" id="List_@item.Id" value="@item.Id" @listCheck />
+                                                <label class="form-check-label" for="List_@item.Id">@Localizer["admin.Listeleme"]</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="Add" id="Add_@item.Id" value="@item.Id" @addCheck />
+                                                <label class="form-check-label" for="Add_@item.Id">@Localizer["admin.Ekleme"]</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="Edit" id="Edit_@item.Id" value="@item.Id" @editCheck />
+                                                <label class="form-check-label" for="Edit_@item.Id">@Localizer["admin.Düzenleme"]</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="Delete" id="Delete_@item.Id" value="@item.Id" @deleteCheck />
+                                                <label class="form-check-label" for="Delete_@item.Id">@Localizer["admin.Silme"]</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="Export" id="Export_@item.Id" value="@item.Id" @exportCheck />
+                                                <label class="form-check-label" for="Export_@item.Id">@Localizer["admin.Dışarı Aktar"]</label>
+                                            </div>
+                                        </div>
+                                    }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <input type="hidden" name="Id" value="@Model.AppUser?.Id">
+                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- [ form-element ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</section>
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<script type="text/javascript">
+    function MenuYetkiSecim() {
+        // Tüm checkbox'ları sıfırla
+        let checkboxList = document.getElementById("authorisationsDiv").querySelectorAll('input');
+        checkboxList.forEach((item) => {
+            $('#' + item.id).prop('checked', false);
+        });
+
+        // Seçilen yetkileri al
+        var authorisationsSelect = $('#userIdValue').val();
+
+        // Her bir yetki tipi için
+        authorisationsSelect.forEach((item) => {
+            if (item == null) {
+                return false;
+            }
+
+            // Yetki tiplerini al ve parse et
+            var yetkiTipleri = document.getElementById("authorisationType_" + item).value;
+            yetkiTipleri = JSON.parse(yetkiTipleri);
+
+            yetkiTipleri.forEach((item) => {
+                var tumAdet = 0;
+
+                // Her bir izin tipi için checkbox'ı işaretle
+                if (document.getElementById('List_' + item.MenuId) != null && item.List === true) {
+                    $('#List_' + item.MenuId).prop('checked', true);
+                    tumAdet++;
+                }
+
+                if (document.getElementById('Add_' + item.MenuId) != null && item.Add === true) {
+                    $('#Add_' + item.MenuId).prop('checked', true);
+                    tumAdet++;
+                }
+
+                if (document.getElementById('Edit_' + item.MenuId) != null && item.Edit === true) {
+                    $('#Edit_' + item.MenuId).prop('checked', true);
+                    tumAdet++;
+                }
+
+                if (document.getElementById('Delete_' + item.MenuId) != null && item.Delete === true) {
+                    $('#Delete_' + item.MenuId).prop('checked', true);
+                    tumAdet++;
+                }
+
+                if (document.getElementById('Export_' + item.MenuId) != null && item.Export === true) {
+                    $('#Export_' + item.MenuId).prop('checked', true);
+                    tumAdet++;
+                }
+
+                // Tüm izinler seçiliyse "all" checkbox'ını işaretle
+                if (document.getElementById('all_' + item.MenuId) != null && tumAdet === 5) {
+                    $('#all_' + item.MenuId).prop('checked', true);
+                }
+
+                // Debug için console log'ları
+                console.log(item.List);
+            });
+
+        });
+    }
+
+
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        setTimeout(() => {
+            document.getElementById("PasswordHash").value = "";
+        }, 500);
+    });
+
+    $('input[type=checkbox]').change(function () {
+        var Id = event.target.id.split("_")[1];
+        if (event.target.id.split("_")[0] == "all") {
+            if (event.target.checked) {
+                $('#List_' + Id).prop('checked', true);
+                $('#Add_' + Id).prop('checked', true);
+                $('#Edit_' + Id).prop('checked', true);
+                $('#Delete_' + Id).prop('checked', true);
+                $('#Export_' + Id).prop('checked', true);
+            } else {
+                $('#List_' + Id).prop('checked', false);
+                $('#Add_' + Id).prop('checked', false);
+                $('#Edit_' + Id).prop('checked', false);
+                $('#Delete_' + Id).prop('checked', false);
+                $('#Export_' + Id).prop('checked', false);
+            }
+        }
+    });
+</script>

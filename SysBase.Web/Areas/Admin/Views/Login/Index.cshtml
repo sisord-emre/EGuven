@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "";
+    @model Config
+}
+<!doctype html>
+<html lang="en">
+<!-- [Head] start -->
+
+<head>
+    <title>@Model.Title</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="@Model.LicenseCompanyName" />
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="/Images/favicon.png" type="image/x-icon" />
+    <!-- [Font] Family -->
+    <link rel="stylesheet" href="/AdminAssets/fonts/inter/inter.css" id="main-font-link" />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="/AdminAssets/fonts/phosphor/duotone/style.css" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="/AdminAssets/fonts/tabler-icons.min.css" />
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="/AdminAssets/fonts/feather.css" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="/AdminAssets/fonts/fontawesome.css" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="/AdminAssets/fonts/material.css" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="/AdminAssets/css/style.css" id="main-style-link" />
+    <link rel="stylesheet" href="/AdminAssets/css/style-preset.css" />
+
+</head>
+<!-- [Head] end -->
+<!-- [Body] Start -->
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+    <div class="page-loader">
+        <div class="bar"></div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+
+    <div class="auth-main">
+        <div class="auth-wrapper v1">
+            <div class="auth-form">
+                <div class="card my-5">
+                    <form class="form-horizontal" action="" method="post" novalidate>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <a href="#"><img src="/Images/logo.png" alt="img"></a>
+                            </div>
+                            <h4 class="text-center f-w-500 mb-3 mt-3">Login with your email</h4>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" id="Email" name="Email" placeholder="Email Address" />
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" id="PasswordHash" name="PasswordHash" placeholder="Password" />
+                            </div>
+                            @if (TempData["message"] != null)
+                            {
+                                <span style="color:red">@TempData["message"]</span>
+                            }
+                            <div class="d-grid mt-4">
+                                <input type="hidden" name="tokenRec" id="tokenRec" value="" />
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <!-- Required Js -->
+    <script src="/AdminAssets/js/plugins/popper.min.js"></script>
+    <script src="/AdminAssets/js/plugins/simplebar.min.js"></script>
+    <script src="/AdminAssets/js/plugins/bootstrap.min.js"></script>
+    <script src="/AdminAssets/js/fonts/custom-font.js"></script>
+    <script src="/AdminAssets/js/pcoded.js"></script>
+    <script src="/AdminAssets/js/plugins/feather.min.js"></script>
+    <script>
+        layout_change('light');
+
+        change_box_container('false');
+
+        layout_caption_change('true');
+
+        layout_rtl_change('false');
+
+        preset_change('preset-1');
+
+        main_layout_change('vertical');
+    </script>
+</body>
+<!-- [Body] end -->
+</html>
