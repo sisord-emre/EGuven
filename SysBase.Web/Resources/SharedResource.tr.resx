@@ -170,4 +170,9 @@
   <data name="admin.Ek Menu Yetkileri Manuel Verilidir"><value>Ek Menu Yetkileri Manuel Verilidir</value></data>
   <data name="admin.Yetki Şablonları"><value>Yetki Şablonları</value></data>
   <data name="admin.Menü Erişim Yetkiniz Bulunmamaktadır."><value>Menü Erişim Yetkiniz Bulunmamaktadır.</value></data>
+  <data name="admin.Firma Listele"><value>Firma Listele</value></data>
+  <data name="admin.Firma Ekle"><value>Firma Ekle</value></data>
+  <data name="admin.Firmalar"><value>Firmalar</value></data>
+  <data name="admin.Operasyon Temsilcisi"><value>Operasyon Temsilcisi</value></data>
+  <data name="admin.Kurumsal Satış Temsilcisi"><value>Kurumsal Satış Temsilcisi</value></data>
   </root>

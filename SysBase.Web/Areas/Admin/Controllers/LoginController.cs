@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog.Context;
 using SysBase.Core.Models;
@@ -54,6 +55,30 @@ namespace SysBase.Web.Areas.Admin.Controllers
             _logger.LogCritical(functions.LogCriticalMessage("Sign in", ControllerContext.ActionDescriptor.ControllerName, hasUser.Id, JsonConvert.SerializeObject(model)));
 
             return View(await _service.GetByIdAsync(1));
+
+            // bu yapı crmden gelecek token göre giriş işlemi
+            /*  
+            model.CrmToken = "E123";
+            // _userManager üzerinden kullanıcıyı CrmToken ile bul
+            var hasUser = await _userManager.Users.FirstOrDefaultAsync(x => x.CrmToken == model.CrmToken);
+            if (hasUser != null)
+            {
+                //log işleme alanı     
+                LogContext.PushProperty("TypeName", "Sign in");
+                _logger.LogCritical(functions.LogCriticalMessage("Sign in", ControllerContext.ActionDescriptor.ControllerName, hasUser.Id, JsonConvert.SerializeObject(model)));
+
+                // Kullanıcı bulunduysa SignIn işlemi
+                await _signInManager.SignInAsync(hasUser, isPersistent: false);
+                return Redirect("~/Admin");              
+            }
+            else
+            {
+                // Kullanıcı bulunamadıysa hata veya yönlendirme
+                ModelState.AddModelError(string.Empty, "Invalid CRM token.");
+            }
+
+            return View(await _service.GetByIdAsync(1));
+            */
         }
     }
 }

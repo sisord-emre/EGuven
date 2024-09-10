@@ -170,4 +170,9 @@
   <data name="admin.Ek Menu Yetkileri Manuel Verilidir"><value>Additional Menu Authorisations are Manual</value></data>
   <data name="admin.Yetki Şablonları"><value>Authorisation Templates</value></data>
   <data name="admin.Menü Erişim Yetkiniz Bulunmamaktadır."><value>You are not authorised to access the menu.</value></data>
+  <data name="admin.Firma Listele"><value>List Company</value></data>
+  <data name="admin.Firma Ekle"><value>Add Company</value></data>
+  <data name="admin.Firmalar"><value>Companys</value></data>
+  <data name="admin.Operasyon Temsilcisi"><value>Operation Representative</value></data>
+  <data name="admin.Kurumsal Satış Temsilcisi"><value>Corporate Sales Representative</value></data>
   </root>

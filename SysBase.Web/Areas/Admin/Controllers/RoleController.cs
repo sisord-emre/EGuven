@@ -101,6 +101,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 AppRole role = await _roleManager.FindByIdAsync(model.Id);
                 role.Name = model.Name;
                 role.Status = model.Status;
+                role.RoleType = model.RoleType;
                 role.MenuPermissions = menuPermissionsJSON;
                 // Here you would also update any additional properties related to roles and permissions
                 isControl = await _roleManager.UpdateAsync(role);
@@ -111,7 +112,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
             else
             {
-                AppRole role = new AppRole { Name = model.Name, Status = model.Status, MenuPermissions = menuPermissionsJSON};
+                AppRole role = new AppRole { Name = model.Name, Status = model.Status, RoleType = model.RoleType, MenuPermissions = menuPermissionsJSON};
                 isControl = await _roleManager.CreateAsync(role);
 
                 //log işleme alanı

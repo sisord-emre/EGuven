@@ -8,13 +8,14 @@ using SysBase.Repository;
 
 namespace SysBase.Web.Areas.Admin.ViewComponents
 {
-    public class MenuViewComponent:ViewComponent
+    public class MenuViewDealerComponent : ViewComponent
     {
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
         protected readonly IService<AppUserRole> _appUserRoleService;
         protected readonly IService<AppRole> _appRoleService;
-        public MenuViewComponent(AppDbContext context, UserManager<AppUser> userManager, IService<AppUserRole> appUserRoleService, IService<AppRole> appRoleService)
+
+        public MenuViewDealerComponent(AppDbContext context, UserManager<AppUser> userManager, IService<AppUserRole> appUserRoleService, IService<AppRole> appRoleService)
         {
             _context = context;
             _userManager = userManager;
@@ -24,15 +25,6 @@ namespace SysBase.Web.Areas.Admin.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-             /* 
-             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
-
-             List<Menu> list = _context.Menus.Where(x => x.SpecialVisibility == true && x.Visibility == true).OrderBy(X => X.Sequence).ToList();
-             ViewData["MenuPermission"] = JsonConvert.DeserializeObject<List<MenuPermission>>(currentUser.MenuPermissions);
-
-             return View(list);
-             */
-
             // Şu anki kullanıcıyı al
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
@@ -59,4 +51,5 @@ namespace SysBase.Web.Areas.Admin.ViewComponents
             return View(list);
         }
     }
+
 }
