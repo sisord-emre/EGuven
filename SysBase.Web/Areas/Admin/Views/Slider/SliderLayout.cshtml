@@ -1,0 +1,56 @@
+﻿@model List<Slider>
+
+@{
+    Layout = null;
+    List<Slider> orderedSliders = Model;
+}
+
+<div class="row" id="card-drag-area">
+    @foreach (var item in orderedSliders)
+    {
+        <div class="col-md-3" id="sliderSatir-@item.Id">
+            <div class="card grab" style="border: 1px solid #cacfe7;">
+                <div class="card-content">
+                    <div class="card-content">
+                        <img class="card-img-top img-fluid" src="/Images/Slider/@item.Media" style="height:150px;">
+                        <div class="card-body" style="height: 250px;">
+                            <h4 class="card-title">@item.Title</h4>
+                            <p class="card-text">@item.SubTitle</p>
+                            @if (!string.IsNullOrEmpty(item.Common))
+                            {
+                                <a href="" target="_blank" class="btn btn-outline-amber">@item.Common</a>
+                            }
+                        </div>
+                        <div class="card-footer" style="text-align: right; padding: 0.5rem 0.5rem;">
+                            @if (item.Status)
+                            {
+                                <div class="badge badge-success" style="float: left; margin-top: 0.75rem;">@Localizer["admin.Aktif"]</div>
+                            }
+                            else
+                            {
+                                <div class="badge badge-danger" style="float: left; margin-top: 0.75rem;">@Localizer["admin.Pasif"]</div>
+                            }
+                            <button type="button" onclick="GetPage('0','Admin/Slider/Add','@item.Id');" class="btn btn-warning net-button">
+                                <i class="la la-edit"></i>
+                            </button>
+                            <button type="button" onclick="sliderSil('@item.Id')" class="btn btn-danger net-button">
+                                <i class="la la-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (orderedSliders.Count > 0)
+{
+    <div class="col-md-12" style="text-align: center; padding: 2rem;">
+        <button type="button" class="btn btn-success" onclick="sliderLayoutAdd()">
+            <i class="la la-floppy-o"></i> @Localizer["admin.Slider Düzenini Kaydet"]
+        </button>
+    </div>
+}
+<script src="AdminAssets/dragula.min.js"></script>
+<script src="AdminAssets/drag-drop.js"></script>

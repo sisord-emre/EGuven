@@ -26,4 +26,8 @@
     <ProjectReference Include="..\SysBase.Service\SysBase.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Slider\" />
+  </ItemGroup>
+
 </Project>

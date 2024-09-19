@@ -33,6 +33,7 @@ namespace SysBase.Repository
         public DbSet<Project> Projects { get; set; }
         public DbSet<SiteMenu> SiteMenus { get; set; }
         public DbSet<FooterMenu> FooterMenus{ get; set; }
+        public DbSet<Slider> Sliders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
