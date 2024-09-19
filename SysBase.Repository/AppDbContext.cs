@@ -31,6 +31,8 @@ namespace SysBase.Repository
         public DbSet<AppUserRole> AppUserRoles { get; set; }
         public DbSet<Company> Companys { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<SiteMenu> SiteMenus { get; set; }
+        public DbSet<FooterMenu> FooterMenus{ get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

@@ -137,7 +137,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 new CompanyListViewModel 
                 { 
                     MenuPermission = menuPermission, 
-                    Companys = await _service.Where(x => x.Status).ToListAsync(),
+                    Companys = await _service.ToListAsync(),
                     UsersInCorporateSalesRepresentative = (List<AppUser>)usersInCorporateSalesRepresentative,
                     UsersInOperationRepresentative = (List<AppUser>)usersInOperationRepresentative
                 }

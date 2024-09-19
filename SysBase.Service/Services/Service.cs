@@ -69,6 +69,11 @@ namespace SysBase.Service.Services
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task<List<T>> ToListAsync()
+        {
+            return await _repository.GetAll().ToListAsync();
+        }
+
         public async Task<T> UpdateAsync(T entity)
         {
             _repository.Update(entity);

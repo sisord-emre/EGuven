@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using SysBase.Core.Models;
+using System.Linq.Expressions;
 
 namespace SysBase.Core.Services
 {
@@ -14,5 +15,6 @@ namespace SysBase.Core.Services
         Task RemoveAsync(T entity);
         Task RemoveRangeAsync(IEnumerable<T> entities);
         Task<T> GetByStringIdAsync(string id);
+        Task<List<T>> ToListAsync();
     }
 }

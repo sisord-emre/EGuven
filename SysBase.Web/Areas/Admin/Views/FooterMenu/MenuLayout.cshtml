@@ -1,0 +1,74 @@
+﻿@model List<FooterMenu>
+
+@{
+    Layout = null;
+    List<FooterMenu> menuler = Model;
+}
+
+<div class="cf nestable-lists">
+    <div class="dd" id="nestable-1">
+        <ol class="dd-list">
+            @foreach (FooterMenu item in menuler)
+            {
+                List<FooterMenu> altMenuler = menuler.Where(x => x.ParentId == item.Id).ToList();
+                if (item.ParentId != 0)
+                {
+                    continue;
+                }
+                <li class="dd-item dd3-item" data-id="@item.Id" id="menuSatir-@item.Id">
+                    <div class="dd-handle dd3-handle"></div>
+                    <div class="dd3-content">@item.Title (@item.Url)</div>
+                    <button type="button" onclick="GetPage('0','Admin/FooterMenu/Add','@item.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
+                        <i class="la la-edit"></i>
+                    </button>
+                    <button type="button" onclick="menuSil('@item.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
+                        <i class="la la-trash-o"></i>
+                    </button>
+                    @if (altMenuler.Count > 0)
+                    {
+                        <ol class="dd-list">
+                            @foreach (FooterMenu itemAlt in altMenuler)
+                            {
+                                List<FooterMenu> altAltMenuler = menuler.Where(x => x.ParentId == itemAlt.Id).ToList();
+                                <li class="dd-item dd3-item" data-id="@itemAlt.Id" id="menuSatir-@itemAlt.Id">
+                                    <div class="dd-handle dd3-handle"></div>
+                                    <div class="dd3-content">@itemAlt.Title (@itemAlt.Url)</div>
+                                    <button type="button" onclick="GetPage('0','Admin/FooterMenu/Add','@itemAlt.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
+                                        <i class="la la-edit"></i>
+                                    </button>
+                                    <button type="button" onclick="menuSil('@itemAlt.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
+                                        <i class="la la-trash-o"></i>
+                                    </button>
+                                    @if (altAltMenuler.Count > 0)
+                                    {
+                                        <ol class="dd-list">
+                                            @foreach (FooterMenu itemAltAlt in altAltMenuler)
+                                            {
+                                                <li class="dd-item dd3-item" data-id="@itemAltAlt.Id" id="menuSatir-@itemAltAlt.Id">
+                                                    <div class="dd-handle dd3-handle"></div>
+                                                    <div class="dd3-content">@itemAltAlt.Title (@itemAltAlt.Url)</div>
+                                                    <button type="button" onclick="GetPage('0','Admin/FooterMenu/Add','@itemAltAlt.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
+                                                        <i class="la la-edit"></i>
+                                                    </button>
+                                                    <button type="button" onclick="menuSil('@itemAltAlt.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
+                                                        <i class="la la-trash-o"></i>
+                                                    </button>
+                                                </li>
+                                            }
+                                        </ol>
+                                    }
+                                </li>
+                            }
+                        </ol>
+                    }
+                </li>
+            }
+        </ol>
+    </div>
+</div>
+
+<div class="col-md-12" style="text-align: center;padding: 1rem;">
+    <button type="button" class="btn btn-success" onclick="menuLayoutAdd(@ViewBag.type)">
+        <i class="la la-floppy-o"></i>  @Localizer["admin.Menü Düzenini Kaydet"]
+    </button>
+</div>

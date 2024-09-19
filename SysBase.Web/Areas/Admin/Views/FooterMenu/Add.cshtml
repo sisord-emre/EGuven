@@ -1,0 +1,208 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<script>
+    $('#ustYazi').html('&nbsp;-&nbsp;' + '@ViewContext.RouteData.Values["controller"].ToString()'); document.getElementById('menuVideoButton').setAttribute('menuVideoId', '');
+</script>
+<!-- Basic form layout section start -->
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <div class="btn-group" role="group" aria-label="button groups">
+                            @if (Model.MenuPermission?.Add)
+                            {
+                                <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
+                            }
+                        </div>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Title" class="form-label">@Localizer["admin.Title"]</label>
+                                    <input type="text" id="Title" class="form-control" name="Title" value="@Model.FooterMenu?.Title" autocomplete="off" required>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Url" class="form-label">@Localizer["admin.Url"]</label>
+                                    <input type="text" id="Url" class="form-control border-primary close-capitalized" name="Url" value="@Model.FooterMenu?.Url" autocomplete="off">
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.FooterMenu?.Status == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <input type="hidden" name="Id" value="@Model.FooterMenu?.Id">
+                                <input type="hidden" name="menuId" value="0">
+                                <button type="submit" class="btn btn-success me-2"> @Localizer["admin.Kayıt"]</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Menü Düzeni"]</h4>
+                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                        <div class="heading-elements">
+                        </div>
+                    </div>
+                    <div class="card-content collapse show">
+                        <div class="card-body" id="menuLayout-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- // Basic form layout section end -->
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<link rel="stylesheet" type="text/css" href="AdminAssets/nestable.css">
+<script src="AdminAssets/jquery.nestable.js"></script>
+<script type="text/javascript">
+    var siteMenuLayout = "";
+    $(document).ready(function () {
+        menuLayout();
+    });
+
+    function menuLayout() {
+        var data = new FormData();
+        data.append("menuId", '0');
+        $.ajax({
+            type: "POST",
+            url: "Admin/FooterMenu/MenuLayout",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#menuLayout-1').html(res);
+                nestableInit(1);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    }
+
+    function nestableInit(type) {
+        maxDepth = 3;
+        if (type != 1) {
+            maxDepth = 1;
+        }
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target), output = list.data('output');
+            if (window.JSON) {
+                siteMenuLayout = window.JSON.stringify(list.nestable('serialize'));
+            } else {
+                siteMenuLayout = 'JSON browser support required for this demo.';
+            }
+        };
+        $('#nestable-' + type).nestable({
+            group: 1,
+            maxDepth: maxDepth,
+        }).on('change', updateOutput);
+        updateOutput($('#nestable-' + type));
+    }
+
+    function menuLayoutAdd() {
+        var data = new FormData();
+        data.append("siteMenuLayout", siteMenuLayout);
+        $.ajax({
+            type: "POST",
+            url: "Admin/FooterMenu/MenuLayoutAdd",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                menuLayout();
+                if (res == '1') {
+                    toastr.success('Güncelleme Sağlandı.');
+                } else {
+                    alert(res);
+                }
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    }
+
+    function menuSil(Id) {
+        if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
+            $.ajax({
+                type: "POST",
+                url: "Admin/FooterMenu/Delete",
+                data: { 'Id': Id },
+                success: function (res) {
+                    if (res == 1) {
+                        document.getElementById('menuSatir-' + Id).style.display = "none";
+                    } else {
+                        menuLayout();
+                    }
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        }
+    }
+
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+                GetPage('0', '@addUrl')
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+</script>
