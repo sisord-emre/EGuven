@@ -56,10 +56,10 @@
   -moz-box-sizing: border-box;
 }
 
-  .dd-handle:hover {
+.dd-handle:hover {
     color: #2ea8e5;
     background: #fff;
-  }
+}
 
 .dd-item > button {
   display: block;
@@ -67,14 +67,13 @@
   cursor: pointer;
   float: right;
   width: 25px;
-  height: 20px;
+  height: 25px;
   margin: 5px 0;
   padding: 0;
   text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
   border: 0;
-  background: transparent;
   font-size: 12px;
   line-height: 1;
   text-align: center;
@@ -94,8 +93,12 @@
     content: '-';
   }
 
+.dd-item > button i {
+    font-size: 12px;
+}
+
 .net-button {
-  text-indent: inherit !important;
+    text-indent: inherit !important;
 }
 
 .dd-item > .net-button:before {
@@ -162,7 +165,7 @@
 
 .dd3-content {
   display: block;
-  height: 35px;
+  height: 40px;
   margin: 5px 0;
   padding: 5px 10px 5px 45px;
   color: #333;

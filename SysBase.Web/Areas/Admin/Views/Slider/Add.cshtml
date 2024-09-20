@@ -46,6 +46,22 @@
                                     <label for="SubTitle" class="form-label">@Localizer["admin.Alt Başlık"]</label>
                                     <input class="form-control close-capitalized" type="text" name="SubTitle" id="SubTitle" value="@Model.Slider?.SubTitle" autocomplete="off" />
                                 </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LanguageId" class="form-label">@Localizer["admin.Dil"]</label>
+                                    <select class="select2 form-control block" name="LanguageId" id="LanguageId" required>
+                                        @foreach (Language item in Model.Languages)
+                                        {
+                                            if (item.Id == Model.Slider?.LanguageId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
                                 <div class="mb-3 col-md-3 col-sm-10">
                                     <label for="Image" class="form-label">@Localizer["admin.Slider Görseli"]</label>
                                     <input class="form-control" type="file" name="Image" id="Image" />
@@ -53,7 +69,10 @@
                                 <div class="mb-3 col-md-1 col-sm-2">
                                     @if (Model.Slider?.Media != null)
                                     {
-                                        <a href="/Images/Slider/@Model.Slider?.Media" target="_blank"><img src="/Images/Slider/@Model.Slider?.Media" style="height:75px" /></a>
+                                        <a href="/Images/Slider/@Model.Slider?.Media" target="_blank">
+                                            <img src="/Images/Slider/@Model.Slider?.Media" style="width: 100%" />
+                                        </a>
+                                        <input class="form-control" type="hidden" name="Media" id="Media" value="@Model.Slider?.Media" />
                                     }
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
@@ -83,6 +102,19 @@
                         <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Slider Düzeni"]</h4>
 						<a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
 						<div class="heading-elements">
+                            <select class="select2 form-control block" name="sliderLanguageIdOrder" id="sliderLanguageIdOrder" onchange="sliderLayout();" required>
+                                @foreach (Language item in Model.Languages)
+                                {
+                                    if (item.Id == Model.Slider?.LanguageId)
+                                    {
+                                        <option value="@item.Id" selected>@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
 						</div>
 					</div>
 					<div class="card-content collapse show">
@@ -103,8 +135,10 @@
     });
 
     function sliderLayout() {
+        var sliderLanguageId = $('#sliderLanguageIdOrder').val();
         var data = new FormData();
         data.append("menuId", '0');
+        data.append("sliderLanguageId", sliderLanguageId);
         $.ajax({
             type: "POST",
             url: "Admin/Slider/SliderLayout",

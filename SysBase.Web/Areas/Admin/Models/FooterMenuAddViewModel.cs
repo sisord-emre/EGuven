@@ -6,5 +6,6 @@ namespace SysBase.Web.Areas.Admin.Models
     {
         public MenuPermission MenuPermission { get; set; }
         public FooterMenu FooterMenu { get; set; }
+        public List<Language> Languages { get; set; }
     }
 }

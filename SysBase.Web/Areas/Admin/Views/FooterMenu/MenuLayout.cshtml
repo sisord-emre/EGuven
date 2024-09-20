@@ -17,12 +17,12 @@
                 }
                 <li class="dd-item dd3-item" data-id="@item.Id" id="menuSatir-@item.Id">
                     <div class="dd-handle dd3-handle"></div>
-                    <div class="dd3-content">@item.Title (@item.Url)</div>
+                    <div class="dd3-content">(@item.Language.Name) - @item.Title (@item.Url)</div>
                     <button type="button" onclick="GetPage('0','Admin/FooterMenu/Add','@item.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
-                        <i class="la la-edit"></i>
+                        <i class="fa fa-edit"></i>
                     </button>
                     <button type="button" onclick="menuSil('@item.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
-                        <i class="la la-trash-o"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                     @if (altMenuler.Count > 0)
                     {
@@ -32,12 +32,12 @@
                                 List<FooterMenu> altAltMenuler = menuler.Where(x => x.ParentId == itemAlt.Id).ToList();
                                 <li class="dd-item dd3-item" data-id="@itemAlt.Id" id="menuSatir-@itemAlt.Id">
                                     <div class="dd-handle dd3-handle"></div>
-                                    <div class="dd3-content">@itemAlt.Title (@itemAlt.Url)</div>
+                                    <div class="dd3-content">(@itemAlt.Language.Name) - @itemAlt.Title (@itemAlt.Url)</div>
                                     <button type="button" onclick="GetPage('0','Admin/FooterMenu/Add','@itemAlt.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
-                                        <i class="la la-edit"></i>
+                                        <i class="fa fa-edit"></i>
                                     </button>
                                     <button type="button" onclick="menuSil('@itemAlt.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
-                                        <i class="la la-trash-o"></i>
+                                        <i class="fa fa-trash"></i>
                                     </button>
                                     @if (altAltMenuler.Count > 0)
                                     {
@@ -46,12 +46,12 @@
                                             {
                                                 <li class="dd-item dd3-item" data-id="@itemAltAlt.Id" id="menuSatir-@itemAltAlt.Id">
                                                     <div class="dd-handle dd3-handle"></div>
-                                                    <div class="dd3-content">@itemAltAlt.Title (@itemAltAlt.Url)</div>
+                                                    <div class="dd3-content">(@itemAltAlt.Language.Name) - @itemAltAlt.Title (@itemAltAlt.Url)</div>
                                                     <button type="button" onclick="GetPage('0','Admin/FooterMenu/Add','@itemAltAlt.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
-                                                        <i class="la la-edit"></i>
+                                                        <i class="fa fa-edit"></i>
                                                     </button>
                                                     <button type="button" onclick="menuSil('@itemAltAlt.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
-                                                        <i class="la la-trash-o"></i>
+                                                        <i class="fa fa-trash"></i>
                                                     </button>
                                                 </li>
                                             }

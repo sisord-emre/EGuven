@@ -34,8 +34,11 @@ namespace SysBase.Repository
         public DbSet<SiteMenu> SiteMenus { get; set; }
         public DbSet<FooterMenu> FooterMenus{ get; set; }
         public DbSet<Slider> Sliders { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogLanguageInfo> BlogLanguageInfos { get; set; }
+        public DbSet<Brand> Brands { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
 
             base.OnModelCreating(modelBuilder);

@@ -2,10 +2,10 @@
 
 namespace SysBase.Web.Areas.Admin.Models
 {
-    internal class SiteMenuAddViewModel
+    internal class BlogAddViewModel
     {
         public MenuPermission MenuPermission { get; set; }
-        public SiteMenu SiteMenu { get; set; }
-        public List<Language> Languages { get; set; }
+        public Blog Blog { get; set; }
+        public IEnumerable<Language> Languages { get; set; }
     }
 }

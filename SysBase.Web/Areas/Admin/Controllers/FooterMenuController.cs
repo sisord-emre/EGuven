@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
+using SysBase.Repository.Migrations;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
 using System.Diagnostics;
@@ -22,13 +23,15 @@ namespace SysBase.Web.Areas.Admin.Controllers
         // PageController specific dependencies
         protected readonly IService<FooterMenu> _service;
         protected readonly ILogger<FooterMenuController> _logger;
+        protected readonly IService<Language> _languageService;
 
         public FooterMenuController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<FooterMenu> service, ILogger<FooterMenuController> logger)
+                              IService<FooterMenu> service, ILogger<FooterMenuController> logger, IService<Language> languageService)
             : base(localizer, userManager)
         {
             _service = service;
             _logger = logger;
+            _languageService = languageService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -55,7 +58,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 new FooterMenuAddViewModel
                 {
                     MenuPermission = menuPermission,
-                    FooterMenu = model
+                    FooterMenu = model,
+                    Languages = (List<Language>)await _languageService.GetAllAsync()
                 }
             );
         }
@@ -101,7 +105,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 new FooterMenuAddViewModel
                 {
                     MenuPermission = menuPermission,
-                    FooterMenu = model
+                    FooterMenu = model,
+                    Languages = (List<Language>)await _languageService.GetAllAsync()
                 }
             );
         }
@@ -159,9 +164,12 @@ namespace SysBase.Web.Areas.Admin.Controllers
             return resultJson;
         }
 
-        public async Task<IActionResult> MenuLayout()
+        public async Task<IActionResult> MenuLayout(int footerMenuLanguageId)
         {
-            var siteMenus = await _service.GetAllAsync();
+            var siteMenus = await _service
+                .Where(x => x.LanguageId == footerMenuLanguageId)
+                .Include(x => x.Language) // Language varlığını sorguya dahil ediyoruz
+                .ToListAsync();
 
             return View(siteMenus);
         }

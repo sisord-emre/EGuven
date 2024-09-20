@@ -9,6 +9,7 @@ using Serilog.Context;
 using SysBase.Core.DTOs;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
+using SysBase.Repository.Migrations;
 using SysBase.Service.Functions;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
@@ -22,13 +23,15 @@ namespace SysBase.Web.Areas.Admin.Controllers
         // SliderController specific dependencies
         protected readonly IService<Slider> _service;
         protected readonly ILogger<SliderController> _logger;
+        protected readonly IService<Language> _languageService;
 
         public SliderController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                                  IService<Slider> service,ILogger<SliderController> logger)
+                                  IService<Slider> service,ILogger<SliderController> logger, IService<Language> languageService)
             : base(localizer, userManager)
         {
             _service = service;   
             _logger = logger;
+            _languageService = languageService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -50,7 +53,15 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new SliderAddViewModel { MenuPermission = menuPermission, Slider = slider });
+            return View
+            (
+                new SliderAddViewModel 
+                { 
+                    MenuPermission = menuPermission, 
+                    Slider = slider, 
+                    Languages = (List<Language>)await _languageService.GetAllAsync() 
+                }
+            );
         }
 
         [HttpPost]
@@ -63,7 +74,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            model.Media = await functions.ImageUpload(Image, "Images/Slider", Guid.NewGuid().ToString("N"));
+            if (Image != null && Image.Length > 0)
+            {
+                model.Media = await functions.ImageUpload(Image, "Images/Slider", Guid.NewGuid().ToString("N"));
+            }
 
             Slider isControl;
             if (ModelState.IsValid)
@@ -90,8 +104,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 TempData["ErrorMessage"] = _localizer["admin.Bilgileri Kontrol Ediniz"].Value;
             }
-
-            return View(new SliderAddViewModel { MenuPermission = menuPermission, Slider = isControl });
+         
+            return View
+            (
+                new SliderAddViewModel
+                {
+                    MenuPermission = menuPermission,
+                    Slider = isControl,
+                    Languages = (List<Language>)await _languageService.GetAllAsync()
+                }
+            );
         }
 
         public async Task<IActionResult> List()
@@ -143,11 +165,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
             return resultJson;
         }
 
-        public async Task<IActionResult> SliderLayout()
+        public async Task<IActionResult> SliderLayout(int sliderLanguageId)
         {
-            var sliders = await _service.GetAllAsync();
-            var orderedSliders = sliders.OrderBy(s => s.Sequence).ToList();
+            var orderedSliders = await _service
+               .Where(x => x.LanguageId == sliderLanguageId)
+               .Include(x => x.Language) // Language varlığını sorguya dahil ediyoruz
+               .OrderBy(s => s.Sequence)
+               .ToListAsync();
+
             return View(orderedSliders);
+
         }
 
         [HttpPost]

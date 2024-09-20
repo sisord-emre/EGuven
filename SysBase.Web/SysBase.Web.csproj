@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Images\Blog\" />
+    <Folder Include="wwwroot\Images\Brand\" />
     <Folder Include="wwwroot\Images\Slider\" />
   </ItemGroup>
 
