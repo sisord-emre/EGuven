@@ -239,3 +239,9 @@
         flex-wrap: inherit !important;
     }
 }
+
+.datatable-table,
+.table td, th
+{
+    white-space: normal !important;
+}

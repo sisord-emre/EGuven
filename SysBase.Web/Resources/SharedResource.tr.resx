@@ -218,4 +218,5 @@
   <data name="admin.Projeler"><value>Projeler</value></data>
   <data name="admin.Marka Listele"><value>Marka Listele</value></data>
   <data name="admin.Marka Ekle"><value>Marka Ekle</value></data>
+  <data name="admin.Description"><value>Açıklama</value></data>
   </root>
