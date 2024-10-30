@@ -1,22 +1,51 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.EntityFrameworkCore;
+using Serilog.Context;
+using SysBase.Core.Models;
+using SysBase.Core.Services;
+using SysBase.Repository.Migrations;
 using SysBase.Web.Models;
+using SysBase.Web.Resources;
+using SysBase.Web.ViewModels;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace SysBase.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        protected readonly IService<SiteMenu> _siteMenuService;
+        protected readonly IService<FooterMenu> _footerMenuService;
+        protected readonly IService<Language> _languageService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service, 
+            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, IService<Language> languageService)
+           : base(localizer, service)
         {
             _logger = logger;
+            _siteMenuService = siteMenuService;
+            _footerMenuService = footerMenuService;
+            _languageService = languageService;
         }
 
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+            var langCode = rqf.RequestCulture.Culture;
+            Debug.WriteLine(langCode);
+
+            UiLayoutViewModel model = new UiLayoutViewModel();
+            model.Config = await _service.GetByIdAsync(1);
+            model.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).ToList();
+            model.FooterMenus = _footerMenuService.Where(x => x.Status).ToList();
+            model.Languages = await _languageService.ToListAsync();
+            ViewBag.langCode = langCode;
+            return View(model);
         }
 
         public IActionResult SetLang(string lng, string returnUrl)
@@ -27,12 +56,6 @@ namespace SysBase.Web.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
             return LocalRedirect(returnUrl);
-        }
-
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

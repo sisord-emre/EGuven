@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import './vendor/swiper-bundle.min.css';
+@import './../js/aos/aos.css';
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+@import './components/nav.css';
+@import './components/button.css';
+@import './components/sliders.css';
+@import './components/tab.css';
+@import './card/card.css';
+@import './components/pagination.css';
+
+@import 'tailwindcss/utilities';
+@import './animation/animation.css';
+
+@layer {
+    html,
+    body {
+        @apply bg-white dark:bg-primary-dark transition-colors duration-150 ease-in font-sans;
+    }
+}
