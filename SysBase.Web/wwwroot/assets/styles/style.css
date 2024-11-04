@@ -1537,7 +1537,7 @@ button.swiper-pagination-bullet{
 }
 
 [data-aos^=fade][data-aos^=fade]{
-  opacity:0;
+  opacity:1;
   transition-property:opacity,transform
 }
 

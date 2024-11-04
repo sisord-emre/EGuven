@@ -1,10 +1,12 @@
 ﻿@using SysBase.Web.ViewModels;
 @{
     UiLayoutViewModel model = Model;
+    var emails = model.Config.Mail?.Split(';');
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="@Model.Config.SiteUrl">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SysBase.Web</title>
@@ -21,31 +23,31 @@
                 <!-- social-menu -->
                 <ul class="flex items-center gap-1.5">
                     <li>
-                        <a href="javascript:;"
+                        <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
                            class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                             <span class="icon-youtube"></span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:;"
+                        <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
                            class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                             <span class="icon-linkedin"></span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:;"
+                        <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
                            class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                             <span class="icon-instagram"></span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:;"
+                        <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
                            class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                             <span class="icon-facebook"></span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:;"
+                        <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
                            class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                             <span class="icon-x"></span>
                         </a>
@@ -74,14 +76,14 @@
                          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-24 border border-primary-gray">
                         <ul class="py-2 text-sm text-primary-dark font-semibold"
                             aria-labelledby="languageSelectHeader">
-                            <li>
-                                <a href="javascript:;"
-                                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Turkish</a>
-                            </li>
-                            <li>
-                                <a href="javascript:;"
-                                   class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Deutsch</a>
-                            </li>
+                            @foreach (Language item in model.Languages.Where(x => x.Status).ToList())
+                            {
+                                <li>
+                                    <a href="@item.Code" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        @item.Name
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <!-- theme switch -->
@@ -228,15 +230,16 @@
                                      alt="E-Güven Logo" />
                             </a>
                             <div class="text-sm text-white">
-                                Değirmen sokak Nida Kule İş Merkezi No:18
-                                Kat:5 Kozyatağı / İstanbul
+                                @Html.Raw(model.Config.Address)
                             </div>
                             <div class="text-sm text-white">
-                                <p>0850 321 85 55</p>
-                                <p>
-                                    <a href="mailto:info@e-guven.com"
-                                       class="hover:text-primary-red transition-colors duration-150 ease-in">info@e-guven.com</a>
-                                </p>
+                                <a href="tel:@Html.Raw(model.Config.Phone)">@Html.Raw(model.Config.Phone)</a><br />
+                                @if (emails != null && emails.Length > 1)
+                                {
+                                    <a href="mailto:@emails[1].Trim()" class="hover:text-primary-red transition-colors duration-150 ease-in">
+                                        @emails[1].Trim()
+                                    </a>
+                                }
                             </div>
                             <a href="satis-ofisleri.html"
                                class="btn btn-primary-red">Satış Ofisleri</a>
@@ -262,114 +265,31 @@
                             </div>
                         </div>
                         <div class="grid lg:grid-cols-4 grid-cols-2 gap-y-7">
-                            <div class="flex flex-col xl:gap-7 gap-4 text-white">
-                                <div class="xl:text-2xl text-lg font-semibold">
-                                    Kurumsal
-                                </div>
-                                <ul class="flex flex-col gap-3">
-                                    <li>
-                                        <a href="kurumsal.html"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Hakkımızda</a>
-                                    </li>
-                                    <li>
-                                        <a href="kurumsal.html"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Misyon & Vizyon</a>
-                                    </li>
-                                    <li>
-                                        <a href="kurumsal.html"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Değerlerimiz</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Basın Odası</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Kalite Politikamız</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="flex flex-col xl:gap-7 gap-4 text-white">
-                                <div class="xl:text-2xl text-lg font-semibold">
-                                    Ürünlerimiz
-                                </div>
-                                <ul class="flex flex-col gap-3">
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Yeni Ürünler</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Popüler Ürünler</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Kampanyalı Ürünler</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Kategorilere Göre Ürünler</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Özel Üretim Ürünler</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="flex flex-col xl:gap-7 gap-4 text-white">
-                                <div class="xl:text-2xl text-lg font-semibold">
-                                    Destek
-                                </div>
-                                <ul class="flex flex-col gap-3">
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Müşteri Hizmetleri</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">SSS (Sıkça Sorulan Sorular)</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Garanti ve İade</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Teknik Destek</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Canlı Destek</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="flex flex-col xl:gap-7 gap-4 text-white">
-                                <div class="xl:text-2xl text-lg font-semibold">
-                                    Bilgi Bankası
-                                </div>
-                                <ul class="flex flex-col gap-3">
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Kullanım Kılavuzları</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Eğitim Videoları</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Blog</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Dokümanlar ve Kaynaklar</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;"
-                                           class="hover:text-primary-red transition-colors duration-150 ease-in">Ürün Karşılaştırmaları</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            @foreach (var menu in Model.FooterMenus)
+                            {
+                                if (menu.ParentId == 0)
+                                {
+                                    <div class="flex flex-col xl:gap-7 gap-4 text-white">
+                                        <div class="xl:text-2xl text-lg font-semibold">
+                                            @menu.Title
+                                        </div>
+                                        <ul class="flex flex-col gap-3">
+                                            @foreach (var subMenu in Model.FooterMenus)
+                                            {
+                                                if (subMenu.ParentId == menu.Id)
+                                                {
+                                                    <li>
+                                                        <a href="@subMenu.Url" class="hover:text-primary-red transition-colors duration-150 ease-in">
+                                                            @subMenu.Title
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -383,32 +303,32 @@
                         <!-- social-menu -->
                         <ul class="flex items-center gap-1.5">
                             <li>
-                                <a href="javascript:;"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
+                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                     <span class="icon-youtube"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:;"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
+                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                     <span class="icon-linkedin"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:;"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
+                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                     <span class="icon-instagram"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:;"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
+                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                     <span class="icon-facebook"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="javascript:;"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
+                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                     <span class="icon-x"></span>
                                 </a>
                             </li>
@@ -450,14 +370,14 @@
                              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-24 border border-primary-gray">
                             <ul class="py-2 text-sm text-primary-dark font-semibold"
                                 aria-labelledby="dropdownLanguageFooter">
-                                <li>
-                                    <a href="javascript:;"
-                                       class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Turkish</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"
-                                       class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Deutsch</a>
-                                </li>
+                                @foreach (Language item in model.Languages.Where(x => x.Status).ToList())
+                                {
+                                    <li>
+                                        <a href="@item.Code" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                            @item.Name
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -554,15 +474,16 @@
 
         <div class="flex flex-col gap-4 text-primary-dark">
             <div class="text-sm">
-                Değirmen sokak Nida Kule İş Merkezi No:18 Kat:5 Kozyatağı /
-                İstanbul
+                @Html.Raw(model.Config.Address)
             </div>
             <div class="text-sm">
-                <p>0850 321 85 55</p>
-                <p>
-                    <a href="mailto:info@e-guven.com"
-                       class="hover:text-primary-red transition-colors duration-150 ease-in">info@e-guven.com</a>
-                </p>
+                <a href="tel:@Html.Raw(model.Config.Phone)">@Html.Raw(model.Config.Phone)</a><br />
+                @if (emails != null && emails.Length > 1)
+                {
+                    <a href="mailto:@emails[1].Trim()" class="hover:text-primary-red transition-colors duration-150 ease-in">
+                        @emails[1].Trim()
+                    </a>
+                }
             </div>
             <a href="satis-ofisleri.html" class="btn btn-primary-red w-full">Satış Ofisleri</a>
         </div>

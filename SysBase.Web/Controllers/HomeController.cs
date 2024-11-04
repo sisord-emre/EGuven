@@ -42,7 +42,7 @@ namespace SysBase.Web.Controllers
             UiLayoutViewModel model = new UiLayoutViewModel();
             model.Config = await _service.GetByIdAsync(1);
             model.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).ToList();
-            model.FooterMenus = _footerMenuService.Where(x => x.Status).ToList();
+            model.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).ToList();
             model.Languages = await _languageService.ToListAsync();
             ViewBag.langCode = langCode;
             return View(model);
