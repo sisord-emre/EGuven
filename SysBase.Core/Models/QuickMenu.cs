@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SysBase.Core.Models
 {
-    public class Slider
+    public class QuickMenu
     {
         public int Id { get; set; }
         public int? LanguageId { get; set; }
         public string Title { get; set; }
-        public string SubTitle { get; set; }
-        public string Media { get; set; }
-        public string Common { get ; set; }
         public string Url { get; set; }
         public int Sequence { get; set; }
         public bool Status { get; set; }

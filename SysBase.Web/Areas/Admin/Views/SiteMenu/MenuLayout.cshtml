@@ -1,10 +1,8 @@
 ﻿@model List<SiteMenu>
-
 @{
     Layout = null;
     List<SiteMenu> menuler = Model;
 }
-
 <div class="cf nestable-lists">
     <div class="dd" id="nestable-1">
         <ol class="dd-list">
@@ -66,7 +64,6 @@
         </ol>
     </div>
 </div>
-
 <div class="col-md-12" style="text-align: center;padding: 1rem;">
     <button type="button" class="btn btn-success" onclick="menuLayoutAdd(@ViewBag.type)">
         <i class="la la-floppy-o"></i>  @Localizer["admin.Menü Düzenini Kaydet"]

@@ -7,64 +7,30 @@
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
         <!-- Slides -->
-        <!-- Slide1 -->
-        <div class="swiper-slide">
-            <div class="hero-slider-item" style="background-image: url('assets/images/slider/slider-1.png');">
-                <div class="hero-slider-item-content">
-                    <div class="hero-slider-item-content-box">
-                        <div class="hero-slider-item-subtitle">
-                            Yenilikçi ve fayda odaklı çözümler sunan
+        @foreach (Slider item in Model.Sliders)
+        {
+            <!-- Slide1 -->
+            <div class="swiper-slide">
+                <div class="hero-slider-item" style="background-image: url('/Images/Slider/@item.Media');">
+                    <div class="hero-slider-item-content">
+                        <div class="hero-slider-item-content-box">
+                            <div class="hero-slider-item-subtitle">
+                                @item.Title
+                            </div>
+                            <div class="hero-slider-item-title">
+                                @item.SubTitle
+                            </div>
+                            @if (item.Common != "" && item.Common != null)
+                            {
+                                <a href="@item.Url" class="btn btn-common">
+                                    @item.Common
+                                </a>
+                            }
                         </div>
-                        <div class="hero-slider-item-title">
-                            E-Güven hayatı kolaylaştırır
-                        </div>
-                        <button class="btn btn-common">
-                            Detaylı bilgi için
-                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Slide2 -->
-        <div class="swiper-slide">
-            <div class="hero-slider-item" style="background-image: url('assets/images/slider/slider-2.png');">
-                <div class="hero-slider-item-content">
-                    <div class="hero-slider-item-content-box">
-                        <div class="hero-slider-item-subtitle">
-                            Lorem ipsum dolor, sit amet consectetur
-                            adipisicing elit.
-                        </div>
-                        <div class="hero-slider-item-title">
-                            Lorem ipsum dolor sit amet consectetur
-                            adipisicing elit. Ab.
-                        </div>
-                        <button class="btn btn-common">
-                            Detaylı bilgi için
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Slide3 -->
-        <div class="swiper-slide">
-            <div class="hero-slider-item" style="background-image: url('assets/images/slider/slider-3.png');">
-                <div class="hero-slider-item-content">
-                    <div class="hero-slider-item-content-box">
-                        <div class="hero-slider-item-subtitle">
-                            Lorem ipsum dolor, sit amet consectetur
-                            adipisicing elit.
-                        </div>
-                        <div class="hero-slider-item-title">
-                            Lorem ipsum dolor sit amet consectetur
-                            adipisicing elit. Ab.
-                        </div>
-                        <button class="btn btn-common">
-                            Detaylı bilgi için
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
     </div>
     <!-- If we need pagination -->
     <div class="swiper-pagination"></div>
@@ -80,14 +46,6 @@
     </div>
 </div>
 
-<div class="text-center">
-    <h1 class="display-4">@Localizer["title"]</h1>
-    <h1 class="display-4">@Localizer["title-panel"]</h1>
-    <a href="/Home/s/SetLang?lng=tr&returnUrl=@Context.Request.Path">Türkçe</a>
-    <a href="/Home/s/SetLang?lng=en&returnUrl=@Context.Request.Path">English</a>
-</div>
-
-
 <!-- Duyurular -->
 <section class="news" data-aos="fade-up">
     <div class="container">
@@ -97,55 +55,17 @@
             </div>
             <div class="news-slider">
                 <div class="news-slider-wrapper">
-                    <div class="news-slider-slide">
-                        <a href="javascript:;"
-                           class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
-                            <div class="line-clamp-1">
-                                It is a long established fact that a
-                                reader will be distracted by the
-                                readable content of a page when looking
-                                at its layout. The point of using Lorem
-                                Ipsum is that it has a more-or-less
-                                normal distribution of letters,
-                            </div>
-                            <div class="text-primary-red italic underline">
-                                devamı
-                            </div>
-                        </a>
-                    </div>
-                    <div class="news-slider-slide">
-                        <a href="javascript:;"
-                           class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
-                            <div class="line-clamp-1">
-                                Lorem Ipsum is simply dummy text of the
-                                printing and typesetting industry. Lorem
-                                Ipsum has been the industry's standard
-                                dummy text ever since the 1500s,
-                            </div>
-                            <div class="text-primary-red italic underline">
-                                devamı
-                            </div>
-                        </a>
-                    </div>
-                    <div class="news-slider-slide">
-                        <a href="javascript:;"
-                           class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
-                            <div class="line-clamp-1">
-                                There are many variations of passages of
-                                Lorem Ipsum available, but the majority
-                                have suffered alteration in some form,
-                                by injected humour, or randomised words
-                                which don't look even slightly
-                                believable. If you are going to use a
-                                passage of Lorem Ipsum, you need to be
-                                sure there isn't anything embarrassing
-                                hidden in the middle of text.
-                            </div>
-                            <div class="text-primary-red italic underline">
-                                devamı
-                            </div>
-                        </a>
-                    </div>
+                    @foreach (AnnouncementLanguageInfo item in Model.Announcements)
+                    {
+                        <div class="news-slider-slide">
+                            <a href="javascript:;"
+                               class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
+                                <div class="line-clamp-1">
+                                    @item.Description
+                                </div>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

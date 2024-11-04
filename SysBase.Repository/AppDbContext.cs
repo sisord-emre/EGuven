@@ -37,6 +37,9 @@ namespace SysBase.Repository
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogLanguageInfo> BlogLanguageInfos { get; set; }
         public DbSet<Brand> Brands { get; set; }
+        public DbSet<QuickMenu> QuickMenus { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<AnnouncementLanguageInfo> AnnouncementLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

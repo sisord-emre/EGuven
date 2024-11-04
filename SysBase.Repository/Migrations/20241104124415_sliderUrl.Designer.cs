@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SysBase.Repository;
 
@@ -11,9 +12,11 @@ using SysBase.Repository;
 namespace SysBase.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241104124415_sliderUrl")]
+    partial class sliderUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,61 +137,6 @@ namespace SysBase.Repository.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("SysBase.Core.Models.Announcement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Sequence")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Announcements");
-                });
-
-            modelBuilder.Entity("SysBase.Core.Models.AnnouncementLanguageInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnnouncementId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnnouncementId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("AnnouncementLanguageInfos");
                 });
 
             modelBuilder.Entity("SysBase.Core.Models.AppRole", b =>
@@ -7496,7 +7444,7 @@ namespace SysBase.Repository.Migrations
                             Id = 1,
                             AdminStatus = true,
                             Code = "tr",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 614, DateTimeKind.Local).AddTicks(9893),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(1107),
                             Image = "tr.png",
                             Name = "Türkçe",
                             Status = true
@@ -7506,7 +7454,7 @@ namespace SysBase.Repository.Migrations
                             Id = 2,
                             AdminStatus = true,
                             Code = "en",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 614, DateTimeKind.Local).AddTicks(9896),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(1110),
                             Image = "en.png",
                             Name = "English",
                             Status = true
@@ -10487,7 +10435,7 @@ namespace SysBase.Repository.Migrations
                             Id = 1,
                             BaseMenuId = 0,
                             ControllerName = "Menu",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2519),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4205),
                             Icon = "fas fa-bars",
                             Name = "Menüler",
                             Page = "#",
@@ -10505,7 +10453,7 @@ namespace SysBase.Repository.Migrations
                             Id = 2,
                             BaseMenuId = 0,
                             ControllerName = "Menu",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2524),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4209),
                             Icon = "",
                             Name = "Menü Kurulum",
                             Page = "/Admin/Menu/Add",
@@ -10523,7 +10471,7 @@ namespace SysBase.Repository.Migrations
                             Id = 3,
                             BaseMenuId = 0,
                             ControllerName = "Menu",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2527),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4212),
                             Icon = "",
                             Name = "Menü Güncelle",
                             Page = "/Admin/Menu/List",
@@ -10541,7 +10489,7 @@ namespace SysBase.Repository.Migrations
                             Id = 4,
                             BaseMenuId = 0,
                             ControllerName = "User",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2530),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4214),
                             Icon = "fas fa-users-cog",
                             Name = "Kullanıcılar",
                             Page = "#",
@@ -10559,7 +10507,7 @@ namespace SysBase.Repository.Migrations
                             Id = 5,
                             BaseMenuId = 0,
                             ControllerName = "User",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2532),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4217),
                             Icon = "",
                             Name = "Kullanıcı Ekle",
                             Page = "/Admin/User/Add",
@@ -10577,7 +10525,7 @@ namespace SysBase.Repository.Migrations
                             Id = 6,
                             BaseMenuId = 0,
                             ControllerName = "User",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2535),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4219),
                             Icon = "",
                             Name = "Kullanıcı Listele",
                             Page = "/Admin/User/List",
@@ -10595,7 +10543,7 @@ namespace SysBase.Repository.Migrations
                             Id = 7,
                             BaseMenuId = 0,
                             ControllerName = "Config",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2537),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4222),
                             Icon = "fas fa-cog",
                             Name = "Ayarlar",
                             Page = "#",
@@ -10613,7 +10561,7 @@ namespace SysBase.Repository.Migrations
                             Id = 8,
                             BaseMenuId = 0,
                             ControllerName = "Config",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2540),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4224),
                             Icon = "",
                             Name = "Ayar Güncelle",
                             Page = "/Admin/Config/Add",
@@ -10631,7 +10579,7 @@ namespace SysBase.Repository.Migrations
                             Id = 9,
                             BaseMenuId = 0,
                             ControllerName = "Language",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2545),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4228),
                             Icon = "fas fa-language",
                             Name = "Site Dilleri",
                             Page = "#",
@@ -10649,7 +10597,7 @@ namespace SysBase.Repository.Migrations
                             Id = 10,
                             BaseMenuId = 0,
                             ControllerName = "Language",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2549),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4231),
                             Icon = "",
                             Name = "Dil Ekle",
                             Page = "/Admin/Language/Add",
@@ -10667,7 +10615,7 @@ namespace SysBase.Repository.Migrations
                             Id = 11,
                             BaseMenuId = 0,
                             ControllerName = "Language",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2551),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4233),
                             Icon = "",
                             Name = "Dil Ve Değerler",
                             Page = "/Admin/Language/List",
@@ -10685,7 +10633,7 @@ namespace SysBase.Repository.Migrations
                             Id = 12,
                             BaseMenuId = 0,
                             ControllerName = "Language",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2554),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4235),
                             Icon = "",
                             Name = "Dil Keyler",
                             Page = "/Admin/Language/KeyList",
@@ -10703,7 +10651,7 @@ namespace SysBase.Repository.Migrations
                             Id = 13,
                             BaseMenuId = 0,
                             ControllerName = "PanelLanguage",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2556),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4237),
                             Icon = "fas fa-language",
                             Name = "Panel Dilleri",
                             Page = "#",
@@ -10721,7 +10669,7 @@ namespace SysBase.Repository.Migrations
                             Id = 14,
                             BaseMenuId = 0,
                             ControllerName = "PanelLanguage",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2558),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4239),
                             Icon = "",
                             Name = "Dil Ekle",
                             Page = "/Admin/PanelLanguage/Add",
@@ -10739,7 +10687,7 @@ namespace SysBase.Repository.Migrations
                             Id = 15,
                             BaseMenuId = 0,
                             ControllerName = "PanelLanguage",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2561),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4242),
                             Icon = "",
                             Name = "Dil Ve Değerler",
                             Page = "/Admin/PanelLanguage/List",
@@ -10757,7 +10705,7 @@ namespace SysBase.Repository.Migrations
                             Id = 16,
                             BaseMenuId = 0,
                             ControllerName = "PanelLanguage",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2563),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4244),
                             Icon = "",
                             Name = "Dil Keyler",
                             Page = "/Admin/PanelLanguage/KeyList",
@@ -10775,7 +10723,7 @@ namespace SysBase.Repository.Migrations
                             Id = 17,
                             BaseMenuId = 0,
                             ControllerName = "Notification",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2566),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4248),
                             Icon = "fas fa-bell",
                             Name = "Bildirimler",
                             Page = "#",
@@ -10793,7 +10741,7 @@ namespace SysBase.Repository.Migrations
                             Id = 18,
                             BaseMenuId = 0,
                             ControllerName = "Notification",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2568),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4251),
                             Icon = "",
                             Name = "Bildirim Ekle",
                             Page = "/Admin/Notification/Add",
@@ -10811,7 +10759,7 @@ namespace SysBase.Repository.Migrations
                             Id = 19,
                             BaseMenuId = 0,
                             ControllerName = "Notification",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2571),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4253),
                             Icon = "",
                             Name = "Bildirim Listele",
                             Page = "/Admin/Notification/List",
@@ -10829,7 +10777,7 @@ namespace SysBase.Repository.Migrations
                             Id = 20,
                             BaseMenuId = 0,
                             ControllerName = "Page",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2573),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4256),
                             Icon = "fas fa-file-alt",
                             Name = "Sayfalar",
                             Page = "#",
@@ -10847,7 +10795,7 @@ namespace SysBase.Repository.Migrations
                             Id = 21,
                             BaseMenuId = 0,
                             ControllerName = "Page",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2576),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4258),
                             Icon = "",
                             Name = "Sayfa Ekle",
                             Page = "/Admin/Page/Add",
@@ -10865,7 +10813,7 @@ namespace SysBase.Repository.Migrations
                             Id = 22,
                             BaseMenuId = 0,
                             ControllerName = "Page",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2578),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4260),
                             Icon = "",
                             Name = "Sayfa Listele",
                             Page = "/Admin/Page/List",
@@ -10883,7 +10831,7 @@ namespace SysBase.Repository.Migrations
                             Id = 23,
                             BaseMenuId = 0,
                             ControllerName = "User",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2580),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4262),
                             Icon = "",
                             Name = "Profil Güncelle",
                             Page = "/Admin/User/ProfileList",
@@ -10901,7 +10849,7 @@ namespace SysBase.Repository.Migrations
                             Id = 24,
                             BaseMenuId = 0,
                             ControllerName = "User",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2583),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4264),
                             Icon = "",
                             Name = "Şifre Değiştir",
                             Page = "/Admin/User/ChangePasswordList",
@@ -10919,7 +10867,7 @@ namespace SysBase.Repository.Migrations
                             Id = 25,
                             BaseMenuId = 0,
                             ControllerName = "Role",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2585),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4267),
                             Icon = "fas fa-database",
                             Name = "Roleler",
                             Page = "#",
@@ -10937,7 +10885,7 @@ namespace SysBase.Repository.Migrations
                             Id = 26,
                             BaseMenuId = 0,
                             ControllerName = "Role",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2588),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4270),
                             Icon = "",
                             Name = "Role Ekle",
                             Page = "/Admin/Role/Add",
@@ -10955,7 +10903,7 @@ namespace SysBase.Repository.Migrations
                             Id = 27,
                             BaseMenuId = 0,
                             ControllerName = "Role",
-                            CreatedDate = new DateTime(2024, 11, 4, 17, 35, 4, 615, DateTimeKind.Local).AddTicks(2590),
+                            CreatedDate = new DateTime(2024, 11, 4, 15, 44, 15, 293, DateTimeKind.Local).AddTicks(4272),
                             Icon = "",
                             Name = "Role Listele",
                             Page = "/Admin/Role/List",
@@ -11269,40 +11217,6 @@ namespace SysBase.Repository.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("SysBase.Core.Models.QuickMenu", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sequence")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("QuickMenus");
-                });
-
             modelBuilder.Entity("SysBase.Core.Models.SiteMenu", b =>
                 {
                     b.Property<int>("Id")
@@ -11453,25 +11367,6 @@ namespace SysBase.Repository.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SysBase.Core.Models.AnnouncementLanguageInfo", b =>
-                {
-                    b.HasOne("SysBase.Core.Models.Announcement", "Announcement")
-                        .WithMany("AnnouncementLanguageInfos")
-                        .HasForeignKey("AnnouncementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SysBase.Core.Models.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Announcement");
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("SysBase.Core.Models.AppUser", b =>
                 {
                     b.HasOne("SysBase.Core.Models.Notification", null)
@@ -11589,15 +11484,6 @@ namespace SysBase.Repository.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("SysBase.Core.Models.QuickMenu", b =>
-                {
-                    b.HasOne("SysBase.Core.Models.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId");
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("SysBase.Core.Models.SiteMenu", b =>
                 {
                     b.HasOne("SysBase.Core.Models.Language", "Language")
@@ -11614,11 +11500,6 @@ namespace SysBase.Repository.Migrations
                         .HasForeignKey("LanguageId");
 
                     b.Navigation("Language");
-                });
-
-            modelBuilder.Entity("SysBase.Core.Models.Announcement", b =>
-                {
-                    b.Navigation("AnnouncementLanguageInfos");
                 });
 
             modelBuilder.Entity("SysBase.Core.Models.Blog", b =>

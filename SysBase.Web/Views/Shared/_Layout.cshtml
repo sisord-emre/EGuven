@@ -1,12 +1,13 @@
-﻿@using SysBase.Web.ViewModels;
-@{
-    UiLayoutViewModel model = Model;
+﻿@{
+    IndexViewModel model = Model;
     var emails = model.Config.Mail?.Split(';');
+    CultureInfo cultureInfo = Thread.CurrentThread.CurrentUICulture;
+    List<Language> languages = model.Languages.Where(x => x.Status).ToList();
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@cultureInfo.Name">
 <head>
-    <base href="@Model.Config.SiteUrl">
+    <base href="https://localhost:44340/">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SysBase.Web</title>
@@ -22,36 +23,51 @@
             <div class="flex items-center justify-between">
                 <!-- social-menu -->
                 <ul class="flex items-center gap-1.5">
-                    <li>
-                        <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                            <span class="icon-youtube"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                            <span class="icon-linkedin"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                            <span class="icon-instagram"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                            <span class="icon-facebook"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                            <span class="icon-x"></span>
-                        </a>
-                    </li>
+                    @if (model.Config.Youtube != "" && model.Config.Youtube != null)
+                    {
+                        <li>
+                            <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <span class="icon-youtube"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (model.Config.Linkedin != "" && model.Config.Linkedin != null)
+                    {
+                        <li>
+                            <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <span class="icon-linkedin"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (model.Config.Instagram != "" && model.Config.Instagram != null)
+                    {
+                        <li>
+                            <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <span class="icon-instagram"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (model.Config.Facebook != "" && model.Config.Facebook != null)
+                    {
+                        <li>
+                            <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <span class="icon-facebook"></span>
+                            </a>
+                        </li>
+                    }
+                    @if (model.Config.Twitter != "" && model.Config.Twitter != null)
+                    {
+                        <li>
+                            <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                <span class="icon-x"></span>
+                            </a>
+                        </li>
+                    }
                 </ul>
 
                 <!-- search & language & theme switcher -->
@@ -67,7 +83,7 @@
                             data-dropdown-toggle="dropdownLanguageHeaderMenu"
                             class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
                             type="button">
-                        <span>English</span>
+                        <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                         <span class="icon-chevron-down"></span>
                     </button>
 
@@ -76,10 +92,10 @@
                          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-24 border border-primary-gray">
                         <ul class="py-2 text-sm text-primary-dark font-semibold"
                             aria-labelledby="languageSelectHeader">
-                            @foreach (Language item in model.Languages.Where(x => x.Status).ToList())
+                            @foreach (Language item in languages)
                             {
                                 <li>
-                                    <a href="@item.Code" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    <a href="/Home/s/SetLang?lng=@item.Code&returnUrl=@Context.Request.Path" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                         @item.Name
                                     </a>
                                 </li>
@@ -144,38 +160,31 @@
                                     2
                                 </div>
                             </div>
-                            <div class="quick sm:ml-auto ml-0">
-                                <button type="button"
-                                        class="btn btn-common"
-                                        id="dropdownQuickActions"
-                                        data-dropdown-toggle="dropdownQuickActionsMenu">
-                                    <span class="icon-menu text-lg"></span>
-                                    <span>Hızlı İşlemler</span>
-                                </button>
-                                <!-- Dropdown menu -->
-                                <div id="dropdownQuickActionsMenu"
-                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                        aria-labelledby="dropdownDefaultButton">
-                                        <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-                                        </li>
-                                    </ul>
+                            @if (model.QuickMenus.Count > 0)
+                            {
+                                <div class="quick sm:ml-auto ml-0">
+                                    <button type="button"
+                                            class="btn btn-common"
+                                            id="dropdownQuickActions"
+                                            data-dropdown-toggle="dropdownQuickActionsMenu">
+                                        <span class="icon-menu text-lg"></span>
+                                        <span>Hızlı İşlemler</span>
+                                    </button>
+                                    <!-- Dropdown menu -->
+                                    <div id="dropdownQuickActionsMenu"
+                                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                            aria-labelledby="dropdownDefaultButton">
+                                            @foreach (QuickMenu item in model.QuickMenus)
+                                            {
+                                                <li>
+                                                    <a href="@item.Url" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">@item.Title</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div>
                                 <button type="button"
                                         class="btn btn-common text-primary-red">
@@ -215,7 +224,7 @@
     </section>
 
     @RenderBody()
-  
+
     <!-- Footer -->
     <footer class="bg-primary-dark mt-10 py-12 footer relative h-auto"
             data-aos="fade-up">
@@ -302,36 +311,51 @@
                         <div class="text-sm">Copyright © 2024 E-Güven</div>
                         <!-- social-menu -->
                         <ul class="flex items-center gap-1.5">
-                            <li>
-                                <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                                    <span class="icon-youtube"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                                    <span class="icon-linkedin"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                                    <span class="icon-instagram"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                                    <span class="icon-facebook"></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                                    class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
-                                    <span class="icon-x"></span>
-                                </a>
-                            </li>
+                            @if (model.Config.Youtube != "" && model.Config.Youtube != null)
+                            {
+                                <li>
+                                    <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                        <span class="icon-youtube"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (model.Config.Linkedin != "" && model.Config.Linkedin != null)
+                            {
+                                <li>
+                                    <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                        <span class="icon-linkedin"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (model.Config.Instagram != "" && model.Config.Instagram != null)
+                            {
+                                <li>
+                                    <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                        <span class="icon-instagram"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (model.Config.Facebook != "" && model.Config.Facebook != null)
+                            {
+                                <li>
+                                    <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                        <span class="icon-facebook"></span>
+                                    </a>
+                                </li>
+                            }
+                            @if (model.Config.Twitter != "" && model.Config.Twitter != null)
+                            {
+                                <li>
+                                    <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                        <span class="icon-x"></span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                         <div class="text-sm">
                             Designed by
@@ -361,7 +385,7 @@
                                 data-dropdown-toggle="dropdownLanguageFooterMenu"
                                 class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
                                 type="button">
-                            <span>English</span>
+                            <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                             <span class="icon-chevron-down"></span>
                         </button>
 
@@ -370,10 +394,10 @@
                              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-24 border border-primary-gray">
                             <ul class="py-2 text-sm text-primary-dark font-semibold"
                                 aria-labelledby="dropdownLanguageFooter">
-                                @foreach (Language item in model.Languages.Where(x => x.Status).ToList())
+                                @foreach (Language item in languages)
                                 {
                                     <li>
-                                        <a href="@item.Code" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        <a href="/Home/s/SetLang?lng=@item.Code&returnUrl=@Context.Request.Path" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                             @item.Name
                                         </a>
                                     </li>
@@ -568,21 +592,21 @@
             brandSlider,
             mobileSubMenu,
             drawerControl,
-        } from '~/assets/js/main.js'
+        } from '/assets/js/main.js';
         document.addEventListener('DOMContentLoaded', function () {
-            stickyHeader()
-            checkTheme()
-            heroSlider()
-            newsSlider()
-            videoSlider()
-            customTab()
-            brandSlider()
-            mobileSubMenu()
-            drawerControl()
+            stickyHeader();
+            checkTheme();
+            heroSlider();
+            newsSlider();
+            videoSlider();
+            customTab();
+            brandSlider();
+            mobileSubMenu();
+            drawerControl();
             AOS.init({
                 duration: 800,
-            })
-        })
+            });
+        });
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -21,15 +21,21 @@ namespace SysBase.Web.Controllers
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
+        protected readonly IService<Slider> _sliderService;
+        protected readonly IService<QuickMenu> _quickMenuService;
+        protected readonly IService<AnnouncementLanguageInfo> _announcementMenuService;
 
-        public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service, 
-            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, IService<Language> languageService)
+        public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService, IService<AnnouncementLanguageInfo> announcementMenuService)
            : base(localizer, service)
         {
             _logger = logger;
             _siteMenuService = siteMenuService;
             _footerMenuService = footerMenuService;
             _languageService = languageService;
+            _sliderService = sliderService;
+            _quickMenuService = quickMenuService;
+            _announcementMenuService = announcementMenuService;
         }
 
 
@@ -39,12 +45,29 @@ namespace SysBase.Web.Controllers
             var langCode = rqf.RequestCulture.Culture;
             Debug.WriteLine(langCode);
 
-            UiLayoutViewModel model = new UiLayoutViewModel();
-            model.Config = await _service.GetByIdAsync(1);
-            model.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).ToList();
-            model.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).ToList();
-            model.Languages = await _languageService.ToListAsync();
-            ViewBag.langCode = langCode;
+            UiLayoutViewModel uiLayoutViewModel = new UiLayoutViewModel();
+            uiLayoutViewModel.Config = _service.Where(x => x.Id == 1).FirstOrDefault();
+            uiLayoutViewModel.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            uiLayoutViewModel.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
+
+            /*
+            IndexViewModel model = new IndexViewModel();
+            model = (IndexViewModel)uiLayoutViewModel;
+            model.Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x).ToList();
+            model.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            */
+            IndexViewModel model = new IndexViewModel
+            {
+                Config = uiLayoutViewModel.Config,
+                SiteMenus = uiLayoutViewModel.SiteMenus,
+                FooterMenus = uiLayoutViewModel.FooterMenus,
+                Languages = uiLayoutViewModel.Languages,
+                Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
+                QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
+                Announcements = _announcementMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList()
+            };
+
             return View(model);
         }
 

@@ -1,0 +1,29 @@
+﻿@model List<QuickMenu>
+@{
+    Layout = null;
+    List<QuickMenu> menuler = Model;
+}
+<div class="cf nestable-lists">
+    <div class="dd" id="nestable-1">
+        <ol class="dd-list">
+            @foreach (QuickMenu item in menuler)
+            {
+                <li class="dd-item dd3-item" data-id="@item.Id" id="menuSatir-@item.Id">
+                    <div class="dd-handle dd3-handle"></div>
+                    <div class="dd3-content">(@item.Language.Name) - @item.Title (@item.Url)</div>
+                    <button type="button" onclick="GetPage('0','Admin/QuickMenu/Add','@item.Id');" class="btn btn-warning net-button" style="margin-top: -2.3rem;margin-right: 4.5rem;">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button type="button" onclick="menuSil('@item.Id')" class="btn btn-danger net-button" style="margin-top: -2.3rem;margin-right: 2rem;">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </li>
+            }
+        </ol>
+    </div>
+</div>
+<div class="col-md-12" style="text-align: center;padding: 1rem;">
+    <button type="button" class="btn btn-success" onclick="menuLayoutAdd(@ViewBag.type)">
+        <i class="la la-floppy-o"></i>  @Localizer["admin.Menü Düzenini Kaydet"]
+    </button>
+</div>

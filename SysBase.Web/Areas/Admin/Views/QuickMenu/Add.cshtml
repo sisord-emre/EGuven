@@ -18,13 +18,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
+<script>
+    $('#ustYazi').html('&nbsp;-&nbsp;' + '@ViewContext.RouteData.Values["controller"].ToString()'); document.getElementById('menuVideoButton').setAttribute('menuVideoId', '');
+</script>
+<!-- Basic form layout section start -->
 <section class="pc-container custom-container">
     <div class="pc-content custom-content">
-        <!-- [ Main Content ] start -->
         <div class="row">
-            <!-- [ form-element ] start -->
             <div class="col-sm-12">
-                <!-- HTML Input Types -->
                 <div class="card">
                     <div class="card-header custom-page-header">
                         <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
@@ -38,20 +39,20 @@
                     <form id="formPost" class="form" action="" method="post" autocomplete="off">
                         <div class="card-body">
                             <div class="row">
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Title" class="form-label">@Localizer["admin.Başlık"]</label>
-                                    <input class="form-control close-capitalized" type="text" name="Title" id="Title" value="@Model.Slider?.Title" autocomplete="off" required />
+                                <div class="mb-3 col-md-3 col-sm-12">
+                                    <label for="Title" class="form-label">@Localizer["admin.Title"]</label>
+                                    <input type="text" id="Title" class="form-control" name="Title" value="@Model.QuickMenu?.Title" autocomplete="off" required>
                                 </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="SubTitle" class="form-label">@Localizer["admin.Alt Başlık"]</label>
-                                    <input class="form-control close-capitalized" type="text" name="SubTitle" id="SubTitle" value="@Model.Slider?.SubTitle" autocomplete="off" />
+                                <div class="mb-3 col-md-3 col-sm-12">
+                                    <label for="Url" class="form-label">@Localizer["admin.Url"]</label>
+                                    <input type="text" id="Url" class="form-control border-primary close-capitalized" name="Url" value="@Model.QuickMenu?.Url" autocomplete="off">
                                 </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
+                                <div class="mb-3 col-md-3 col-sm-12">
                                     <label for="LanguageId" class="form-label">@Localizer["admin.Dil"]</label>
                                     <select class="select2 form-control block" name="LanguageId" id="LanguageId" required>
                                         @foreach (Language item in Model.Languages)
                                         {
-                                            if (item.Id == Model.Slider?.LanguageId)
+                                            if (item.Id == Model.QuickMenu?.LanguageId)
                                             {
                                                 <option value="@item.Id" selected>@item.Name</option>
                                             }
@@ -62,54 +63,33 @@
                                         }
                                     </select>
                                 </div>
-                                <div class="mb-3 col-md-3 col-sm-10">
-                                    <label for="Image" class="form-label">@Localizer["admin.Slider Görseli"]</label>
-                                    <input class="form-control" type="file" name="Image" id="Image" />
-                                </div>
-                                <div class="mb-3 col-md-1 col-sm-2">
-                                    @if (Model.Slider?.Media != null)
-                                    {
-                                        <a href="/Images/Slider/@Model.Slider?.Media" target="_blank">
-                                            <img src="/Images/Slider/@Model.Slider?.Media" style="width: 100%" />
-                                        </a>
-                                        <input class="form-control" type="hidden" name="Media" id="Media" value="@Model.Slider?.Media" />
-                                    }
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Common" class="form-label">@Localizer["admin.Buton Yazı"]</label>
-                                    <input class="form-control close-capitalized" type="text" name="Common" id="Common" value="@Model.Slider?.Common" autocomplete="off" />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Url" class="form-label">@Localizer["admin.Buton Link"]</label>
-                                    <input class="form-control close-capitalized" type="text" name="Url" id="Url" value="@Model.Slider?.Url" autocomplete="off" />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
+                                <div class="mb-3 col-md-3 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.Slider?.Status == true ? "checked" : "") />
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.QuickMenu?.Status == true ? "checked" : "") />
                                         <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <input type="hidden" name="Id" value="@Model.Slider?.Id">
-                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                            <div class="card-footer text-center">
+                                <input type="hidden" name="Id" value="@Model.QuickMenu?.Id">
+                                <input type="hidden" name="menuId" value="0">
+                                <button type="submit" class="btn btn-success me-2"> @Localizer["admin.Kayıt"]</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <!-- [ form-element ] end -->
-            <div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-                        <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Slider Düzeni"]</h4>
-						<a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-						<div class="heading-elements">
-                            <select class="select2 form-control block" name="sliderLanguageIdOrder" id="sliderLanguageIdOrder" onchange="sliderLayout();" required>
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Menü Düzeni"]</h4>
+                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <select class="select2 form-control block" name="QuickMenuLanguageIdOrder" id="QuickMenuLanguageIdOrder" onchange="menuLayout();" required>
                                 @foreach (Language item in Model.Languages)
                                 {
-                                    if (item.Id == Model.Slider?.LanguageId)
+                                    if (item.Id == Model.QuickMenu?.LanguageId)
                                     {
                                         <option value="@item.Id" selected>@item.Name</option>
                                     }
@@ -119,38 +99,41 @@
                                     }
                                 }
                             </select>
-						</div>
-					</div>
-					<div class="card-content collapse show">
-						<div class="card-body" id="sliderLayout">
-
-						</div>
-					</div>
-				</div>
-			</div>
+                        </div>
+                    </div>
+                    <div class="card-content collapse show">
+                        <div class="card-body" id="menuLayout-1">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- [ Main Content ] end -->
     </div>
 </section>
+<!-- // Basic form layout section end -->
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<link rel="stylesheet" type="text/css" href="AdminAssets/nestable.css">
+<script src="AdminAssets/jquery.nestable.js"></script>
 <script type="text/javascript">
+    var QuickMenuLayout = "";
     $(document).ready(function () {
-        sliderLayout();
+        menuLayout();
     });
 
-    function sliderLayout() {
-        var sliderLanguageId = $('#sliderLanguageIdOrder').val();
+    function menuLayout() {
+        var QuickMenuLanguageId = $('#QuickMenuLanguageIdOrder').val();
         var data = new FormData();
         data.append("menuId", '0');
-        data.append("sliderLanguageId", sliderLanguageId);
+        data.append("QuickMenuLanguageId", QuickMenuLanguageId);
         $.ajax({
             type: "POST",
-            url: "Admin/Slider/SliderLayout",
+            url: "Admin/QuickMenu/MenuLayout",
             data: data,
             contentType: false,
             processData: false,
             success: function (res) {
-                $('#sliderLayout').html(res);
+                $('#menuLayout-1').html(res);
+                nestableInit(1);
             },
             error: function (jqXHR, status, errorThrown) {
                 alert("Result: " + status + " Status: " + jqXHR.status);
@@ -158,27 +141,41 @@
         });
     }
 
-    function sliderLayoutAdd() {
-        var sliderLayoutList = [];
-        var sliderList = document.getElementById("card-drag-area").children;
-        for (var i = 0; i < sliderList.length; i++) {
-            sliderLayoutList.push(sliderList[i].id.split("-")[1]);
+    function nestableInit(type) {
+        maxDepth = 1;
+        if (type != 1) {
+            maxDepth = 1;
         }
+        var updateOutput = function (e) {
+            var list = e.length ? e : $(e.target), output = list.data('output');
+            if (window.JSON) {
+                QuickMenuLayout = window.JSON.stringify(list.nestable('serialize'));
+            } else {
+                QuickMenuLayout = 'JSON browser support required for this demo.';
+            }
+        };
+        $('#nestable-' + type).nestable({
+            group: 1,
+            maxDepth: maxDepth,
+        }).on('change', updateOutput);
+        updateOutput($('#nestable-' + type));
+    }
 
-        console.log(sliderLayoutList); // Test etmek için konsola yazdır
-
-        // JSON formatında veri gönderelim
+    function menuLayoutAdd() {
+        var data = new FormData();
+        data.append("QuickMenuLayout", QuickMenuLayout);
         $.ajax({
             type: "POST",
-            url: "Admin/Slider/SliderLayoutAdd", // .NET Core URL formatı
-            contentType: "application/json", // JSON gönderiyoruz
-            data: JSON.stringify({ sliderLayoutList: sliderLayoutList }), // JSON string'e çeviriyoruz
+            url: "Admin/QuickMenu/MenuLayoutAdd",
+            data: data,
+            contentType: false,
+            processData: false,
             success: function (res) {
-                sliderLayout();
-                if (res.success) {
-                    toastr.success(res.message);
+                menuLayout();
+                if (res == '1') {
+                    toastr.success('Güncelleme Sağlandı.');
                 } else {
-                    alert(res.message);
+                    alert(res);
                 }
             },
             error: function (jqXHR, status, errorThrown) {
@@ -187,17 +184,15 @@
         });
     }
 
-
-
-    function sliderSil(Id) {
+    function menuSil(Id) {
         if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
             $.ajax({
                 type: "POST",
-                url: "Admin/Slider/Delete",
+                url: "Admin/QuickMenu/Delete",
                 data: { 'Id': Id },
                 success: function (res) {
                     if (res == 1) {
-                        document.getElementById('sliderSatir-' + Id).style.display = "none";
+                        document.getElementById('menuSatir-' + Id).style.display = "none";
                     } else {
                         menuLayout();
                     }
@@ -234,6 +229,7 @@
             processData: false,
             success: function (res) {
                 $('#Pages').html(res);
+                GetPage('0', '@addUrl')
             },
             error: function (jqXHR, status, errorThrown) {
                 alert("Result: " + status + " Status: " + jqXHR.status);
