@@ -59,7 +59,7 @@
                     {
                         <div class="news-slider-slide">
                             <a href="javascript:;"
-                               class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
+                           class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
                                 <div class="line-clamp-1">
                                     @item.Description
                                 </div>
@@ -571,54 +571,14 @@
 
             <div class="swiper brand-slider w-full sm:px-20 px-5">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b1.png"
-                                 alt="Brand Name" />
+                    @foreach (Brand item in Model.Brands)
+                    {
+                        <div class="swiper-slide">
+                            <div class="flex items-center justify-center">
+                                <img src="/Images/Brand/@item.Media" alt="@item.Title" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b2.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b3.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b4.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b5.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b5.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b5.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="flex items-center justify-center">
-                            <img src="assets/images/brands/b5.png"
-                                 alt="Brand Name" />
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
 
@@ -652,68 +612,21 @@
             </div>
 
             <div class="grid md:grid-cols-3 grid-cols-1 gap-4">
-                <div class="relative rounded-5 overflow-hidden h-56"
-                     data-aos="fade-up">
-                    <a href="blog-detay.html"
-                       class="block group rounded-5 overflow-hidden">
-                        <img src="assets/images/blog/blog.png"
-                             alt="Blog Name"
-                             class="w-full h-full rounded-5 group-hover:scale-150 transition-all duration-150 ease-in object-cover" />
-                        <div class="absolute inset-0 bg-primary-dark/50"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-5">
-                            <a href="blog-detay.html"
-                               class="text-white">
-                                <span class="text-lg font-bold block">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit.
-                                </span>
-                                <span class="text-xs">5 Ağustos 2024</span>
-                            </a>
-                        </div>
-                    </a>
-                </div>
-                <div class="relative rounded-5 overflow-hidden h-56"
-                     data-aos="fade-up"
-                     data-aos-delay="200">
-                    <a href="blog-detay.html"
-                       class="block group rounded-5 overflow-hidden">
-                        <img src="assets/images/blog/blog.png"
-                             alt="Blog Name"
-                             class="w-full h-full rounded-5 group-hover:scale-150 transition-all duration-150 ease-in object-cover" />
-                        <div class="absolute inset-0 bg-primary-dark/50"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-5">
-                            <a href="blog-detay.html"
-                               class="text-white">
-                                <span class="text-lg font-bold block">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit.
-                                </span>
-                                <span class="text-xs">5 Ağustos 2024</span>
-                            </a>
-                        </div>
-                    </a>
-                </div>
-                <div class="relative rounded-5 overflow-hidden h-56"
-                     data-aos="fade-up"
-                     data-aos-delay="300">
-                    <a href="blog-detay.html"
-                       class="block group rounded-5 overflow-hidden">
-                        <img src="assets/images/blog/blog.png"
-                             alt="Blog Name"
-                             class="w-full h-full rounded-5 group-hover:scale-150 transition-all duration-150 ease-in object-cover" />
-                        <div class="absolute inset-0 bg-primary-dark/50"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-5">
-                            <a href="blog-detay.html"
-                               class="text-white">
-                                <span class="text-lg font-bold block">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit.
-                                </span>
-                                <span class="text-xs">5 Ağustos 2024</span>
-                            </a>
-                        </div>
-                    </a>
-                </div>
+                @foreach (BlogLanguageInfo item in Model.BlogLanguageInfos)
+                {
+                    <div class="relative rounded-5 overflow-hidden h-56" data-aos="fade-up">
+                        <a href="/blog/@item.Slug" class="block group rounded-5 overflow-hidden">
+                            <img src="/Images/Blog/@item.Blog.Image" alt="@item.Title" class="w-full h-full rounded-5 group-hover:scale-150 transition-all duration-150 ease-in object-cover" />
+                            <div class="absolute inset-0 bg-primary-dark/50"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-5">
+                                <a href="/blog/@item.Slug" class="text-white">
+                                    <span class="text-lg font-bold block">@item.Title</span>
+                                    <span class="text-xs">@item.Blog.CreatedDate.ToString("dd MMMM yyyy")</span>
+                                </a>
+                            </div>
+                        </a>
+                    </div>
+                }
             </div>
 
             <a href="blog-list.html"

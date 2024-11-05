@@ -127,11 +127,11 @@
                                                         <div class="row">
                                                             <div class="mb-3 col-md-5 col-sm-12">
                                                                 <label for="BlogLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Title" id="BlogLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" />
+                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Title" id="BlogLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" onkeyup="toSeo('BlogLanguageInfos[@i].Title','BlogLanguageInfos[@i].Slug')" />
                                                             </div>
                                                             <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Description" class="form-label">@Localizer["admin.Kısa Açıklama"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Description" id="BlogLanguageInfos[@i].Description" value="@languageInfo?.Description" autocomplete="off" />
+                                                                <label for="BlogLanguageInfos[@i].Slug" class="form-label">@Localizer["admin.Slug"]</label>
+                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Slug" id="BlogLanguageInfos[@i].Slug" value="@languageInfo?.Slug" autocomplete="off" />
                                                             </div>
                                                             <div class="mb-3 col-md-2 col-sm-12">
                                                                 <label for="BlogLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
@@ -139,6 +139,10 @@
                                                                     <input type="checkbox" class="form-check-input" name="BlogLanguageInfos[@i].Status" id="BlogLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
                                                                     <label class="form-check-label" for="BlogLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
                                                                 </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="BlogLanguageInfos[@i].Description" class="form-label">@Localizer["admin.Kısa Açıklama"]</label>
+                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Description" id="BlogLanguageInfos[@i].Description" value="@languageInfo?.Description" autocomplete="off" />
                                                             </div>
                                                             <div class="mb-3 col-md-12 col-sm-12">
                                                                 <label for="BlogLanguageInfos[@i].Content" class="form-label">@Localizer["admin.İçerik"]</label>

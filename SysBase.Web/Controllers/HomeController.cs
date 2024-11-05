@@ -23,10 +23,12 @@ namespace SysBase.Web.Controllers
         protected readonly IService<Language> _languageService;
         protected readonly IService<Slider> _sliderService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<AnnouncementLanguageInfo> _announcementMenuService;
+        protected readonly IService<AnnouncementLanguageInfo> _announcementService;
+        protected readonly IService<Brand> _brandService;
+        protected readonly IService<BlogLanguageInfo> _blogLanguageInfoService;
 
         public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService, IService<AnnouncementLanguageInfo> announcementMenuService)
+            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService, IService<AnnouncementLanguageInfo> announcementService, IService<Brand> brandService, IService<BlogLanguageInfo> blogLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -35,7 +37,9 @@ namespace SysBase.Web.Controllers
             _languageService = languageService;
             _sliderService = sliderService;
             _quickMenuService = quickMenuService;
-            _announcementMenuService = announcementMenuService;
+            _announcementService = announcementService;
+            _brandService = brandService;
+            _blogLanguageInfoService = blogLanguageInfoService;
         }
 
 
@@ -65,7 +69,9 @@ namespace SysBase.Web.Controllers
                 Languages = uiLayoutViewModel.Languages,
                 Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
                 QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
-                Announcements = _announcementMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList()
+                Announcements = _announcementService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList(),
+                Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
+                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).Take(3).ToListAsync()
             };
 
             return View(model);
