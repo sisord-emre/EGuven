@@ -1,0 +1,115 @@
+﻿@model CorporateViewModel
+@{
+    ViewData["Title"] = "Corporate Page";
+}
+
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item" style="background-image: url('assets/images/slider/slider-2.png');">
+                <div class="hero-slider-item-content">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Hakkımızda
+                        </div>
+                        <div class="hero-slider-item-title">
+                            E-Güven hayatı kolaylaştırır
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kurumsal -->
+<section class="mt-10 kurumsal red-tab">
+    <div class="container">
+        <div class="flex flex-col xl:gap-20 gap-10 xl:mt-20 mt-10">
+            @Html.Raw(Model.Corporate.CorporateLanguageInfos[0].Content)
+            <div class="grid xl:grid-cols-5 grid-cols-1 gap-16"
+                 data-aos="fade-up">
+                <div class="xl:col-span-3">
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <div class="text-primary-red text-lg">
+                                @Model.Corporate.CorporateLanguageInfos[0].SubTitle
+                            </div>
+                            <div class="text-3xl font-bold text-primary-dark">
+                                @Model.Corporate.CorporateLanguageInfos[0].SubDescription
+                            </div>
+                        </div>
+                        <div class="tab-container">
+                            <!-- Tab Buttons -->
+                            <div class="tab-buttons border-b border-tab-inactive">
+                                @if (Model.Corporate.CorporateLanguageInfos[0].VisionmissionStatus == true)
+                                {
+                                    <button class="tab-button active py-4 md:px-8 px-2 text-sm font-extrabold text-center"
+                                            data-tab="vizyon">
+                                        Vizyon&Misyon
+                                    </button>
+                                }
+                                @if (Model.Corporate.CorporateLanguageInfos[0].ValuesStatus == true)
+                                {
+                                    <button class="tab-button py-4 md:px-8 px-2 text-sm font-extrabold text-center"
+                                            data-tab="deger-politikasi">
+                                        Değer ve Politikamız
+                                    </button>
+                                }
+                               
+                                @if (Model.Corporate.CorporateLanguageInfos[0].KssStatus == true)
+                                {
+                                    <button class="tab-button py-4 md:px-8 px-2 text-sm font-extrabold text-center"
+                                            data-tab="kss">
+                                        KSS
+                                    </button>
+                                }
+                               
+                                @if (Model.Corporate.CorporateLanguageInfos[0].DocumentStatus == true)
+                                {
+                                    <button class="tab-button py-4 md:px-8 px-2 text-sm font-extrabold text-center"
+                                            data-tab="kurumsal-belgeler">
+                                        Kurumsal Belgelerimiz
+                                    </button>
+                                }
+                            </div>
+
+                            <div class="tab-content text-primary-dark text-sm pt-7">
+                                @Html.Raw(Model.Corporate.CorporateLanguageInfos[0].Visionmission)
+                                @Html.Raw(Model.Corporate.CorporateLanguageInfos[0].Values)
+                                @Html.Raw(Model.Corporate.CorporateLanguageInfos[0].Kss)
+                                @Html.Raw(Model.Corporate.CorporateLanguageInfos[0].Document)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="xl:col-span-2">
+                    <img src="/Images/Corporate/@Model.Corporate.CorporateLanguageInfos[0].Media"
+                         alt="@Model.Corporate.CorporateLanguageInfos[0].Title"
+                         class="object-cover h-full w-full" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

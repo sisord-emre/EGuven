@@ -7,7 +7,7 @@ export function checkTheme() {
     var currentTheme = localStorage.getItem('color-theme');
     var isDarkMode = currentTheme === 'dark' || (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-    
+
     themeToggleBtns.forEach(btn => {
         var darkIcon = btn.querySelector('.theme-toggle-dark-icon');
         var lightIcon = btn.querySelector('.theme-toggle-light-icon');
@@ -19,7 +19,7 @@ export function checkTheme() {
         }
     });
 
-    
+
     function toggleTheme() {
         themeToggleBtns.forEach(btn => {
             var darkIcon = btn.querySelector('.theme-toggle-dark-icon');
@@ -58,7 +58,7 @@ export function checkTheme() {
 export function heroSlider() {
     const contentBox = document.querySelectorAll('.hero-slider-item-content-box')
     const swiper = new Swiper('.hero-slider', {
-        
+
         direction: 'horizontal',
         loop: true,
         autoplay: {
@@ -68,7 +68,7 @@ export function heroSlider() {
         cssMode: true,
 
 
-     
+
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
@@ -82,27 +82,27 @@ export function heroSlider() {
     });
 
     swiper.on('activeIndexChange', function () {
-    contentBox.forEach((box) => {
-        const subTitle = box.querySelector('div.hero-slider-item-subtitle');
-        const title = box.querySelector('div.hero-slider-item-title');
-        const btn = box.querySelector('.btn');
-        
-        if (subTitle) subTitle.classList.remove('fadeInUp', 'hero-subtitle-delay');
-        if (title) title.classList.remove('fadeInUp', 'hero-subtitle-delay');
-        if (btn) btn.classList.remove('fadeInUp', 'hero-subtitle-delay');
+        contentBox.forEach((box) => {
+            const subTitle = box.querySelector('div.hero-slider-item-subtitle');
+            const title = box.querySelector('div.hero-slider-item-title');
+            const btn = box.querySelector('.btn');
+
+            if (subTitle) subTitle.classList.remove('fadeInUp', 'hero-subtitle-delay');
+            if (title) title.classList.remove('fadeInUp', 'hero-subtitle-delay');
+            if (btn) btn.classList.remove('fadeInUp', 'hero-subtitle-delay');
+        });
+
+        const activeBox = contentBox[swiper.activeIndex];
+        if (activeBox) {
+            const activeSubTitle = activeBox.querySelector('div.hero-slider-item-subtitle');
+            const activeTitle = activeBox.querySelector('div.hero-slider-item-title');
+            const activeBtn = activeBox.querySelector('.btn');
+
+            if (activeSubTitle) activeSubTitle.classList.add('fadeInUp', 'hero-subtitle-delay');
+            if (activeTitle) activeTitle.classList.add('fadeInUp', 'hero-title-delay');
+            if (activeBtn) activeBtn.classList.add('fadeInUp', 'hero-btn-delay');
+        }
     });
-
-    const activeBox = contentBox[swiper.activeIndex];
-    if (activeBox) {
-        const activeSubTitle = activeBox.querySelector('div.hero-slider-item-subtitle');
-        const activeTitle = activeBox.querySelector('div.hero-slider-item-title');
-        const activeBtn = activeBox.querySelector('.btn');
-
-        if (activeSubTitle) activeSubTitle.classList.add('fadeInUp', 'hero-subtitle-delay');
-        if (activeTitle) activeTitle.classList.add('fadeInUp', 'hero-title-delay');
-        if (activeBtn) activeBtn.classList.add('fadeInUp', 'hero-btn-delay');
-    }
-});
 
 }
 
@@ -128,7 +128,7 @@ export function newsSlider() {
                     sliderWrapper.style.transition = 'none';
                     sliderWrapper.style.transform = 'translateY(0)';
                     currentIndex = 0;
-                }, 500); 
+                }, 500);
             }
         }, 3000);
     }
@@ -146,7 +146,7 @@ export function newsSlider() {
 
 export function videoSlider() {
     const swiper = new Swiper('.video-slider', {
-        
+
         direction: 'horizontal',
         loop: false,
         autoplay: {
@@ -157,7 +157,7 @@ export function videoSlider() {
         slidePerView: 3,
         spaceBetween: 20,
 
-        
+
         navigation: {
             nextEl: '.video-slider-next',
             prevEl: '.video-slider-prev',
@@ -180,60 +180,60 @@ export function videoSlider() {
 
 export function stickyHeader() {
     const header = document.querySelector('.header');
-const scrollUp = "scroll-up";
-const scrollDown = "scroll-down";
-let lastScroll = 0;
-const body = document.body;
-const detailHeaderLogo = document.querySelector('.detail-header-logo');
-const basketIcon = document.querySelector('.basketIcon');
-const basketIconValue = document.querySelector('.basketIconValue');
+    const scrollUp = "scroll-up";
+    const scrollDown = "scroll-down";
+    let lastScroll = 0;
+    const body = document.body;
+    const detailHeaderLogo = document.querySelector('.detail-header-logo');
+    const basketIcon = document.querySelector('.basketIcon');
+    const basketIconValue = document.querySelector('.basketIconValue');
 
-window.addEventListener("scroll", () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll <= 100) {
-        body.classList.remove(scrollUp);
-        if (header) {
-            header.classList.remove('animated-background', 'bg-gradient-to-r', 'from-primary-red', 'via-red-800', 'to-red-900');
-        }
-        if (detailHeaderLogo) {
-            detailHeaderLogo.src = 'assets/images/logo-red@2x.png';
-        }
-        if (basketIcon) {
-            basketIcon.classList.remove('text-white');
-        }
-        if (basketIconValue) {
-            basketIconValue.classList.remove('bg-white', '!text-primary-red');
-        }
-        return;
-    }
+    window.addEventListener("scroll", () => {
+        const currentScroll = window.pageYOffset;
 
-    if (currentScroll > lastScroll && !body.classList.contains(scrollDown)) {
-        // down
-        body.classList.remove(scrollUp);
-        body.classList.add(scrollDown);
-        if (header) {
-            header.classList.add('animated-background', 'bg-gradient-to-r', 'from-primary-red', 'via-red-800', 'to-red-900');
+        if (currentScroll <= 100) {
+            body.classList.remove(scrollUp);
+            if (header) {
+                header.classList.remove('animated-background', 'bg-gradient-to-r', 'from-primary-red', 'via-red-800', 'to-red-900');
+            }
+            if (detailHeaderLogo) {
+                detailHeaderLogo.src = 'assets/images/logo-red@2x.png';
+            }
+            if (basketIcon) {
+                basketIcon.classList.remove('text-white');
+            }
+            if (basketIconValue) {
+                basketIconValue.classList.remove('bg-white', '!text-primary-red');
+            }
+            return;
         }
-        if (detailHeaderLogo) {
-            detailHeaderLogo.src = 'assets/images/logo@2x.png';
+
+        if (currentScroll > lastScroll && !body.classList.contains(scrollDown)) {
+            // down
+            body.classList.remove(scrollUp);
+            body.classList.add(scrollDown);
+            if (header) {
+                header.classList.add('animated-background', 'bg-gradient-to-r', 'from-primary-red', 'via-red-800', 'to-red-900');
+            }
+            if (detailHeaderLogo) {
+                detailHeaderLogo.src = 'assets/images/logo@2x.png';
+            }
+            if (basketIcon) {
+                basketIcon.classList.add('text-white');
+            }
+            if (basketIconValue) {
+                basketIconValue.classList.add('bg-white', '!text-primary-red');
+            }
+        } else if (
+            currentScroll < lastScroll &&
+            body.classList.contains(scrollDown)
+        ) {
+            // up
+            body.classList.remove(scrollDown);
+            body.classList.add(scrollUp);
         }
-        if (basketIcon) {
-            basketIcon.classList.add('text-white');
-        }
-        if (basketIconValue) {
-            basketIconValue.classList.add('bg-white', '!text-primary-red');
-        }
-    } else if (
-        currentScroll < lastScroll &&
-        body.classList.contains(scrollDown)
-    ) {
-        // up
-        body.classList.remove(scrollDown);
-        body.classList.add(scrollUp);
-    }
-    lastScroll = currentScroll;
-});
+        lastScroll = currentScroll;
+    });
 
 
 }
@@ -260,11 +260,11 @@ export function customTab() {
             button.addEventListener('click', function () {
                 const targetTab = this.getAttribute('data-tab');
 
-                
+
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabPanes.forEach(pane => pane.classList.remove('active'));
 
-                
+
                 this.classList.add('active');
                 document.getElementById(targetTab).classList.add('active');
                 AOS.refresh(console.log('active'));
@@ -318,7 +318,7 @@ export function mobileSubMenu() {
             subMenuButton.addEventListener("click", function (e) {
                 e.preventDefault();
 
-                
+
                 menuItems.forEach((menuItem) => {
                     if (menuItem !== item) {
                         menuItem.classList.remove("open");
@@ -330,7 +330,7 @@ export function mobileSubMenu() {
                     }
                 });
 
-                
+
                 item.classList.toggle("open");
 
                 const subMenu = item.querySelector('.sub-menu');
@@ -351,43 +351,43 @@ export function mobileSubMenu() {
 
 export function drawerControl() {
 
-const $targetEl = document.getElementById('mobileMenuDrawer');
+    const $targetEl = document.getElementById('mobileMenuDrawer');
 
 
-const options = {
-    placement: 'left',
-    backdrop: true,
-    bodyScrolling: false,
-    backdropClasses:
-        'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
-    onHide: () => {
-        const menuItems = document.querySelectorAll("#mobileMenuDrawer .mobile-menu .menu-item");
-        menuItems.forEach((menuItem) => {
-            menuItem.classList.remove("open");
-            const subMenu = menuItem.querySelector('.sub-menu');
-            if (subMenu) {
-                subMenu.style.maxHeight = null;
-                subMenu.style.opacity = 0;
-            }
-        });
-    },
-    onShow: () => {
-    },
-    onToggle: () => {
-    },
-};
+    const options = {
+        placement: 'left',
+        backdrop: true,
+        bodyScrolling: false,
+        backdropClasses:
+            'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+        onHide: () => {
+            const menuItems = document.querySelectorAll("#mobileMenuDrawer .mobile-menu .menu-item");
+            menuItems.forEach((menuItem) => {
+                menuItem.classList.remove("open");
+                const subMenu = menuItem.querySelector('.sub-menu');
+                if (subMenu) {
+                    subMenu.style.maxHeight = null;
+                    subMenu.style.opacity = 0;
+                }
+            });
+        },
+        onShow: () => {
+        },
+        onToggle: () => {
+        },
+    };
 
-const instanceOptions = {
-  id: 'mobileMenuDrawer',
-  override: true
-};
-const drawer = new Drawer($targetEl, options, instanceOptions);
+    const instanceOptions = {
+        id: 'mobileMenuDrawer',
+        override: true
+    };
+    const drawer = new Drawer($targetEl, options, instanceOptions);
 
-const mobileMenuBtn = document.getElementById('showMobileMenuDrawer');
+    const mobileMenuBtn = document.getElementById('showMobileMenuDrawer');
 
-mobileMenuBtn.addEventListener('click', () => {
-    drawer.show();
-});
+    mobileMenuBtn.addEventListener('click', () => {
+        drawer.show();
+    });
 }
 
 

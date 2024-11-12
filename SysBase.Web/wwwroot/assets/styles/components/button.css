@@ -7,6 +7,7 @@
     outline-none active:outline-none
     transition-all duration-150 ease-in
     w-max
+    whitespace-nowrap
     shadow-md;
 }
 

@@ -46,3 +46,12 @@
 .red-tab .tab-button {
     @apply w-full whitespace-nowrap;
 }
+
+.vertical-tab {
+    .tab-buttons {
+        @apply lg:flex-col lg:items-start lg:justify-start;
+    }
+    .tab-button {
+        @apply w-full text-left border-b border-tab-inactive text-primary-dark lg:px-0 px-4 lg:text-left text-center;
+    }
+}

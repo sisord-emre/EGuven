@@ -150,4 +150,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{slug?}/{action=Index}");
 
+app.MapControllerRoute(
+    name: "Corporate",
+    pattern: "kurumsal/{controller=Corporate}/{action=Index}");
+
 app.Run();

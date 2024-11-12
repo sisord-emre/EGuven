@@ -635,3 +635,31 @@
         </div>
     </div>
 </section>
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        heroSlider,
+        newsSlider,
+        videoSlider,
+        customTab,
+        brandSlider,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        heroSlider()
+        newsSlider()
+        videoSlider()
+        customTab()
+        brandSlider()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

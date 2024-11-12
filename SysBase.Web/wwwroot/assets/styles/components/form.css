@@ -1,0 +1,18 @@
+.base-form {
+    .base-form-group {
+        @apply flex flex-col gap-2;
+
+        label {
+            @apply text-primary-dark;
+        }
+        input[type='text'],
+        input[type='email'],
+        input[type='password'],
+        input[type='tel'],
+        input[type='number'],
+        select,
+        textarea {
+            @apply border border-tab-inactive rounded-5 py-3 px-4 h-[52px] w-full outline-none focus:outline-none ring-0;
+        }
+    }
+}

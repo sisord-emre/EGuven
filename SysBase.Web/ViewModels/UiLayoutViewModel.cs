@@ -8,5 +8,6 @@ namespace SysBase.Web.ViewModels
         public List<SiteMenu> SiteMenus { get; set; }
         public List<FooterMenu> FooterMenus { get; set; }
         public List<Language> Languages { get; set; }
+        public List<QuickMenu> QuickMenus { get; set; }
     }
 }

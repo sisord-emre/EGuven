@@ -40,6 +40,8 @@ namespace SysBase.Repository
         public DbSet<QuickMenu> QuickMenus { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<AnnouncementLanguageInfo> AnnouncementLanguageInfos { get; set; }
+        public DbSet<Corporate> Corporates { get; set; }
+        public DbSet<CorporateLanguageInfo> CorporateLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

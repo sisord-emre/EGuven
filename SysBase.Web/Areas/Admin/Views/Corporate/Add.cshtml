@@ -1,0 +1,202 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+    IEnumerable<CorporateLanguageInfo> corporateLanguageInfos = Model.Corporate?.CorporateLanguageInfos;
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ form-element ] start -->
+            <div class="col-sm-12">
+                <!-- HTML Input Types -->
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Corporate?.Sequence" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.Corporate?.Status == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-sm-12">
+                                    <div class="accordion card" id="dilBloklari">
+                                        @for (int i = 0; i < Model.Languages.Count; i++)
+                                        {
+                                            CorporateLanguageInfo languageInfo = null;
+                                            if (corporateLanguageInfos != null)
+                                            {
+                                                languageInfo = corporateLanguageInfos.Where(x => x.LanguageId == Model.Languages[i].Id).FirstOrDefault();
+                                            }
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="heading-@i">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">
+                                                        @Model.Languages[i].Name
+                                                    </button>
+                                                </h2>
+                                                <!-- classın içine "show" eklersen açık gelir ve yukarıdaki button içine aria-expanded="true" eklersen ok işareti çıkar ve button içinde collapsed clasını kaldırmalısın-->
+                                                <div id="collapse-@i" class="accordion-collapse collapse @(languageInfo?.Status == true ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#dilBloklari">
+                                                    <div class="accordion-body">
+                                                        <input type="hidden" name="CorporateLanguageInfos[@i].Id" id="CorporateLanguageInfos[@i].Id" value="@languageInfo?.Id" />
+                                                        <input type="hidden" name="CorporateLanguageInfos[@i].LanguageId" id="CorporateLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
+                                                        <div class="row">
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
+                                                                <input class="form-control" type="text" name="CorporateLanguageInfos[@i].Title" id="CorporateLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" onkeyup="toSeo('CorporateLanguageInfos[@i].Title','CorporateLanguageInfos[@i].Slug')" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="Media" class="form-label">@Localizer["admin.Alt Görsel"]</label>
+                                                                <input class="form-control" type="file" name="images" id="CorporateLanguageInfos[@i].Media" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-2 col-sm-12">
+                                                                @if (!string.IsNullOrEmpty(languageInfo?.Media))
+                                                                {
+                                                                    <img src="/Images/Corporate/@languageInfo.Media" alt="Current Image" style="width: 100px; margin-top: 10px;" />
+                                                                }
+                                                            </div>
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].SubTitle" class="form-label">@Localizer["admin.Alt Başlık"]</label>
+                                                                <input class="form-control" type="text" name="CorporateLanguageInfos[@i].SubTitle" id="CorporateLanguageInfos[@i].SubTitle" value="@languageInfo?.SubTitle" autocomplete="off" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].SubDescription" class="form-label">@Localizer["admin.Alt Açıklama"]</label>
+                                                                <input class="form-control" type="text" name="CorporateLanguageInfos[@i].SubDescription" id="CorporateLanguageInfos[@i].SubDescription" value="@languageInfo?.SubDescription" autocomplete="off" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-2 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="CorporateLanguageInfos[@i].Status" id="CorporateLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="CorporateLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Content" class="form-label">@Localizer["admin.İçerik"]</label>
+                                                                <textarea class="editorCk form-control" name="CorporateLanguageInfos[@i].Content" id="CorporateLanguageInfos[@i].Content">@languageInfo?.Content</textarea>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Visionmission" class="form-label">@Localizer["admin.Vizyon & Misyon"]</label>
+                                                                <textarea class="editorCk form-control" name="CorporateLanguageInfos[@i].Visionmission" id="CorporateLanguageInfos[@i].Visionmission">@languageInfo?.Visionmission</textarea>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].VisionmissionStatus" class="form-label">@Localizer["admin.Vizyon & Misyon Durum"]</label>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="CorporateLanguageInfos[@i].VisionmissionStatus" id="CorporateLanguageInfos[@i].VisionmissionStatus" value="True" @(languageInfo?.VisionmissionStatus == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="VisionmissionStatus">@Localizer["admin.Aktif"]</label>
+                                                                </div>
+                                                            </div>
+                                                             <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Values" class="form-label">@Localizer["admin.Değer ve Politikamız"]</label>
+                                                                <textarea class="editorCk form-control" name="CorporateLanguageInfos[@i].Values" id="CorporateLanguageInfos[@i].Values">@languageInfo?.Values</textarea>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].ValuesStatus" class="form-label">@Localizer["admin.Değer ve Politikamız Durum"]</label>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="CorporateLanguageInfos[@i].ValuesStatus" id="CorporateLanguageInfos[@i].ValuesStatus" value="True" @(languageInfo?.ValuesStatus == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="ValuesStatus">@Localizer["admin.Aktif"]</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Kss" class="form-label">@Localizer["admin.KSS"]</label>
+                                                                <textarea class="editorCk form-control" name="CorporateLanguageInfos[@i].Kss" id="CorporateLanguageInfos[@i].Kss">@languageInfo?.Kss</textarea>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].KssStatus" class="form-label">@Localizer["admin.KSS Durum"]</label>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="CorporateLanguageInfos[@i].KssStatus" id="CorporateLanguageInfos[@i].KssStatus" value="True" @(languageInfo?.KssStatus == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="KssStatus">@Localizer["admin.Aktif"]</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].Document" class="form-label">@Localizer["admin.Kurumsal Belgelerimiz"]</label>
+                                                                <textarea class="editorCk form-control" name="CorporateLanguageInfos[@i].Document" id="CorporateLanguageInfos[@i].Document">@languageInfo?.Document</textarea>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="CorporateLanguageInfos[@i].DocumentStatus" class="form-label">@Localizer["admin.Kurumsal Belgelerimiz Durum"]</label>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="CorporateLanguageInfos[@i].DocumentStatus" id="CorporateLanguageInfos[@i].DocumentStatus" value="True" @(languageInfo?.DocumentStatus == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="DocumentStatus">@Localizer["admin.Aktif"]</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <input type="hidden" name="Code" value="@Model.Corporate?.Code">
+                            <input type="hidden" name="Id" value="@Model.Corporate?.Id">
+                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- [ form-element ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</section>
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<script type="text/javascript">
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+</script>

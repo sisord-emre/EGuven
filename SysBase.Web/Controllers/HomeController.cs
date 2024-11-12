@@ -54,6 +54,7 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
             uiLayoutViewModel.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
+            uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
             /*
             IndexViewModel model = new IndexViewModel();
@@ -67,8 +68,8 @@ namespace SysBase.Web.Controllers
                 SiteMenus = uiLayoutViewModel.SiteMenus,
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
+                QuickMenus = uiLayoutViewModel.QuickMenus,
                 Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
-                QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
                 Announcements = _announcementService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList(),
                 Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
                 BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).Take(3).ToListAsync()

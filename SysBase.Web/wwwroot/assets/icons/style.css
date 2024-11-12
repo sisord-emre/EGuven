@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?sraclp');
-  src:  url('fonts/icomoon.eot?sraclp#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?sraclp') format('truetype'),
-    url('fonts/icomoon.woff?sraclp') format('woff'),
-    url('fonts/icomoon.svg?sraclp#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?155vvu');
+  src:  url('fonts/icomoon.eot?155vvu#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?155vvu') format('truetype'),
+    url('fonts/icomoon.woff?155vvu') format('woff'),
+    url('fonts/icomoon.svg?155vvu#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-dm-eimza-kurulumu:before {
+  content: "\e924";
+}
+.icon-dm-pin-sorgulama:before {
+  content: "\e925";
+}
+.icon-dm-urun-yazilimlari:before {
+  content: "\e926";
+}
+.icon-dm-uzak-baglanti:before {
+  content: "\e927";
+}
+.icon-dm-yardimci-videolar:before {
+  content: "\e928";
+}
 .icon-email:before {
   content: "\e91f";
 }
