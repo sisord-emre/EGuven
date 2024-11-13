@@ -8,28 +8,30 @@ using Newtonsoft.Json;
 using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
+using SysBase.Service.Functions;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
+using System.Diagnostics;
 
 namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class CorporateController : BaseController
+    public class SectorController : BaseController
     {
-        // CorporateController specific dependencies
-        protected readonly IService<Corporate> _service;
-        protected readonly IService<CorporateLanguageInfo> _corporateLanguageInfoService;
+        // SectorController specific dependencies
+        protected readonly IService<Sector> _service;
+        protected readonly IService<SectorLanguageInfo> _sectorLanguageInfoService;
         protected readonly IService<Language> _languageService;
-        protected readonly ILogger<CorporateController> _logger;
+        protected readonly ILogger<SectorController> _logger;
 
-        public CorporateController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Corporate> service, IService<CorporateLanguageInfo> corporateLanguageInfoService,
-                              IService<Language> languageService, ILogger<CorporateController> logger)
+        public SectorController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<Sector> service, IService<SectorLanguageInfo> sectorLanguageInfoService,
+                              IService<Language> languageService, ILogger<SectorController> logger)
             : base(localizer, userManager)
         {
             _service = service;
-            _corporateLanguageInfoService = corporateLanguageInfoService;
+            _sectorLanguageInfoService = sectorLanguageInfoService;
             _languageService = languageService;
             _logger = logger;
         }
@@ -43,19 +45,22 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Corporate model = null;
-            model = await _service.GetByIdAsync(9);
-            model.CorporateLanguageInfos = await _corporateLanguageInfoService.Where(x => x.CorporateId == model.Id).ToListAsync();
-           
+            Sector model = null;
+            if (Id != null)
+            {
+                model = await _service.GetByIdAsync(Int32.Parse(Id));
+                model.SectorLanguageInfos = await _sectorLanguageInfoService.Where(x => x.SectorId == model.Id).ToListAsync();
+            }
+
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new CorporateAddViewModel { MenuPermission = menuPermission, Corporate = model, Languages = await _languageService.GetAllAsync() });
+            return View(new SectorAddViewModel { MenuPermission = menuPermission, Sector = model, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Corporate model, List<IFormFile> images)
+        public async Task<IActionResult> Add(Sector model)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -64,23 +69,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Corporate isControl;
+            Sector isControl;
             if (ModelState.IsValid)
             {
                 model.UpdatedDate = DateTime.Now;
-                // CorporateLanguageInfos içinde her dil için ayrı bir görsel yükleme işlemi
-                if (images != null && images.Count > 0)
-                {
-                    for (int i = 0; i < model.CorporateLanguageInfos.Count; i++)
-                    {
-                        var image = images.ElementAtOrDefault(i);
-                        if (image != null && image.Length > 0)
-                        {
-                            // Her dil için görseli yükleyip atıyoruz
-                            model.CorporateLanguageInfos[i].Media = await functions.ImageUpload(image, "Images/Corporate", Guid.NewGuid().ToString("N"));
-                        }
-                    }
-                }
                 isControl = await _service.UpdateAsync(model);
 
                 //log işleme alanı
@@ -100,19 +92,6 @@ namespace SysBase.Web.Areas.Admin.Controllers
             else
             {
                 model.Code = Guid.NewGuid().ToString("N");
-                // CorporateLanguageInfos içinde her dil için ayrı bir görsel yükleme işlemi
-                if (images != null && images.Count > 0)
-                {
-                    for (int i = 0; i < model.CorporateLanguageInfos.Count; i++)
-                    {
-                        var image = images.ElementAtOrDefault(i);
-                        if (image != null && image.Length > 0)
-                        {
-                            // Her dil için görseli yükleyip atıyoruz
-                            model.CorporateLanguageInfos[i].Media = await functions.ImageUpload(image, "Images/Corporate", Guid.NewGuid().ToString("N"));
-                        }
-                    }
-                }
                 isControl = await _service.AddAsync(model);
 
                 //log işleme alanı
@@ -128,7 +107,6 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     isControl.Id.ToString(),
                     json
                 ));
-                
             }
             if (isControl.Id != 0)
             {
@@ -139,7 +117,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 TempData["ErrorMessage"] = _localizer["admin.Bilgileri Kontrol Ediniz"].Value;
             }
 
-            return View(new CorporateAddViewModel { MenuPermission = menuPermission, Corporate = model, Languages = await _languageService.GetAllAsync() });
+            return View(new SectorAddViewModel { MenuPermission = menuPermission, Sector = model, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -157,7 +135,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new CorporateListViewModel { MenuPermission = menuPermission, CorporateLanguageInfos = await _corporateLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Corporate).ToListAsync() });
+            return View(new SectorListViewModel { MenuPermission = menuPermission, SectorLanguageInfos = await _sectorLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Sector).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -166,7 +144,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _corporateLanguageInfoService.Where(x => x.Corporate.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.Corporate).FirstOrDefaultAsync());
+                return View(await _sectorLanguageInfoService.Where(x => x.Sector.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.Sector).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -190,7 +168,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                Corporate item = await _service.GetByIdAsync(Int32.Parse(Id));
+                Sector item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);

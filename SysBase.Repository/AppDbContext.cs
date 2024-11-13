@@ -43,6 +43,10 @@ namespace SysBase.Repository
         public DbSet<Corporate> Corporates { get; set; }
         public DbSet<CorporateLanguageInfo> CorporateLanguageInfos { get; set; }
         public DbSet<ApiBasvuruRequest> ApiBasvuruRequests { get; set; }
+        public DbSet<Sector> Sectors { get; set; }
+        public DbSet<SectorLanguageInfo> SectorLanguageInfos { get; set; }
+        public DbSet<SectoralReference> SectoralReferences { get; set; }
+        public DbSet<SectoralReferenceSector> SectoralReferenceSectors { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
