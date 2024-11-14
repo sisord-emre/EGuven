@@ -389,7 +389,3 @@ export function drawerControl() {
         drawer.show();
     });
 }
-
-
-
-

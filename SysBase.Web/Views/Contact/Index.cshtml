@@ -1,0 +1,235 @@
+﻿@model UiLayoutViewModel
+@{
+    ViewData["Title"] = "İletişim";
+}
+<!-- Hero -->
+<!-- Hero Slider -->
+<div class="swiper hero-slider relative">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <!-- Slide1 -->
+        <div class="swiper-slide">
+            <div class="hero-slider-item"
+                 style="
+                            background-image: url('assets/images/slider/slider-1.png');
+                        ">
+                <div class="hero-slider-item-content">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Hakkımızda
+                        </div>
+                        <div class="hero-slider-item-title">
+                            Bize Ulaşın
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- İletisim -->
+<section class="mt-10 iletisim red-tab">
+    <div class="container">
+        <div class="flex flex-col xl:gap-20 gap-10 xl:mt-20 mt-10">
+            <div class="grid xl:grid-cols-2 grid-cols-1 xl:gap-16 gap-4"
+                 data-aos="fade-up">
+                <div class="">
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <div class="text-primary-dark text-3xl font-bold">
+                                İletişime Geçin
+                            </div>
+                            <p class="text-primary-dark text-sm max-w-3xl mt-4">
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Unde nostrum quaerat
+                                eaque culpa nesciunt reprehenderit,
+                                sapiente nihil placeat, ipsum accusamus
+                                laborum numquam quod consequatur.
+                                Impedit maiores, illo adipisci provident
+                                dolores eveniet nisi autem magnam
+                                dignissimos recusandae vel expedita
+                                molestias dicta.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="icon-phone-call text-primary-red"></span>
+                            <span class="text-primary-dark">0(850) 321 85 55</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="icon-email text-primary-red"></span>
+                            <a href="mailto:info@e-guven.com"
+                               class="text-primary-dark hover:underline hover:text-primary-red">info@e-guven.com</a>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm">
+                            <span class="icon-pin text-primary-red p-1"></span>
+                            <div class="flex flex-col gap-5">
+                                <div class="flex flex-col gap-1 text-primary-dark text-sm max-w-xs">
+                                    <div class="font-semibold">
+                                        GENEL MÜDÜRLÜK
+                                    </div>
+                                    <p>
+                                        Değirmen Sokak Nida Kule İş
+                                        Merkezi No:18 Kat:5 34742
+                                        Kozyatağı / İstanbul
+                                    </p>
+                                </div>
+                                <div class="flex flex-col gap-1 text-primary-dark text-sm max-w-xs">
+                                    <div class="font-semibold">
+                                        ANKARA ŞUBESİ
+                                    </div>
+                                    <p>
+                                        Ankara Dünya Ticaret Merkezi
+                                        Tahran Caddesi No: 30 Ofis:1004
+                                        Kavaklıdere / Çankaya / Ankara
+                                    </p>
+                                </div>
+
+                                <a href="javascript:;"
+                                   class="btn btn-primary-red">Satış Ofisleri</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="text-primary-red font-bold mb-5">
+                        Bize Yazın
+                    </div>
+                    <form id="contactForm" class="base-form flex flex-col gap-3">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="base-form-group">
+                                <label for="name">Adınız</label>
+                                <input type="text" name="Name" id="name" class="!border-primary-red" required/>
+                                <div class="text-xs text-primary-red italic font-semibold hidden">
+                                    Zorunlu alan lütfen boş bırakmayınız.
+                                </div>
+                            </div>
+                            <div class="base-form-group">
+                                <label for="surname">Soyadınız</label>
+                                <input type="text" name="soyad" id="surname" required/>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="base-form-group">
+                                <label for="tckn">TCKN</label>
+                                <input type="text" name="Tcno" id="tckn" maxlength="11" minlength="9" required />
+                            </div>
+                            <div class="base-form-group">
+                                <label for="tel">Telefon Numaranız</label>
+                                <input type="tel" name="Phone" id="tel" required />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="base-form-group">
+                                <label for="email">E-Posta</label>
+                                <input type="email" name="Email" id="email" required/>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="base-form-group">
+                                <label for="istek">İstek Seçiniz</label>
+                                <select name="Type" id="istek" required>
+                                    <option value="teklif">Teklif Talebi</option>
+                                    <option value="destek">Destek Talebi</option>
+                                    <option value="bilgi">Bilgi Talebi</option>
+                                    <option value="şikayet">Şikayet</option>
+                                    <option value="öneri">Öneri</option>
+                                </select>
+                            </div>
+                            <div class="base-form-group">
+                                <label for="konu">Konu Seçiniz</label>
+                                <select name="Subject" id="konu" required>
+                                    <option value="urun-bilgisi"> Ürün Bilgisi</option>
+                                    <option value="fiyatlandırma">Fiyatlandırma</option>
+                                    <option value="siparis-durumu">Sipariş Durumu</option>
+                                    <option value="iade-ve-degisim">İade ve Değişim</option>
+                                    <option value="teknik-destek">Teknik Destek</option>
+                                    <option value="genel-sorular">Genel Sorular</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="base-form-group mt-3">
+                            <textarea name="Message" id="mesaj" placeholder="Mesajınız" class="min-h-44" required></textarea>
+                        </div>
+                        <div class="base-form-group mt-3">
+                            <div class="flex items-center justify-between">
+                                <!-- TODO:Buraya google captcha gelecek -->
+                                <div class="max-w-52">
+                                    Google Captcha
+                                </div>
+                                <button type="submit" class="btn btn-primary-red w-40" id="submitButton">Gönder</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-container" data-aos="fade-up">
+                <!-- Tab Buttons -->
+                <div class="tab-buttons border-b border-tab-inactive">
+                    <button class="tab-button active py-4 md:px-14 px-2 text-sm font-extrabold text-center"
+                            data-tab="sirket-bilgileri">
+                        Şirket Bilgileri
+                    </button>
+                    <button class="tab-button py-4 md:px-14 px-2 text-sm font-extrabold text-center"
+                            data-tab="hesap-numaralari">
+                        Hesap Numaraları
+                    </button>
+                </div>
+
+                <div class="tab-content text-primary-dark text-sm pt-7">
+                    <div id="sirket-bilgileri"
+                         class="tab-pane active overflow-hidden">
+                        <p>
+                            Elektronik imza alımlarınızı satış
+                            ofislerimizden gerçekleştirebilirsiniz. Size
+                            daha iyi hizmet verebilmek için ofislerimizi
+                            randevu alarak ziyaret etmenizi rica ederiz.
+                        </p>
+                    </div>
+                    <div id="hesap-numaralari"
+                         class="tab-pane overflow-hidden">
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur
+                            adipisicing elit. Possimus obcaecati ipsam
+                            tempora consequuntur similique labore
+                            officia quaerat nemo provident? Adipisci
+                            voluptatum nam asperiores, laborum
+                            repudiandae at dolor sed. Adipisci
+                            laboriosam nesciunt est cum quod sunt enim
+                            eligendi repudiandae aliquam necessitatibus.
+                        </p>
+                        <br />
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur
+                            adipisicing elit. Necessitatibus vitae vero
+                            vel dolore nobis sapiente ex. Non fugiat
+                            aliquid excepturi!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        heroSlider,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        heroSlider()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

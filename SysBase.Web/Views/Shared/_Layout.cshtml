@@ -582,7 +582,60 @@
 
     <script src="~/assets/js/swiper-bundle.min.js"></script>
     <script src="~/assets/js/aos/aos.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $('#pinPukForm').submit(function (e) {
+            e.preventDefault(); //submit postu kesyoruz
+            document.getElementById("submitButton").disabled = true;
+            var data = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "/Pin/s/Kayit",
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    //console.log(res);
+                    if (res.status == "success") {
+                        alert(res.message);
+                    } else {
+                        alert(res.message);
+                    }
+                    document.getElementById("pinPukForm").reset();
+                    document.getElementById("submitButton").disabled = false;
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        });
 
+        $('#contactForm').submit(function (e) {
+            e.preventDefault(); //submit postu kesyoruz
+            document.getElementById("submitButton").disabled = true;
+            var data = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "/Contact/s/Kayit",
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    //console.log(res);
+                    if (res.status == "success") {
+                        alert(res.message);
+                    } else {
+                        alert(res.message);
+                    }
+                    document.getElementById("contactForm").reset();
+                    document.getElementById("submitButton").disabled = false;
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

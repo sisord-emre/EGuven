@@ -1,0 +1,89 @@
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using SysBase.Core.Models;
+using SysBase.Core.Services;
+using SysBase.Web.Resources;
+using SysBase.Web.ViewModels;
+using System.Diagnostics;
+using System.Globalization;
+
+namespace SysBase.Web.Controllers
+{
+    public class ContactController : BaseController
+    {
+        private readonly ILogger<CorporateController> _logger;
+        protected readonly IService<SiteMenu> _siteMenuService;
+        protected readonly IService<FooterMenu> _footerMenuService;
+        protected readonly IService<Language> _languageService;
+        protected readonly IService<QuickMenu> _quickMenuService;
+        protected readonly IService<Form> _formService;
+
+        public ContactController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+           ILogger<CorporateController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<Form> formService)
+          : base(localizer, service)
+        {
+            _logger = logger;
+            _siteMenuService = siteMenuService;
+            _footerMenuService = footerMenuService;
+            _languageService = languageService;
+            _quickMenuService = quickMenuService;
+            _formService = formService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+            var langCode = rqf.RequestCulture.Culture;
+            Debug.WriteLine(langCode);
+
+            UiLayoutViewModel uiLayoutViewModel = new UiLayoutViewModel();
+            uiLayoutViewModel.Config = _service.Where(x => x.Id == 1).FirstOrDefault();
+            uiLayoutViewModel.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            uiLayoutViewModel.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
+            uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+
+            return View(uiLayoutViewModel);
+        }
+
+        [HttpPost]
+        public async Task<ResultJson> Kayit(Form model, string soyad)
+        {
+            ResultJson resultJson = new ResultJson();
+            resultJson.status = "error";
+            resultJson.message = "Kayıt İşlemi Sırasında Hata Oluştu.";
+
+            model.Name = model.Name + " " + soyad;
+            model.Status = false;
+            await _formService.AddAsync(model);
+
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://192.168.127.25:5558/Web2.svc");
+            request.Headers.Add("SOAPAction", "http://tempuri.org/IWeb2/SendPINPUKMailbyTCNO");
+            var content = new StringContent("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <soap:Header/>\r\n  <soap:Body>\r\n    <FormIletisim xmlns=\"http://tempuri.org/\">\r\n      <fir>\r\n        <Name>" + model.Name + "</Name>\r\n        <Tcno>" + model.Tcno + "</Tcno>\r\n        <Subject>" + model.Subject + "</Subject>\r\n        <Phone>" + model.Phone + "</Phone>\r\n        <Email>" + model.Email + "</Email>\r\n        <Type>" + model.Type + "</Type>\r\n        <Message>" + model.Message + "</Message>\r\n      </fir>\r\n      <token>TEST_TOKEN</token>\r\n      <pass>TEST_PASS</pass>\r\n    </FormIletisim>\r\n  </soap:Body>\r\n</soap:Envelope>\r\n", null, "text/xml");
+            request.Content = content;
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            string res = await response.Content.ReadAsStringAsync();
+            if (res.Contains("Şifreniz Cep Telefonunuza Gönderilmiştir."))
+            {
+                resultJson.status = "success";
+                resultJson.message = "Şifreniz Cep Telefonunuza Gönderilmiştir.";
+
+                model.Status = true;
+                model.UpdatedDate = DateTime.Now;
+                await _formService.UpdateAsync(model);
+            }
+            else
+            {
+                resultJson.status = "error";
+                resultJson.message = "Cep Telefonu ve TC No Uyumsuzdur.";
+            }
+
+            return resultJson;
+        }
+
+    }
+}
