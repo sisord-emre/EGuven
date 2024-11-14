@@ -47,6 +47,7 @@ namespace SysBase.Repository
         public DbSet<SectorLanguageInfo> SectorLanguageInfos { get; set; }
         public DbSet<SectoralReference> SectoralReferences { get; set; }
         public DbSet<SectoralReferenceSector> SectoralReferenceSectors { get; set; }
+        public DbSet<Form> Forms { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
