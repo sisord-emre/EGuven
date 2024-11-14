@@ -166,6 +166,11 @@ app.MapControllerRoute(
     name: "Blog",
     pattern: "blog-list/{controller=Blog}/{action=Index}");
 
+
+app.MapControllerRoute(
+    name: "BlogListRow",
+    pattern: "blog-list-row/{controller=BlogListRow}/{action=Index}");
+
 app.MapControllerRoute(
     name: "BlogDetail",
     pattern: "blog-detay/{slug}/{controller=BlogDetail}/{action=Index}");
