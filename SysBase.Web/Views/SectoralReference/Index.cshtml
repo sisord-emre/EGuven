@@ -1,0 +1,85 @@
+﻿@model SectoralReferenceViewModel
+
+@{
+    ViewData["Title"] = "Sektörel Referanslarımız";
+    var activeSlug = Model.SectorLanguageInfos.FirstOrDefault()?.Title.ToLower().Replace(" ", "-");
+}
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item"
+                 style="background-image: url('assets/images/slider/slider-2.png');">
+                <div class="hero-slider-item-content">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Kurumsal
+                        </div>
+                        <div class="hero-slider-item-title">
+                            Sektörel Referanslarımız
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sektörel Referanslarımız -->
+<section class="mt-10 sektorell-referanslarimiz red-tab vertical-tab">
+    <div class="container">
+        <div class="flex lg:flex-row flex-col lg:gap-20 gap-4 tab-container">
+            <div class="w-full lg:max-w-48 max-w-full">
+                <div class="tab-buttons">
+                    @foreach (var item in Model.SectorLanguageInfos)
+                    {
+                        var slug = item.Title.ToLower().Replace(" ", "-");
+                        <button class="tab-button @(slug == activeSlug ? "active" : "") py-4 text-sm font-extrabold" data-tab="@slug">
+                            @item.Title
+                        </button>
+                    }
+                </div>
+            </div>
+            <div class="w-full">
+                <div class="tab-content text-primary-dark text-sm">
+                    @foreach (var item in Model.SectorLanguageInfos)
+                    {
+                        var slug = item.Title.ToLower().Replace(" ", "-");
+                        <div id="@slug" class="tab-pane @(slug == activeSlug ? "active" : "")">
+                            <div class="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-3">
+                                @foreach (var sectorReference in Model.SectoralReferences.Where(sr => sr.SectoralReferenceSectors.Any(srs => srs.SectorId == item.SectorId)))
+                                {
+                                    <div class="bg-white rounded-5 h-24 flex items-center justify-center px-2 py-4 sr-item-shadow">
+                                        <img src="/Images/SectoralReference/@sectorReference.Media" alt="@sectorReference.SectoralReferenceSectors.FirstOrDefault()?.Sector.SectorLanguageInfos.FirstOrDefault().Title" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

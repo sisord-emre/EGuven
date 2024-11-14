@@ -615,13 +615,13 @@
                 @foreach (BlogLanguageInfo item in Model.BlogLanguageInfos)
                 {
                     <div class="relative rounded-5 overflow-hidden h-56" data-aos="fade-up">
-                        <a href="/blog/@item.Slug" class="block group rounded-5 overflow-hidden">
+                        <a href="/blog-detay/@item.Slug" class="block group rounded-5 overflow-hidden">
                             <img src="/Images/Blog/@item.Blog.Image" alt="@item.Title" class="w-full h-full rounded-5 group-hover:scale-150 transition-all duration-150 ease-in object-cover" />
                             <div class="absolute inset-0 bg-primary-dark/50"></div>
                             <div class="absolute bottom-0 left-0 right-0 p-5">
-                                <a href="/blog/@item.Slug" class="text-white">
+                                <a href="/blog-detay/@item.Slug" class="text-white">
                                     <span class="text-lg font-bold block">@item.Title</span>
-                                    <span class="text-xs">@item.Blog.CreatedDate.ToString("dd MMMM yyyy")</span>
+                                    <span class="text-xs">@item.Blog.PublicationTime.ToString("dd MMMM yyyy")</span>
                                 </a>
                             </div>
                         </a>
@@ -629,9 +629,7 @@
                 }
             </div>
 
-            <a href="blog-list.html"
-               class="btn mx-auto mt-3 btn-common"
-               data-aos="fade-up">Tümüne göz at</a>
+            <a href="blog-list" class="btn mx-auto mt-3 btn-common" data-aos="fade-up">Tümüne göz at</a>
         </div>
     </div>
 </section>

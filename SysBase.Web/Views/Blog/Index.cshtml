@@ -1,0 +1,215 @@
+﻿@model BlogViewModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "E-Güven’li Hayat";
+}
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item animated-background bg-gradient-to-r from-primary-red via-red-800 to-red-900">
+                <div class="hero-slider-item-content !bg-transparent">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Türkiyenin e-imza blogu
+                        </div>
+                        <div class="hero-slider-item-title !text-5xl">
+                            E-Güven’li Hayat
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog? -->
+<section class="blog-list red-tab mt-10" data-aos="fade-up">
+    <div class="container">
+        <div class="tab-container">
+            <!-- Tab Buttons -->
+            <div class="tab-buttons border-b border-tab-inactive">
+                @{
+                    // Seçeneklerin değer ve metinlerini tutan bir liste oluştur
+                    var options = new List<(string Value, string Text)>
+                    {
+                        ("1", "site.E-Dönüşümde Değişenler"),
+                        ("2", "site.Sözü Dinlenenler"),
+                        ("3", "site.E-İmzalı Hayat"),
+                        ("4", "site.Raporlardan Görünenler"),
+                        ("5", "site.Teknoloji Gündemi")
+                    };
+                }
+
+                @foreach (var option in options.Select((value, index) => new { value, index }))
+                {
+                    <button class="tab-button @(option.index == 0 ? "active" : "") py-4 xl:px-12 lg:px-6 px-2 text-sm font-extrabold text-center" data-tab="@option.value.Value">
+                        @Localizer[option.value.Text]
+                    </button>
+                }
+            </div>
+
+            <div class="grid xl:grid-cols-3 grid-cols-1 gap-4 py-11">
+                <div class="xl:col-span-2">
+                    <div class="tab-content">
+                        @foreach (var option in options.Select((value, index) => new { value, index }))
+                        {
+                            <div id="@option.value.Value" class="tab-pane @(option.index == 0 ? "active" : "") overflow-hidden">
+                                <div class="grid xl:grid-cols-2 grid-cols-1 gap-x-6 gap-y-12">
+                                    @foreach (BlogLanguageInfo item in Model.BlogLanguageInfos.Where(x => x.Blog.Type.ToString() == option.value.Value))
+                                    {
+                                        <div class="group">
+                                            <a href="/blog-detay/@item.Slug" class="relative overflow-hidden flex flex-col w-full gap-4">
+                                                <div class="relative overflow-hidden sm:max-h-72 sm:min-h-72 max-h-full min-h-full">
+                                                    <img class="group-hover:scale-150 transition-all duration-150 ease-linear" src="/Images/Blog/@item.Blog.Image" alt="@item.Title" />
+                                                    <div class="w-12 h-12 absolute flex flex-col items-center justify-center text-white bg-primary-red p-2 text-center font-bold top-5 left-5">
+                                                        <span class="text-2xl">
+                                                            @item.Blog.PublicationTime.ToString("dd")
+                                                        </span>
+                                                        <span class="text-xs">
+                                                            @item.Blog.PublicationTime.ToString("MMMM", new CultureInfo("tr-TR"))
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <span class="icon-calendar text-primary-red"></span>
+                                                        <span class="text-xs text-blog-content font-medium">
+                                                            @item.Blog.PublicationTime.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <span class="icon-clock text-primary-red"></span>
+                                                        <span class="text-xs text-blog-content font-medium">
+                                                            Tahmini Okuma Süresi: @item.Blog.ReadTime dk
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <h2 class="text-xl font-semibold text-primary-dark line-clamp-2 max-h-14 min-h-14 overflow-hidden">
+                                                    @item.Title
+                                                </h2>
+                                                <div class="text-sm text-blog-content line-clamp-5">
+                                                    @item.Description
+                                                </div>
+                                            </a>
+                                            <a href="/blog-detay/@item.Slug" class="btn btn-blog-read-more mt-4">Devamını Oku</a>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- pagination -->
+                                <ul class="pagination mt-14">
+                                    <li class="pagination-item">
+                                        <a href="javascript:;"
+                                           class="pagination-item-link disabled">
+                                            <span class="icon-chevron-left"></span>
+                                        </a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="javascript:;"
+                                           class="pagination-item-link active">1</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="javascript:;"
+                                           class="pagination-item-link">2</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="javascript:;"
+                                           class="pagination-item-link">3</a>
+                                    </li>
+                                    <li class="pagination-item">...</li>
+                                    <li class="pagination-item">
+                                        <a href="javascript:;"
+                                           class="pagination-item-link">7</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="javascript:;"
+                                           class="pagination-item-link">
+                                            <span class="icon-chevron-right"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="border border-aside-section py-3 px-5">
+                        <div class="flex flex-col gap-5">
+                            <div class="flex items-center gap-2">
+                                <span class="icon-title-icon text-primary-red text-2xl"></span>
+                                <span class="font-bold text-xl">Arama</span>
+                            </div>
+                            <div class="flex items-stretch justify-stretch">
+                                <input id="blogSearch"
+                                       class="bg-aside-search text-blog-content border-0 text-sm rounded-l-5 block px-4 py-2.5 w-full outline-none focus:outline-none ring-0 focus:ring-transparent focus:bg-aside-search autofill:bg-aside-search"
+                                       name="blog_search"
+                                       aria-label="Blog arama"
+                                       placeholder="Blog ara..."
+                                       type="text" />
+                                <button class="btn btn-primary-red rounded-r-5 rounded-l-none shrink-0 h-full text-xl">
+                                    <span class="icon-search"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-aside-section py-3 px-5">
+                        <div class="flex flex-col gap-5">
+                            <div class="flex items-center gap-2">
+                                <span class="icon-title-icon text-primary-red text-2xl"></span>
+                                <span class="font-bold text-xl">Son Yazılar</span>
+                            </div>
+                            <ul class="flex flex-col gap-6">
+                                @foreach (BlogLanguageInfo item in Model.LastPosts)
+                                {
+                                    <li>
+                                        <a href="/blog-detay/@item.Slug" class="flex gap-3 group">
+                                            <div class="w-20 h-20 relative overflow-hidden shrink-0">
+                                                <img src="/Images/Blog/@item.Blog.Image" alt="@item.Title" class="w-full h-full group-hover:scale-125 transition-transform duration-150 object-cover" />
+                                            </div>
+                                            <div class="flex flex-col gap-3">
+                                                <div class="font-bold text-sm text-primary-dark line-clamp-2">
+                                                   @item.Title
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <div class="flex items-center gap-1 font-bold text-primary-red">
+                                                        <span class="icon-calendar"></span>
+                                                        <span class="text-xs font-medium">
+                                                            @item.Blog.PublicationTime.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

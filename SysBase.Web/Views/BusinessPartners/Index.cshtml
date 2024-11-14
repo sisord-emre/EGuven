@@ -1,0 +1,60 @@
+﻿@model BusinessPartnersViewModel
+
+@{
+    ViewData["Title"] = "İş Ortaklarımız";
+}
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item"
+                 style="background-image: url('assets/images/slider/slider-2.png');">
+                <div class="hero-slider-item-content">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Kurumsal
+                        </div>
+                        <div class="hero-slider-item-title">
+                            İş Ortaklarımız
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sektörel Referanslarımız -->
+<section class="mt-10 is-ortaklarimiz">
+    <div class="container">
+        <div class="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-3 py-14 md:px-32 px-10">
+            @foreach (Brand item in Model.Brands)
+            {
+                <div class="bg-white rounded-5 h-24 flex items-center justify-center px-2 py-4 sr-item-shadow">
+                    <img src="/Images/Brand/@item.Media" alt="@item.Title" />
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

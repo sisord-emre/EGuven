@@ -154,4 +154,20 @@ app.MapControllerRoute(
     name: "Corporate",
     pattern: "kurumsal/{controller=Corporate}/{action=Index}");
 
+app.MapControllerRoute(
+    name: "SectoralReference",
+    pattern: "sektorel-referanslarimiz/{controller=SectoralReference}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "BusinessPartners",
+    pattern: "is-ortaklarimiz/{controller=BusinessPartners}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "Blog",
+    pattern: "blog-list/{controller=Blog}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "BlogDetail",
+    pattern: "blog-detay/{slug}/{controller=BlogDetail}/{action=Index}");
+
 app.Run();

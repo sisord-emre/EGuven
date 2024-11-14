@@ -1,0 +1,139 @@
+﻿@model BlogDetailViewModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "E-Güven’li Hayat";
+}
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item animated-background bg-gradient-to-r from-primary-red via-red-800 to-red-900">
+                <div class="hero-slider-item-content !bg-transparent">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Türkiyenin e-imza blogu
+                        </div>
+                        <div class="hero-slider-item-title !text-5xl">
+                            @Model.BlogLanguageInfo?.Title
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blog? -->
+<section class="blog-list red-tab mt-10" data-aos="fade-up">
+    <div class="container">
+        <div class="tab-container">
+            <div class="grid xl:grid-cols-3 grid-cols-1 gap-4 py-11">
+                <div class="xl:col-span-2">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center gap-1">
+                            <span class="icon-calendar text-primary-red"></span>
+                            <span class="text-xs text-blog-content font-medium">
+                                @Model.BlogLanguageInfo.Blog.PublicationTime.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))
+                            </span>
+                        </div>
+                        <h1 class="text-primary-dark text-2xl font-semibold my-5">
+                            @Model.BlogLanguageInfo?.Title
+                        </h1>
+                        @Html.Raw(Model.BlogLanguageInfo?.Content)
+                        <div class="flex items-center gap-4" data-aos="fade-up">
+                            @if (Model.BeforeBlog != null)
+                            {
+                                <a href="/blog-detay/@Model.BeforeBlog.Slug" class="btn btn-common">
+                                    <span class="icon-chevron-left"></span>
+                                    Önceki Yazı
+                                </a>
+                            }
+
+                            @if (Model.LastBlog != null)
+                            {
+                                <a href="/blog-detay/@Model.LastBlog.Slug" class="btn btn-common">
+                                    Sonraki Yazı
+                                    <span class="icon-chevron-right"></span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <div class="border border-aside-section py-3 px-5">
+                        <div class="flex flex-col gap-5">
+                            <div class="flex items-center gap-2">
+                                <span class="icon-title-icon text-primary-red text-2xl"></span>
+                                <span class="font-bold text-xl">Arama</span>
+                            </div>
+                            <div class="flex items-stretch justify-stretch">
+                                <input id="blogSearch"
+                                       class="bg-aside-search text-blog-content border-0 text-sm rounded-l-5 block px-4 py-2.5 w-full outline-none focus:outline-none ring-0 focus:ring-transparent focus:bg-aside-search autofill:bg-aside-search"
+                                       name="blog_search"
+                                       aria-label="Blog arama"
+                                       placeholder="Blog ara..."
+                                       type="text" />
+                                <button class="btn btn-primary-red rounded-r-5 rounded-l-none shrink-0 h-full text-xl">
+                                    <span class="icon-search"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-aside-section py-3 px-5">
+                        <div class="flex flex-col gap-5">
+                            <div class="flex items-center gap-2">
+                                <span class="icon-title-icon text-primary-red text-2xl"></span>
+                                <span class="font-bold text-xl">Son Yazılar</span>
+                            </div>
+                            <ul class="flex flex-col gap-6">
+                                @foreach (BlogLanguageInfo item in Model.LastPosts)
+                                {
+                                    <li>
+                                        <a href="/blog-detay/@item.Slug" class="flex gap-3 group">
+                                            <div class="w-20 h-20 relative overflow-hidden shrink-0">
+                                                <img src="/Images/Blog/@item.Blog.Image" alt="@item.Title" class="w-full h-full group-hover:scale-125 transition-transform duration-150 object-cover" />
+                                            </div>
+                                            <div class="flex flex-col gap-3">
+                                                <div class="font-bold text-sm text-primary-dark line-clamp-2">
+                                                    @item.Title
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <div class="flex items-center gap-1 font-bold text-primary-red">
+                                                        <span class="icon-calendar"></span>
+                                                        <span class="text-xs font-medium">
+                                                            @item.Blog.PublicationTime.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

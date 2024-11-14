@@ -15,34 +15,27 @@ using System.Globalization;
 
 namespace SysBase.Web.Controllers
 {
-    public class HomeController : BaseController
+    public class BusinessPartnersController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<BusinessPartnersController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
-        protected readonly IService<Slider> _sliderService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<AnnouncementLanguageInfo> _announcementService;
         protected readonly IService<Brand> _brandService;
-        protected readonly IService<BlogLanguageInfo> _blogLanguageInfoService;
 
-        public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, 
-            IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService, 
-            IService<AnnouncementLanguageInfo> announcementService, IService<Brand> brandService, 
-            IService<BlogLanguageInfo> blogLanguageInfoService)
+        public BusinessPartnersController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+            ILogger<BusinessPartnersController> logger, IService<SiteMenu> siteMenuService, 
+            IService<FooterMenu> footerMenuService, IService<Language> languageService, 
+            IService<QuickMenu> quickMenuService, IService<Brand> brandService)
            : base(localizer, service)
         {
             _logger = logger;
             _siteMenuService = siteMenuService;
             _footerMenuService = footerMenuService;
             _languageService = languageService;
-            _sliderService = sliderService;
             _quickMenuService = quickMenuService;
-            _announcementService = announcementService;
             _brandService = brandService;
-            _blogLanguageInfoService = blogLanguageInfoService;
         }
 
 
@@ -58,24 +51,15 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
-
-            /*
-            IndexViewModel model = new IndexViewModel();
-            model = (IndexViewModel)uiLayoutViewModel;
-            model.Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x).ToList();
-            model.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
-            */
-            IndexViewModel model = new IndexViewModel
+        
+            BusinessPartnersViewModel model = new BusinessPartnersViewModel
             {
                 Config = uiLayoutViewModel.Config,
                 SiteMenus = uiLayoutViewModel.SiteMenus,
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
-                Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
-                Announcements = _announcementService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList(),
-                Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
-                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).Take(3).ToListAsync()
+                Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).ToList(),
             };
 
             return View(model);

@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
-using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
-using SysBase.Repository.Migrations;
 using SysBase.Web.Models;
 using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
@@ -15,34 +12,29 @@ using System.Globalization;
 
 namespace SysBase.Web.Controllers
 {
-    public class HomeController : BaseController
+    public class SectoralReferenceController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<SectoralReferenceController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
-        protected readonly IService<Slider> _sliderService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<AnnouncementLanguageInfo> _announcementService;
-        protected readonly IService<Brand> _brandService;
-        protected readonly IService<BlogLanguageInfo> _blogLanguageInfoService;
+        protected readonly IService<SectoralReference> _sectoralReferenceService;
+        protected readonly IService<SectorLanguageInfo> _sectorLanguageInfoService;
 
-        public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, 
-            IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService, 
-            IService<AnnouncementLanguageInfo> announcementService, IService<Brand> brandService, 
-            IService<BlogLanguageInfo> blogLanguageInfoService)
+        public SectoralReferenceController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+            ILogger<SectoralReferenceController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+            IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<SectoralReference> sectoralReferenceService,
+            IService<SectorLanguageInfo> sectorLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
             _siteMenuService = siteMenuService;
             _footerMenuService = footerMenuService;
             _languageService = languageService;
-            _sliderService = sliderService;
             _quickMenuService = quickMenuService;
-            _announcementService = announcementService;
-            _brandService = brandService;
-            _blogLanguageInfoService = blogLanguageInfoService;
+            _sectoralReferenceService = sectoralReferenceService;
+            _sectorLanguageInfoService = sectorLanguageInfoService;
         }
 
 
@@ -59,27 +51,22 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
-            /*
-            IndexViewModel model = new IndexViewModel();
-            model = (IndexViewModel)uiLayoutViewModel;
-            model.Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x).ToList();
-            model.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
-            */
-            IndexViewModel model = new IndexViewModel
+          
+            // SectoralReferenceViewModel'i oluşturuyoruz
+            SectoralReferenceViewModel model = new SectoralReferenceViewModel
             {
                 Config = uiLayoutViewModel.Config,
                 SiteMenus = uiLayoutViewModel.SiteMenus,
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
-                Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
-                Announcements = _announcementService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList(),
-                Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
-                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).Take(3).ToListAsync()
+                SectoralReferences = await _sectoralReferenceService.Where(x => x.Status).Include(sr => sr.SectoralReferenceSectors).ThenInclude(srs => srs.Sector).ToListAsync(),
+                SectorLanguageInfos = await _sectorLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Sector).OrderBy(x => x.Sector.Sequence).ToListAsync()
             };
 
             return View(model);
         }
+
 
         public IActionResult SetLang(string lng, string returnUrl)
         {
