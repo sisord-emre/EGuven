@@ -55,6 +55,27 @@ namespace SysBase.Web.Controllers
                 .Where(x => x.Status && x.Slug == Slug && x.Language.Code == CultureInfo.CurrentCulture.Name)
                 .FirstOrDefaultAsync();
 
+            var lastPosts = await _blogLanguageInfoService.
+                    Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).
+                    Include(x => x.Blog).
+                    OrderByDescending(x => x.Blog.Id).
+                    Take(3).
+                    ToListAsync();
+
+            var beforeBlog = blogLanguageInfo != null
+                    ? await _blogLanguageInfoService
+                        .Where(x => x.Id < blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name)
+                        .OrderByDescending(x => x.Id)
+                        .FirstOrDefaultAsync()
+                    : null;
+
+            var lastBlog = blogLanguageInfo != null
+                    ? await _blogLanguageInfoService
+                        .Where(x => x.Id > blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name)
+                        .OrderBy(x => x.Id)
+                        .FirstOrDefaultAsync()
+                    : null;
+
             BlogDetailViewModel model = new BlogDetailViewModel
             {
                 Config = uiLayoutViewModel.Config,
@@ -63,24 +84,9 @@ namespace SysBase.Web.Controllers
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 BlogLanguageInfo = blogLanguageInfo,
-                LastPosts = await _blogLanguageInfoService.
-                    Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).
-                    Include(x => x.Blog).
-                    OrderByDescending(x => x.Blog.Id).
-                    Take(3).
-                    ToListAsync(),
-                BeforeBlog = blogLanguageInfo != null
-                    ? await _blogLanguageInfoService
-                        .Where(x => x.Id < blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name)
-                        .OrderByDescending(x => x.Id)
-                        .FirstOrDefaultAsync()
-                    : null,
-                LastBlog = blogLanguageInfo != null
-                    ? await _blogLanguageInfoService
-                        .Where(x => x.Id > blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name)
-                        .OrderBy(x => x.Id)
-                        .FirstOrDefaultAsync()
-                    : null
+                LastPosts = lastPosts,
+                BeforeBlog = beforeBlog,
+                LastBlog = lastBlog
             };
 
             return View(model);

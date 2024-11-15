@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
@@ -9,6 +9,7 @@ using SysBase.Web.Models;
 using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
 using System.Diagnostics;
+using System.Drawing.Printing;
 using System.Globalization;
 
 namespace SysBase.Web.Controllers
@@ -36,7 +37,7 @@ namespace SysBase.Web.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 4)
         {
             var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
             var langCode = rqf.RequestCulture.Culture;
@@ -49,6 +50,29 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
+
+            // Sayfalama için toplam blog dil bilgilerini say
+            var totalBlogLanguageInfos = await _blogLanguageInfoService
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .CountAsync();
+
+            // Sayfalama ile BlogLanguageInfos'u al
+            var blogLanguageInfos = await _blogLanguageInfoService
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .Include(x => x.Blog)
+                .OrderBy(x => x.Blog.Sequence)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Son blog yazılarını al
+            var lastPosts = await _blogLanguageInfoService
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .Include(x => x.Blog)
+                .OrderByDescending(x => x.Blog.Id)
+                .Take(3)
+                .ToListAsync();
+
             BlogViewModel model = new BlogViewModel
             {
                 Config = uiLayoutViewModel.Config,
@@ -56,8 +80,10 @@ namespace SysBase.Web.Controllers
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
-                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderBy(x => x.Blog.Sequence).ToListAsync(),
-                LastPosts = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).Take(3).ToListAsync()
+                BlogLanguageInfos = blogLanguageInfos,
+                LastPosts = lastPosts,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalBlogLanguageInfos / (double)pageSize)
             };
 
             return View(model);
