@@ -38,6 +38,27 @@ namespace SysBase.Service.Functions
             return null;
         }
 
+        public async Task<string> FileUpload(IFormFile File, string path, string title, string[] allowedExtensions)
+        {
+            if (File != null)
+            {
+                string extent = Path.GetExtension(File.FileName).ToLower();
+                if (allowedExtensions.Contains(extent))
+                {
+                    string fileName = this.ToSlug(title) + "" + extent;
+                    // Dosya adını ve yolunu belirleme
+                    var filePath = Path.Combine("wwwroot/" + path + "/", fileName);
+                    // Dosyayı sunucuya kaydetme
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await File.CopyToAsync(stream);
+                    }
+                    return fileName;
+                }
+            }
+            return null;
+        }
+
         public string ToSlug(string value, short limit = 100)
         {
             // Is the source null?

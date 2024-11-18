@@ -30,6 +30,8 @@
     <Folder Include="wwwroot\Images\Blog\" />
     <Folder Include="wwwroot\Images\Brand\" />
     <Folder Include="wwwroot\Images\Corporate\" />
+    <Folder Include="wwwroot\Images\SoftwareCategory\" />
+    <Folder Include="wwwroot\Images\Software\" />
     <Folder Include="wwwroot\Images\SectoralReference\" />
     <Folder Include="wwwroot\Images\Slider\" />
   </ItemGroup>

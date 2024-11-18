@@ -245,3 +245,6 @@
 {
     white-space: normal !important;
 }
+.select2-dropdown {
+  top: -22px;
+}

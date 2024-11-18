@@ -1,0 +1,91 @@
+﻿@model SupportDeskViewModel
+@{
+    ViewData["Title"] = "İletişim";
+}
+<!-- Hero -->
+<!-- Hero Slider -->
+<div class="swiper hero-slider relative">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <!-- Slide1 -->
+        <div class="swiper-slide">
+            <div class="hero-slider-item" style=" background-image: url('assets/images/slider/slider-1.png');">
+                <div class="hero-slider-item-content">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            E-Güven
+                        </div>
+                        <div class="hero-slider-item-title">
+                            Destek Masası
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kurumsal -->
+<section class="mt-10 destek-masasi">
+    <div class="container">
+        <div class="flex flex-col items-center pt-14">
+            <div class="max-w-screen-sm text-primary-dark text-center"
+                 data-aos="fade-up">
+                <h1 class="font-bold text-3xl">
+                    Kullandığınız ya da destek almak istediğini cihazını
+                    seçin
+                </h1>
+                <p class="mt-6">
+                    Sizlere en uygun desteği vermek için istediğiniz
+                    ürünü ya da cihazı seçip, konu ile ilgili yardım ve
+                    çözümleri inceleyebilir, iletişime geçebilirsiniz.
+                </p>
+            </div>
+            <div class="flex items-center justify-center flex-wrap gap-14 my-14" data-aos="fade-up">
+                @foreach (SupportDeskLanguageInfo item in Model.SupportDeskLanguageInfos)
+                {
+                    <a href="@item.Url">
+                        <div class="rounded-5 relative bg-white shadow-md group h-32">
+                            <div class="py-11 px-6 max-w-xs w-96 z-10 relative">
+                                <div class="flex flex-col justify-center">
+                                    <div class="text-primary-red text-xs group-hover:text-white">
+                                        @item.Title
+                                    </div>
+                                    <div class="text-primary-dark font-semibold text-lg group-hover:text-white">
+                                        @item.SubTitle
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-r-5 bg-primary-red h-32 w-16 transition-all duration-150 ease-in group-hover:w-full absolute top-0 right-0 group-hover:rounded-5 z-0"></div>
+                            <div class="w-16 h-16 rounded-full shadow-md bg-white flex items-center justify-center flex-col text-4xl text-primary-dark absolute top-8 right-10">
+                                <span class="@item.SupportDesk.Image"></span>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        heroSlider,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        heroSlider()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

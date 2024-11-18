@@ -15,18 +15,17 @@ namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class AnnouncementController : BaseController
+    public class SupportDeskController : BaseController
     {
-        // AnnouncementController specific dependencies
-        protected readonly IService<Announcement> _service;
-        protected readonly IService<AnnouncementLanguageInfo> _pageLanguageInfoService;
+        // SupportDeskController specific dependencies
+        protected readonly IService<SupportDesk> _service;
+        protected readonly IService<SupportDeskLanguageInfo> _pageLanguageInfoService;
         protected readonly IService<Language> _languageService;
-        protected readonly ILogger<AnnouncementController> _logger;
+        protected readonly ILogger<SupportDeskController> _logger;
 
-        public AnnouncementController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Announcement> service, IService<AnnouncementLanguageInfo> pageLanguageInfoService,
-                              IService<Language> languageService, ILogger<AnnouncementController> logger)
-            : base(localizer, userManager)
+        public SupportDeskController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<SupportDesk> service, IService<SupportDeskLanguageInfo> pageLanguageInfoService,
+                              IService<Language> languageService, ILogger<SupportDeskController> logger) : base(localizer, userManager)
         {
             _service = service;
             _pageLanguageInfoService = pageLanguageInfoService;
@@ -43,22 +42,22 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Announcement model = null;
+            SupportDesk model = null;
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.AnnouncementLanguageInfos = await _pageLanguageInfoService.Where(x => x.AnnouncementId == model.Id).ToListAsync();
+                model.SupportDeskLanguageInfos = await _pageLanguageInfoService.Where(x => x.SupportDeskId == model.Id).ToListAsync();
             }
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new AnnouncementAddViewModel { MenuPermission = menuPermission, Announcement = model, Languages = await _languageService.GetAllAsync() });
+            return View(new SupportDeskAddViewModel { MenuPermission = menuPermission, SupportDesk = model, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Announcement model)
+        public async Task<IActionResult> Add(SupportDesk model)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -67,7 +66,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Announcement isControl;
+            SupportDesk isControl;
             if (model.Id != 0)  // Güncelleme işlemi
             {
                 model.UpdatedDate = DateTime.Now;
@@ -104,7 +103,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
 
-            return View(new AnnouncementAddViewModel { MenuPermission = menuPermission, Announcement = model, Languages = await _languageService.GetAllAsync() });
+            return View(new SupportDeskAddViewModel { MenuPermission = menuPermission, SupportDesk = model, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -122,7 +121,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new AnnouncementListViewModel { MenuPermission = menuPermission, AnnouncementLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Announcement).ToListAsync() });
+            return View(new SupportDeskListViewModel { MenuPermission = menuPermission, SupportDeskLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.SupportDesk).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -131,7 +130,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.Announcement.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.Announcement).FirstOrDefaultAsync());
+                return View(await _pageLanguageInfoService.Where(x => x.SupportDesk.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.SupportDesk).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -155,7 +154,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                Announcement item = await _service.GetByIdAsync(Int32.Parse(Id));
+                SupportDesk item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);

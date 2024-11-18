@@ -3,7 +3,7 @@
     string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
     string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
     string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
-    IEnumerable<BlogLanguageInfo> pageLanguageInfos = Model.Blog?.BlogLanguageInfos;
+    IEnumerable<SoftwareCategoryLanguageInfo> pageLanguageInfos = Model.SoftwareCategory?.SoftwareCategoryLanguageInfos;
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -44,61 +44,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Type" class="form-label">@Localizer["admin.Type"]</label>
-                                    <select class="select2 form-control block" name="Type" id="Type" style="width:100%!important" required>
-                                        @{
-                                            // Seçeneklerin değer ve metinlerini tutan bir liste oluştur
-                                            var options = new List<(string Value, string Text)>
-                                            {
-                                                ("1", "admin.E-Dönüşümde Değişenler"),
-                                                ("2", "admin.Sözü Dinlenenler"),
-                                                ("3", "admin.E-İmzalı Hayat"),
-                                                ("4", "admin.Raporlardan Görünenler"),
-                                                ("5", "admin.Teknoloji Gündemi")
-                                            };
-                                        }
-                                        <option value="">@Localizer["admin.Seçiniz"]</option>
-                                        @foreach (var option in options)
-                                        {
-                                            if (Model.Blog?.Type == int.Parse(option.Value))
-                                            {
-                                                <option value="@option.Value" selected> @Localizer[@option.Text]</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@option.Value">@Localizer[@option.Text]</option>
-                                            }
-                                        }
-                                    </select>
+                                    <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.SoftwareCategory?.Sequence" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-3 col-sm-10">
-                                    <label for="Image" class="form-label">@Localizer["admin.Blog Görseli"]</label>
+                                    <label for="Image" class="form-label">@Localizer["admin.Görsel"] (85x85px)</label>
                                     <input class="form-control" type="file" name="Image" id="Image" />
                                 </div>
                                 <div class="mb-3 col-md-1 col-sm-2">
-                                    @if (Model.Blog?.Image != null)
+                                    @if (Model.SoftwareCategory?.Image != null)
                                     {
-                                        <a href="/Images/Blog/@Model.Blog?.Image" target="_blank">
-                                            <img src="/Images/Blog/@Model.Blog?.Image" style="width: 100%" />
+                                        <a href="/Images/SoftwareCategory/@Model.SoftwareCategory?.Image" target="_blank">
+                                            <img src="/Images/SoftwareCategory/@Model.SoftwareCategory?.Image" style="width: 100%" />
                                         </a>
                                     }
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="PublicationTime" class="form-label">@Localizer["admin.Yazı Tarihi"]</label>
-                                    <input class="form-control" type="date" name="PublicationTime" value="@Model.Blog?.PublicationTime?.ToString("yyyy-MM-dd")" id="demo-date-only" />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="ReadTime" class="form-label">@Localizer["admin.Tahmini Okunma Süresi"]</label>
-                                    <input class="form-control" type="number" name="ReadTime" id="ReadTime" value="@Model.Blog?.ReadTime" autocomplete="off" />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
-                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Blog?.Sequence" autocomplete="off" required />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.Blog?.Status == true ? "checked" : "") />
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.SoftwareCategory?.Status == true ? "checked" : "") />
                                         <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
                                     </div>
                                 </div>
@@ -108,7 +72,7 @@
                                     <div class="accordion card" id="dilBloklari">
                                         @for (int i = 0; i < Model.Languages.Count; i++)
                                         {
-                                            BlogLanguageInfo languageInfo = null;
+                                            SoftwareCategoryLanguageInfo languageInfo = null;
                                             if (pageLanguageInfos != null)
                                             {
                                                 languageInfo = pageLanguageInfos.Where(x => x.LanguageId == Model.Languages[i].Id).FirstOrDefault();
@@ -122,31 +86,27 @@
                                                 <!-- classın içine "show" eklersen açık gelir ve yukarıdaki button içine aria-expanded="true" eklersen ok işareti çıkar ve button içinde collapsed clasını kaldırmalısın-->
                                                 <div id="collapse-@i" class="accordion-collapse collapse @(languageInfo?.Status == true ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#dilBloklari">
                                                     <div class="accordion-body">
-                                                        <input type="hidden" name="BlogLanguageInfos[@i].Id" id="BlogLanguageInfos[@i].Id" value="@languageInfo?.Id" />
-                                                        <input type="hidden" name="BlogLanguageInfos[@i].LanguageId" id="BlogLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
+                                                        <input type="hidden" name="SoftwareCategoryLanguageInfos[@i].Id" id="SoftwareCategoryLanguageInfos[@i].Id" value="@languageInfo?.Id" />
+                                                        <input type="hidden" name="SoftwareCategoryLanguageInfos[@i].LanguageId" id="SoftwareCategoryLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
                                                         <div class="row">
-                                                            <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Title" id="BlogLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" onkeyup="toSeo('BlogLanguageInfos[@i].Title','BlogLanguageInfos[@i].Slug')" />
+                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                                <label for="SoftwareCategoryLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Baslık"]</label>
+                                                                <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].Title" id="SoftwareCategoryLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" />
                                                             </div>
-                                                            <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Slug" class="form-label">@Localizer["admin.Slug"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Slug" id="BlogLanguageInfos[@i].Slug" value="@languageInfo?.Slug" autocomplete="off" />
+                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                                <label for="SoftwareCategoryLanguageInfos[@i].SubTitle" class="form-label">@Localizer["admin.Alt Başlık"]</label>
+                                                                <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].SubTitle" id="SoftwareCategoryLanguageInfos[@i].SubTitle" value="@languageInfo?.SubTitle" autocomplete="off" onkeyup="toSeo('SoftwareCategoryLanguageInfos[@i].SubTitle','SoftwareCategoryLanguageInfos[@i].Slug')"/>
                                                             </div>
-                                                            <div class="mb-3 col-md-2 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                                <label for="SoftwareCategoryLanguageInfos[@i].Slug" class="form-label">@Localizer["admin.Slug"]</label>
+                                                                <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].Slug" id="SoftwareCategoryLanguageInfos[@i].Slug" value="@languageInfo?.Slug" autocomplete="off" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-2 col-sm-2">
+                                                                <label for="SoftwareCategoryLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
                                                                 <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input" name="BlogLanguageInfos[@i].Status" id="BlogLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
-                                                                    <label class="form-check-label" for="BlogLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
+                                                                    <input type="checkbox" class="form-check-input" name="SoftwareCategoryLanguageInfos[@i].Status" id="SoftwareCategoryLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="SoftwareCategoryLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
                                                                 </div>
-                                                            </div>
-                                                            <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Description" class="form-label">@Localizer["admin.Kısa Açıklama"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Description" id="BlogLanguageInfos[@i].Description" value="@languageInfo?.Description" autocomplete="off" />
-                                                            </div>
-                                                            <div class="mb-3 col-md-12 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Content" class="form-label">@Localizer["admin.İçerik"]</label>
-                                                                <textarea class="editorCk form-control" name="BlogLanguageInfos[@i].Content" id="BlogLanguageInfos[@i].Content">@languageInfo?.Content</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,8 +118,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <input type="hidden" name="Code" value="@Model.Blog?.Code">
-                            <input type="hidden" name="Id" value="@Model.Blog?.Id">
+                            <input type="hidden" name="Id" value="@Model.SoftwareCategory?.Id">
                             <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
                         </div>
                     </form>

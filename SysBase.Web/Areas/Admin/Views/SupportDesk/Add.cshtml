@@ -3,7 +3,7 @@
     string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
     string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
     string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
-    IEnumerable<BlogLanguageInfo> pageLanguageInfos = Model.Blog?.BlogLanguageInfos;
+    IEnumerable<SupportDeskLanguageInfo> pageLanguageInfos = Model.SupportDesk?.SupportDeskLanguageInfos;
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -44,23 +44,64 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Type" class="form-label">@Localizer["admin.Type"]</label>
-                                    <select class="select2 form-control block" name="Type" id="Type" style="width:100%!important" required>
+                                    <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.SupportDesk?.Sequence" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Image" class="form-label">@Localizer["admin.Image"]</label>
+                                    <select class="select2 form-control block" name="Image" id="Image" style="width:100%!important">
                                         @{
-                                            // Seçeneklerin değer ve metinlerini tutan bir liste oluştur
                                             var options = new List<(string Value, string Text)>
-                                            {
-                                                ("1", "admin.E-Dönüşümde Değişenler"),
-                                                ("2", "admin.Sözü Dinlenenler"),
-                                                ("3", "admin.E-İmzalı Hayat"),
-                                                ("4", "admin.Raporlardan Görünenler"),
-                                                ("5", "admin.Teknoloji Gündemi")
-                                            };
+                                        {
+                                        ("icon-dm-eimza-kurulumu", "admin.icon-dm-eimza-kurulumu"),
+                                        ("icon-dm-pin-sorgulama", "admin.icon-dm-pin-sorgulama"),
+                                        ("icon-dm-urun-yazilimlari", "admin.icon-dm-urun-yazilimlari"),
+                                        ("icon-dm-uzak-baglanti", "admin.icon-dm-uzak-baglanti"),
+                                        ("icon-dm-yardimci-videolar", "admin.icon-dm-yardimci-videolar"),
+                                        ("icon-email", "admin.icon-email"),
+                                        ("icon-pin", "admin.icon-pin"),
+                                        ("icon-calendar", "admin.icon-calendar"),
+                                        ("icon-clock", "admin.icon-clock"),
+                                        ("icon-title-icon", "admin.icon-title-icon"),
+                                        ("icon-e-imza", "admin.icon-e-imza"),
+                                        ("icon-hsm", "admin.icon-hsm"),
+                                        ("icon-paperzero", "admin.icon-paperzero"),
+                                        ("icon-yazilim_kutuphanesi", "admin.icon-yazilim_kutuphanesi"),
+                                        ("icon-zaman_damgasi", "admin.icon-zaman_damgasi"),
+                                        ("icon-facebook", "admin.icon-facebook"),
+                                        ("icon-youtube", "admin.icon-youtube"),
+                                        ("icon-message", "admin.icon-message"),
+                                        ("icon-add-to-basket", "admin.icon-add-to-basket"),
+                                        ("icon-urun-eimza", "admin.icon-urun-eimza"),
+                                        ("icon-help-circle", "admin.icon-help-circle"),
+                                        ("icon-info", "admin.icon-info"),
+                                        ("icon-phone-call", "admin.icon-phone-call"),
+                                        ("icon-codesandbox", "admin.icon-codesandbox"),
+                                        ("icon-shopping-bag", "admin.icon-shopping-bag"),
+                                        ("icon-play", "admin.icon-play"),
+                                        ("icon-player", "admin.icon-player"),
+                                        ("icon-whatsapp", "admin.icon-whatsapp"),
+                                        ("icon-check", "admin.icon-check"),
+                                        ("icon-chevron-down", "admin.icon-chevron-down"),
+                                        ("icon-chevron-left", "admin.icon-chevron-left"),
+                                        ("icon-chevron-right", "admin.icon-chevron-right"),
+                                        ("icon-chevron-up", "admin.icon-chevron-up"),
+                                        ("icon-moon", "admin.icon-moon"),
+                                        ("icon-sun", "admin.icon-sun"),
+                                        ("icon-search", "admin.icon-search"),
+                                        ("icon-x", "admin.icon-x"),
+                                        ("icon-twitter", "admin.icon-twitter"),
+                                        ("icon-instagram", "admin.icon-instagram"),
+                                        ("icon-linkedin", "admin.icon-linkedin"),
+                                        ("icon-menu", "admin.icon-menu"),
+                                        ("icon-shopping-cart", "admin.icon-shopping-cart"),
+                                        ("icon-user", "admin.icon-user")
+                                        };
                                         }
                                         <option value="">@Localizer["admin.Seçiniz"]</option>
                                         @foreach (var option in options)
                                         {
-                                            if (Model.Blog?.Type == int.Parse(option.Value))
+                                            if (Model.SupportDesk?.Image == option.Value)
                                             {
                                                 <option value="@option.Value" selected> @Localizer[@option.Text]</option>
                                             }
@@ -71,34 +112,10 @@
                                         }
                                     </select>
                                 </div>
-                                <div class="mb-3 col-md-3 col-sm-10">
-                                    <label for="Image" class="form-label">@Localizer["admin.Blog Görseli"]</label>
-                                    <input class="form-control" type="file" name="Image" id="Image" />
-                                </div>
-                                <div class="mb-3 col-md-1 col-sm-2">
-                                    @if (Model.Blog?.Image != null)
-                                    {
-                                        <a href="/Images/Blog/@Model.Blog?.Image" target="_blank">
-                                            <img src="/Images/Blog/@Model.Blog?.Image" style="width: 100%" />
-                                        </a>
-                                    }
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="PublicationTime" class="form-label">@Localizer["admin.Yazı Tarihi"]</label>
-                                    <input class="form-control" type="date" name="PublicationTime" value="@Model.Blog?.PublicationTime?.ToString("yyyy-MM-dd")" id="demo-date-only" />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="ReadTime" class="form-label">@Localizer["admin.Tahmini Okunma Süresi"]</label>
-                                    <input class="form-control" type="number" name="ReadTime" id="ReadTime" value="@Model.Blog?.ReadTime" autocomplete="off" />
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
-                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Blog?.Sequence" autocomplete="off" required />
-                                </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.Blog?.Status == true ? "checked" : "") />
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.SupportDesk?.Status == true ? "checked" : "") />
                                         <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
                                     </div>
                                 </div>
@@ -108,7 +125,7 @@
                                     <div class="accordion card" id="dilBloklari">
                                         @for (int i = 0; i < Model.Languages.Count; i++)
                                         {
-                                            BlogLanguageInfo languageInfo = null;
+                                            SupportDeskLanguageInfo languageInfo = null;
                                             if (pageLanguageInfos != null)
                                             {
                                                 languageInfo = pageLanguageInfos.Where(x => x.LanguageId == Model.Languages[i].Id).FirstOrDefault();
@@ -122,31 +139,27 @@
                                                 <!-- classın içine "show" eklersen açık gelir ve yukarıdaki button içine aria-expanded="true" eklersen ok işareti çıkar ve button içinde collapsed clasını kaldırmalısın-->
                                                 <div id="collapse-@i" class="accordion-collapse collapse @(languageInfo?.Status == true ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#dilBloklari">
                                                     <div class="accordion-body">
-                                                        <input type="hidden" name="BlogLanguageInfos[@i].Id" id="BlogLanguageInfos[@i].Id" value="@languageInfo?.Id" />
-                                                        <input type="hidden" name="BlogLanguageInfos[@i].LanguageId" id="BlogLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
+                                                        <input type="hidden" name="SupportDeskLanguageInfos[@i].Id" id="SupportDeskLanguageInfos[@i].Id" value="@languageInfo?.Id" />
+                                                        <input type="hidden" name="SupportDeskLanguageInfos[@i].LanguageId" id="SupportDeskLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
                                                         <div class="row">
-                                                            <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Title" id="BlogLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" onkeyup="toSeo('BlogLanguageInfos[@i].Title','BlogLanguageInfos[@i].Slug')" />
+                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                                <label for="SupportDeskLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Baslık"]</label>
+                                                                <input class="form-control" type="text" name="SupportDeskLanguageInfos[@i].Title" id="SupportDeskLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" />
                                                             </div>
-                                                            <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Slug" class="form-label">@Localizer["admin.Slug"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Slug" id="BlogLanguageInfos[@i].Slug" value="@languageInfo?.Slug" autocomplete="off" />
+                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                                <label for="SupportDeskLanguageInfos[@i].SubTitle" class="form-label">@Localizer["admin.Alt Başlık"]</label>
+                                                                <input class="form-control" type="text" name="SupportDeskLanguageInfos[@i].SubTitle" id="SupportDeskLanguageInfos[@i].SubTitle" value="@languageInfo?.SubTitle" autocomplete="off" />
                                                             </div>
-                                                            <div class="mb-3 col-md-2 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                                <label for="SupportDeskLanguageInfos[@i].Url" class="form-label">@Localizer["admin.Url"]</label>
+                                                                <input class="form-control close-capitalized" type="text" name="SupportDeskLanguageInfos[@i].Url" id="SupportDeskLanguageInfos[@i].Url" value="@languageInfo?.Url" autocomplete="off" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-2 col-sm-2">
+                                                                <label for="SupportDeskLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
                                                                 <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input" name="BlogLanguageInfos[@i].Status" id="BlogLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
-                                                                    <label class="form-check-label" for="BlogLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
+                                                                    <input type="checkbox" class="form-check-input" name="SupportDeskLanguageInfos[@i].Status" id="SupportDeskLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="SupportDeskLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
                                                                 </div>
-                                                            </div>
-                                                            <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Description" class="form-label">@Localizer["admin.Kısa Açıklama"]</label>
-                                                                <input class="form-control" type="text" name="BlogLanguageInfos[@i].Description" id="BlogLanguageInfos[@i].Description" value="@languageInfo?.Description" autocomplete="off" />
-                                                            </div>
-                                                            <div class="mb-3 col-md-12 col-sm-12">
-                                                                <label for="BlogLanguageInfos[@i].Content" class="form-label">@Localizer["admin.İçerik"]</label>
-                                                                <textarea class="editorCk form-control" name="BlogLanguageInfos[@i].Content" id="BlogLanguageInfos[@i].Content">@languageInfo?.Content</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,8 +171,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <input type="hidden" name="Code" value="@Model.Blog?.Code">
-                            <input type="hidden" name="Id" value="@Model.Blog?.Id">
+                            <input type="hidden" name="Id" value="@Model.SupportDesk?.Id">
                             <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
                         </div>
                     </form>

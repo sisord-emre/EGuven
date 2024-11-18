@@ -1,0 +1,79 @@
+﻿@model SoftwareCategoryViewModel
+@{
+    ViewData["Title"] = "Yazılım Kategorileri";
+}
+<!-- Hero -->
+<!-- Hero Slider -->
+<div class="swiper hero-slider relative">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+        <!-- Slide1 -->
+        <div class="swiper-slide">
+            <div class="hero-slider-item animated-background bg-gradient-to-r from-primary-red via-red-800 to-red-900">
+                <div class="hero-slider-item-content !bg-transparent">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            E-Güven
+                        </div>
+                        <div class="hero-slider-item-title !text-5xl">
+                            E-İmza Yazılımları
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<section class="e-imza-yazilimlari mt-10" data-aos="fade-up">
+    <div class="container">
+        <div class="text-center text-primary-dark text-3xl font-bold max-w-screen-md mx-auto mt-14">
+            Lütfen Nitelikli Elektronik Sertifikanızın yüklü
+            olduğu cihazı seçiniz.
+        </div>
+        <div class="flex items-center justify-center flex-wrap gap-14 my-14" data-aos="fade-up">
+            @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
+            {
+                <a href="~/software/@item.Slug">
+                    <div class="rounded-5 relative bg-white shadow-md group">
+                        <div class="w-full z-10 relative pt-40 px-32 pb-8">
+                            <div class="flex flex-col justify-center items-center">
+                                <div class="text-primary-red text-xs group-hover:text-white">
+                                    @item.Title
+                                </div>
+                                <div class="text-primary-dark font-semibold text-lg group-hover:text-white">
+                                    @item.SubTitle
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-t-5 bg-primary-red h-20 w-full transition-all duration-150 ease-in group-hover:h-full absolute top-0 right-0 group-hover:rounded-5 z-0"></div>
+                        <div class="w-24 h-24 rounded-full shadow-md bg-white flex items-center justify-center flex-col text-4xl text-primary-dark absolute left-1/2 transform -translate-x-1/2 top-9">
+                            <img src="/Images/SoftwareCategory/@item.SoftwareCategory.Image" alt="@item.SubTitle" />
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

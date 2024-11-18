@@ -11,22 +11,22 @@ using SysBase.Core.Services;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
 
+
 namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class AnnouncementController : BaseController
+    public class SoftwareCategoryController : BaseController
     {
-        // AnnouncementController specific dependencies
-        protected readonly IService<Announcement> _service;
-        protected readonly IService<AnnouncementLanguageInfo> _pageLanguageInfoService;
+        // SoftwareCategoryController specific dependencies
+        protected readonly IService<SoftwareCategory> _service;
+        protected readonly IService<SoftwareCategoryLanguageInfo> _pageLanguageInfoService;
         protected readonly IService<Language> _languageService;
-        protected readonly ILogger<AnnouncementController> _logger;
+        protected readonly ILogger<SoftwareCategoryController> _logger;
 
-        public AnnouncementController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Announcement> service, IService<AnnouncementLanguageInfo> pageLanguageInfoService,
-                              IService<Language> languageService, ILogger<AnnouncementController> logger)
-            : base(localizer, userManager)
+        public SoftwareCategoryController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<SoftwareCategory> service, IService<SoftwareCategoryLanguageInfo> pageLanguageInfoService,
+                              IService<Language> languageService, ILogger<SoftwareCategoryController> logger) : base(localizer, userManager)
         {
             _service = service;
             _pageLanguageInfoService = pageLanguageInfoService;
@@ -43,22 +43,22 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Announcement model = null;
+            SoftwareCategory model = null;
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.AnnouncementLanguageInfos = await _pageLanguageInfoService.Where(x => x.AnnouncementId == model.Id).ToListAsync();
+                model.SoftwareCategoryLanguageInfos = await _pageLanguageInfoService.Where(x => x.SoftwareCategoryId == model.Id).ToListAsync();
             }
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new AnnouncementAddViewModel { MenuPermission = menuPermission, Announcement = model, Languages = await _languageService.GetAllAsync() });
+            return View(new SoftwareCategoryAddViewModel { MenuPermission = menuPermission, SoftwareCategory = model, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Announcement model)
+        public async Task<IActionResult> Add(SoftwareCategory model, IFormFile Image)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -67,7 +67,17 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Announcement isControl;
+            if (Image != null && Image.Length > 0)
+            {
+                model.Image = await functions.ImageUpload(Image, "Images/SoftwareCategory", Guid.NewGuid().ToString("N"));
+            }
+            else if (model.Id != 0)
+            {
+                var existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                model.Image = existingBlog.Image;  // Eski resim tekrar set ediliyor
+            }
+
+            SoftwareCategory isControl;
             if (model.Id != 0)  // Güncelleme işlemi
             {
                 model.UpdatedDate = DateTime.Now;
@@ -104,7 +114,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
 
-            return View(new AnnouncementAddViewModel { MenuPermission = menuPermission, Announcement = model, Languages = await _languageService.GetAllAsync() });
+            return View(new SoftwareCategoryAddViewModel { MenuPermission = menuPermission, SoftwareCategory = model, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -122,7 +132,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new AnnouncementListViewModel { MenuPermission = menuPermission, AnnouncementLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Announcement).ToListAsync() });
+            return View(new SoftwareCategoryListViewModel { MenuPermission = menuPermission, SoftwareCategoryLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.SoftwareCategory).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -131,7 +141,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.Announcement.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.Announcement).FirstOrDefaultAsync());
+                return View(await _pageLanguageInfoService.Where(x => x.SoftwareCategory.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.SoftwareCategory).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -155,7 +165,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                Announcement item = await _service.GetByIdAsync(Int32.Parse(Id));
+                SoftwareCategory item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);

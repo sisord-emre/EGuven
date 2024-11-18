@@ -48,6 +48,12 @@ namespace SysBase.Repository
         public DbSet<SectoralReference> SectoralReferences { get; set; }
         public DbSet<SectoralReferenceSector> SectoralReferenceSectors { get; set; }
         public DbSet<Form> Forms { get; set; }
+        public DbSet<Software> Softwares { get; set; }
+        public DbSet<SoftwareLanguageInfo> SoftwareLanguageInfos { get; set; }
+        public DbSet<SupportDesk> SupportDesks { get; set; }
+        public DbSet<SupportDeskLanguageInfo> SupportDeskLanguageInfos { get; set; }
+        public DbSet<SoftwareCategory> SoftwareCategories { get; set; }
+        public DbSet<SoftwareCategoryLanguageInfo> SoftwareCategoryLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
