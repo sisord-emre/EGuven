@@ -20,10 +20,11 @@ namespace SysBase.Web.Controllers
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
         protected readonly IService<SoftwareLanguageInfo> _softwareLanguageInfoService;
+        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareCategoryLanguageInfoService;
 
         public SoftwareController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
             ILogger<SoftwareController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<SoftwareLanguageInfo> softwareLanguageInfoService)
+            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<SoftwareLanguageInfo> softwareLanguageInfoService, IService<SoftwareCategoryLanguageInfo> softwareCategoryLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -32,6 +33,7 @@ namespace SysBase.Web.Controllers
             _quickMenuService = quickMenuService;
             _languageService = languageService;
             _softwareLanguageInfoService = softwareLanguageInfoService;
+            _softwareCategoryLanguageInfoService = softwareCategoryLanguageInfoService;
         }
 
         public async Task<IActionResult> Index(string slug)
@@ -46,6 +48,7 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            SoftwareCategoryLanguageInfo softwareCategoryLanguageInfo = _softwareCategoryLanguageInfoService.Where(x => x.Slug == slug).FirstOrDefault();
 
             SoftwareViewModel model = new SoftwareViewModel
             {
@@ -57,6 +60,8 @@ namespace SysBase.Web.Controllers
                 SoftwareLanguageInfos = await _softwareLanguageInfoService
                 .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Software.Status)
                 .Include(x => x.Software)
+                .ThenInclude(x => x.SoftwareCategory)
+                .Where(x => x.Software.SoftwareCategoryId == softwareCategoryLanguageInfo.SoftwareCategoryId)
                 .OrderBy(x => x.Software.Sequence)
                 .ToListAsync(),
             };

@@ -24,4 +24,19 @@
     .sr-item-shadow {
         box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
     }
+
+    .product-item {
+        @apply bg-white rounded-5 border border-transparent transition-colors duration-150 ease-in cursor-pointer;
+        /* selected */
+    }
+    .product-item-selected {
+        @apply border-primary-red !important;
+
+        .product-item-price {
+            @apply bg-primary-red text-white !important;
+            .form-product-old-price-selected {
+                @apply text-white !important;
+            }
+        }
+    }
 }

@@ -7,7 +7,7 @@
 }
 
 .tab-button {
-    @apply text-tab-inactive;
+    @apply text-tab-inactive transition-colors duration-150 ease-in whitespace-nowrap;
 }
 
 .tab-button:hover {
@@ -52,6 +52,21 @@
         @apply lg:flex-col lg:items-start lg:justify-start;
     }
     .tab-button {
-        @apply w-full text-left border-b border-tab-inactive text-primary-dark lg:px-0 px-4 lg:text-left text-center;
+        @apply w-full text-left border-b border-tab-inactive text-primary-dark lg:px-0 px-4;
     }
+}
+
+.fatura-tab {
+    @apply flex items-center justify-between gap-6;
+    button {
+        @apply w-full border border-white bg-white text-primary-dark p-4 font-extrabold text-center rounded-5 hover:bg-form-product-old-price hover:text-white shadow-sr-item text-xs;
+
+        &.active {
+            @apply border-form-product-old-price bg-form-product-old-price text-white shadow-sr-item;
+        }
+    }
+}
+
+.form-tab .tab-buttons {
+    @apply overflow-hidden xl:justify-center justify-start overflow-x-auto;
 }
