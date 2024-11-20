@@ -1,0 +1,45 @@
+.btn {
+    @apply inline-flex items-center justify-center gap-2.5
+    font-bold text-sm
+    rounded-5  
+    px-4 py-2.5  
+    focus:outline-none
+    outline-none active:outline-none
+    transition-all duration-150 ease-in
+    w-max
+    whitespace-nowrap
+    shadow-md;
+}
+
+.btn-common {
+    @apply bg-white hover:bg-primary-red
+    text-primary-dark hover:text-white;
+}
+
+.btn-theme-switch {
+    @apply shadow-none;
+}
+
+.btn-primary-red {
+    @apply bg-primary-red text-white hover:bg-white hover:text-primary-red;
+}
+
+.btn-blog-read-more {
+    @apply bg-primary-red text-white border border-transparent hover:bg-white hover:text-primary-red hover:border-primary-red shadow-md shadow-black/25;
+}
+
+.btn-primary-red-outline {
+    @apply bg-transparent text-primary-red border border-primary-red hover:bg-primary-red hover:text-white shadow-none;
+}
+
+.btn-outline {
+    @apply bg-transparent text-primary-dark border border-primary-dark hover:bg-primary-red hover:border-primary-red hover:text-white shadow-none;
+}
+
+.btn-link {
+    @apply text-primary-dark hover:text-primary-red bg-transparent shadow-none font-normal hover:bg-transparent;
+}
+
+.footer .btn-theme-switch {
+    @apply bg-primary-dark text-white shadow-none;
+}
