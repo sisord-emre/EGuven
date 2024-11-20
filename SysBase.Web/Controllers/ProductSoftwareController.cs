@@ -11,18 +11,18 @@ using System.Globalization;
 
 namespace SysBase.Web.Controllers
 {
-    public class SoftwareCategoryController : BaseController
+    public class ProductSoftwareController : BaseController
     {
-        private readonly ILogger<SoftwareCategoryController> _logger;
+        private readonly ILogger<ProductSoftwareController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareLanguageInfoService;
+        protected readonly IService<ProductSoftwareLanguageInfo> productSoftware;
 
-        public SoftwareCategoryController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<SoftwareCategoryController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<SoftwareCategoryLanguageInfo> softwareLanguageInfoService)
+        public ProductSoftwareController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+            ILogger<ProductSoftwareController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<ProductSoftwareLanguageInfo> softwareLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -30,7 +30,7 @@ namespace SysBase.Web.Controllers
             _footerMenuService = footerMenuService;
             _quickMenuService = quickMenuService;
             _languageService = languageService;
-            _softwareLanguageInfoService = softwareLanguageInfoService;
+            productSoftware = softwareLanguageInfoService;
         }
 
         public async Task<IActionResult> Index()
@@ -46,17 +46,17 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
-            SoftwareCategoryViewModel model = new SoftwareCategoryViewModel
+            ProductSoftwareViewModel model = new ProductSoftwareViewModel
             {
                 Config = uiLayoutViewModel.Config,
                 SiteMenus = uiLayoutViewModel.SiteMenus,
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
-                SoftwareCategoryLanguageInfos = await _softwareLanguageInfoService
-                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.SoftwareCategory.Status)
-                .Include(x => x.SoftwareCategory)
-                .OrderBy(x => x.SoftwareCategory.Sequence)
+                ProductSoftwareLanguageInfos = await productSoftware
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.ProductSoftware.Status)
+                .Include(x => x.ProductSoftware)
+                .OrderBy(x => x.ProductSoftware.Sequence)
                 .ToListAsync(),
             };
 

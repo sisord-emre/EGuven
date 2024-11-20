@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "";
     @model Config
+
 }
 <!doctype html>
 <html lang="en">
@@ -59,6 +60,9 @@
                             <div class="mb-3">
                                 <input type="password" class="form-control" id="PasswordHash" name="PasswordHash" placeholder="Password" />
                             </div>
+                            <div class="text-center">
+                                <div class="cf-turnstile" data-sitekey="@Model.RecaptchaPublicKey" style="transform:scale(0.77);-webkit-transform:scale(0.77);"></div>
+                            </div>
                             @if (TempData["message"] != null)
                             {
                                 <span style="color:red">@TempData["message"]</span>
@@ -81,6 +85,7 @@
     <script src="/AdminAssets/js/fonts/custom-font.js"></script>
     <script src="/AdminAssets/js/pcoded.js"></script>
     <script src="/AdminAssets/js/plugins/feather.min.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
         layout_change('light');
 

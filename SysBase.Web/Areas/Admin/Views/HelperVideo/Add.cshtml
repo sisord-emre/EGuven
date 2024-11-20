@@ -3,7 +3,7 @@
     string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
     string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
     string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
-    IEnumerable<SoftwareLanguageInfo> pageLanguageInfos = Model.Software?.SoftwareLanguageInfos;
+    IEnumerable<HelperVideoLanguageInfo> pageLanguageInfos = Model.HelperVideo?.HelperVideoLanguageInfos;
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -45,28 +45,28 @@
                             <div class="row">
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
-                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Software?.Sequence" autocomplete="off" required />
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.HelperVideo?.Sequence" autocomplete="off" required />
                                 </div>
-                                <div class="mb-3 col-md-3 col-sm-12">
-                                    <label for="SoftwareCategoryId" class="form-label">@Localizer["admin.Yazılım Kategorileri"]</label>
-                                    <select class="select2 form-control block" name="SoftwareCategoryId" id="SoftwareCategoryId" required>
-                                        @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
-                                        {
-                                            if (item.Id == Model.Software?.SoftwareCategoryId)
-                                            {
-                                                <option value="@item.Id" selected>@item.SubTitle</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.Id">@item.SubTitle</option>
-                                            }
-                                        }
-                                    </select>
+                                <div class="mb-3 col-md-3 col-sm-10">
+                                    <label for="Image" class="form-label">@Localizer["admin.Görsel"]</label> <small>890x520px</small>
+                                    <input class="form-control" type="file" name="Image" id="Image" />
+                                </div>
+                                <div class="mb-3 col-md-1 col-sm-2">
+                                    @if (Model.HelperVideo?.Image != null)
+                                    {
+                                        <a href="/Images/HelperVideo/@Model.HelperVideo?.Image" target="_blank">
+                                            <img src="/Images/HelperVideo/@Model.HelperVideo?.Image" style="width: 100%" />
+                                        </a>
+                                    }
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Video" class="form-label">@Localizer["admin.Video"]</label> <small>@Localizer["admin.Youtube Video Url Yapıştırınız"]</small>
+                                    <input class="form-control" type="url" name="Video" id="Video" value="@Model.HelperVideo?.Video" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.Software?.Status == true ? "checked" : "") />
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.HelperVideo?.Status == true ? "checked" : "") />
                                         <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                     <div class="accordion card" id="dilBloklari">
                                         @for (int i = 0; i < Model.Languages.Count; i++)
                                         {
-                                            SoftwareLanguageInfo languageInfo = null;
+                                            HelperVideoLanguageInfo languageInfo = null;
                                             if (pageLanguageInfos != null)
                                             {
                                                 languageInfo = pageLanguageInfos.Where(x => x.LanguageId == Model.Languages[i].Id).FirstOrDefault();
@@ -90,54 +90,23 @@
                                                 <!-- classın içine "show" eklersen açık gelir ve yukarıdaki button içine aria-expanded="true" eklersen ok işareti çıkar ve button içinde collapsed clasını kaldırmalısın-->
                                                 <div id="collapse-@i" class="accordion-collapse collapse @(languageInfo?.Status == true ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#dilBloklari">
                                                     <div class="accordion-body">
-                                                        <input type="hidden" name="SoftwareLanguageInfos[@i].Id" id="SoftwareLanguageInfos[@i].Id" value="@languageInfo?.Id" />
-                                                        <input type="hidden" name="SoftwareLanguageInfos[@i].LanguageId" id="SoftwareLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
+                                                        <input type="hidden" name="HelperVideoLanguageInfos[@i].Id" id="HelperVideoLanguageInfos[@i].Id" value="@languageInfo?.Id" />
+                                                        <input type="hidden" name="HelperVideoLanguageInfos[@i].LanguageId" id="HelperVideoLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
                                                         <div class="row">
                                                             <div class="mb-3 col-md-5 col-sm-12">
-                                                                <label for="SoftwareLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
-                                                                <input class="form-control" type="text" name="SoftwareLanguageInfos[@i].Title" id="SoftwareLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" />
+                                                                <label for="HelperVideoLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
+                                                                <input class="form-control" type="text" name="HelperVideoLanguageInfos[@i].Title" id="HelperVideoLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" onkeyup="toSeo('HelperVideoLanguageInfos[@i].Title','HelperVideoLanguageInfos[@i].Slug')" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="HelperVideoLanguageInfos[@i].Slug" class="form-label">@Localizer["admin.Slug"]</label>
+                                                                <input class="form-control" type="text" name="HelperVideoLanguageInfos[@i].Slug" id="HelperVideoLanguageInfos[@i].Slug" value="@languageInfo?.Slug" autocomplete="off" />
                                                             </div>
                                                             <div class="mb-3 col-md-2 col-sm-12">
-                                                                <label for="SoftwareLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                                                <label for="HelperVideoLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
                                                                 <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input" name="SoftwareLanguageInfos[@i].Status" id="SoftwareLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
-                                                                    <label class="form-check-label" for="SoftwareLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
+                                                                    <input type="checkbox" class="form-check-input" name="HelperVideoLanguageInfos[@i].Status" id="HelperVideoLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="HelperVideoLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
                                                                 </div>
-                                                            </div>
-                                                            <div class="mb-3 col-md-4 col-sm-12">
-                                                                <label for="SoftwareLanguageInfos[@i].Type" class="form-label">@Localizer["admin.Type"]</label>
-                                                                <select class=" form-control block" name="SoftwareLanguageInfos[@i].Type" id="SoftwareLanguageInfos[@i].Type" onchange="TipSecim('@i');" style="width:100%!important">
-                                                                    @{
-                                                                        var options = new List<(string Value, string Text)> { ("1", "admin.Url"), ("2", "admin.File Upload") };
-                                                                    }
-                                                                    @foreach (var option in options)
-                                                                    {
-                                                                        if (languageInfo?.Type == int.Parse(option.Value))
-                                                                        {
-                                                                            <option value="@option.Value" selected> @Localizer[@option.Text]</option>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <option value="@option.Value">@Localizer[@option.Text]</option>
-                                                                        }
-                                                                    }
-                                                                </select>
-                                                            </div>
-                                                            <div class="mb-3 col-md-4 col-sm-12" id="Url-@i">
-                                                                <label for="FileUrl" class="form-label">@Localizer["admin.Url"]</label>
-                                                                <input class="form-control close-capitalized" type="text" name="SoftwareLanguageInfos[@i].FileUrl" id="SoftwareLanguageInfos[@i].FileUrl" value="@languageInfo?.FileUrl" autocomplete="off" />
-                                                            </div>
-                                                            <div class="mb-3 col-md-4 col-sm-12" id="File-@i">
-                                                                <label for="SoftwareLanguageInfos[@i].File" class="form-label">@Localizer["admin.Dosyası"] (".pdf", ".xls", ".xlsx", ".doc", ".docx", ".txt")</label>
-                                                                <input class="form-control" type="file" name="SoftwareLanguageInfos[@i].File" id="SoftwareLanguageInfos[@i].File" />
-                                                            </div>
-                                                            <div class="mb-3 col-md-1 col-sm-2" id="FileGosterim-@i">
-                                                                @if (languageInfo?.File != null)
-                                                                {
-                                                                    <a href="/Images/Software/@languageInfo?.File" target="_blank">
-                                                                        @Localizer["admin.File"]
-                                                                    </a>
-                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -154,8 +123,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <input type="hidden" name="Code" value="@Model.Software?.Code">
-                            <input type="hidden" name="Id" value="@Model.Software?.Id">
+                            <input type="hidden" name="Id" value="@Model.HelperVideo?.Id">
                             <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
                         </div>
                     </form>
@@ -169,7 +137,7 @@
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
 <script type="text/javascript">
     function TipSecim(id) {
-        var e = document.getElementById("SoftwareLanguageInfos[" + id + "].Type");
+        var e = document.getElementById("HelperVideoLanguageInfos[" + id + "].Type");
         console.log("cdc");
         if (e.value == 2) {
             document.getElementById("File-" + id).style.display = "block";

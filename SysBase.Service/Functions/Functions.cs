@@ -1,10 +1,13 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SysBase.Core.Models;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -14,6 +17,36 @@ namespace SysBase.Service.Functions
     {
         public Functions()
         {
+        }
+
+        public async Task<string> CloudflareTurnstile(string token)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var content = new StringContent($"secret=1x0000000000000000000000000000000AA&response={token}", Encoding.UTF8, "application/x-www-form-urlencoded");
+                var response = await httpClient.PostAsync("https://challenges.cloudflare.com/turnstile/v0/siteverify", content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return "Cloudflare Not Response";
+                }
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                JObject responseObj = JObject.Parse(jsonResponse);
+                if (responseObj["success"] != null && responseObj["success"].Value<bool>() == true)
+                {
+                    return "1";
+                }
+                else
+                {
+                    if (responseObj["error-codes"] != null && responseObj["error-codes"].HasValues)
+                    {
+                        return responseObj["error-codes"].First.ToString(); // İlk hata kodunu döndür
+                    }
+                    else
+                    {
+                        return "Bilinmeyen bir hata oluştu."; // Hata kodu yoksa
+                    }
+                }
+            }
         }
 
         public async Task<string> ImageUpload(IFormFile Image, string path, string title)
@@ -118,6 +151,10 @@ namespace SysBase.Service.Functions
 
         public bool MenuPermControl(MenuPermission menuPermission, string menuType)
         {
+            if (menuPermission == null)
+            {
+                return false;
+            }
             if (menuType == "List")
             {
                 return menuPermission.List;

@@ -9,20 +9,21 @@ using SysBase.Web.ViewModels;
 using System.Diagnostics;
 using System.Globalization;
 
+
 namespace SysBase.Web.Controllers
 {
-    public class SoftwareCategoryController : BaseController
+    public class HelperVideoController : BaseController
     {
-        private readonly ILogger<SoftwareCategoryController> _logger;
+        private readonly ILogger<HelperVideoController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareLanguageInfoService;
+        protected readonly IService<HelperVideoLanguageInfo> _helperVideoLanguageInfoService;
 
-        public SoftwareCategoryController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<SoftwareCategoryController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<SoftwareCategoryLanguageInfo> softwareLanguageInfoService)
+        public HelperVideoController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+            ILogger<HelperVideoController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<HelperVideoLanguageInfo> helperVideoLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -30,7 +31,7 @@ namespace SysBase.Web.Controllers
             _footerMenuService = footerMenuService;
             _quickMenuService = quickMenuService;
             _languageService = languageService;
-            _softwareLanguageInfoService = softwareLanguageInfoService;
+            _helperVideoLanguageInfoService = helperVideoLanguageInfoService;
         }
 
         public async Task<IActionResult> Index()
@@ -46,17 +47,17 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
-            SoftwareCategoryViewModel model = new SoftwareCategoryViewModel
+            HelperVideoViewModel model = new HelperVideoViewModel
             {
                 Config = uiLayoutViewModel.Config,
                 SiteMenus = uiLayoutViewModel.SiteMenus,
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
-                SoftwareCategoryLanguageInfos = await _softwareLanguageInfoService
-                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.SoftwareCategory.Status)
-                .Include(x => x.SoftwareCategory)
-                .OrderBy(x => x.SoftwareCategory.Sequence)
+                HelperVideoLanguageInfos = await _helperVideoLanguageInfoService
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.HelperVideo.Status)
+                .Include(x => x.HelperVideo)
+                .OrderBy(x => x.HelperVideo.Sequence)
                 .ToListAsync(),
             };
 

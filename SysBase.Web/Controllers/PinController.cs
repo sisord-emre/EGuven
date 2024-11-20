@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using Azure;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
+using SysBase.Service.Functions;
 using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
 using System.Diagnostics;
@@ -17,6 +19,7 @@ namespace SysBase.Web.Controllers
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
+        protected Functions functions = new Functions();
 
         public PinController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
            ILogger<CorporateController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
@@ -47,11 +50,18 @@ namespace SysBase.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ResultJson> Kayit(string tcpasport, string tel,string type)
+        public async Task<ResultJson> Kayit(string tcpasport, string tel,string type, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
         {
             ResultJson resultJson = new ResultJson();
             resultJson.status = "error";
             resultJson.message = "Kayıt İşlemi Sırasında Hata Oluştu.";
+
+            string resCT = await functions.CloudflareTurnstile(cfTurnstileResponse);
+            if (resCT!="1")
+            {
+                resultJson.message = resCT;
+                return resultJson;
+            }
 
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "http://192.168.127.25:5558/Web2.svc");

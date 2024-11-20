@@ -595,10 +595,13 @@ export const videoPlayerShow = () => {
     const videoPlayer = document.getElementById('main-video-player')
     const videoItems = document.querySelectorAll('.video-item')
     const videoPlayerIframe = document.getElementById('main-video-iframe')
+    const videoModalTitle = document.getElementById('video-modal-title')
 
     videoItems.forEach((item) => {
         item.addEventListener('click', () => {
-            const videoId = item.getAttribute('data-video-id')
+          const videoId = item.getAttribute('data-video-id')
+          const videoTitle = item.getAttribute('data-title')
+          videoModalTitle.innerText = videoTitle
             if (videoPlayer && videoPlayerIframe && videoId) {
                 videoPlayer.classList.remove('hidden')
                 videoPlayerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`

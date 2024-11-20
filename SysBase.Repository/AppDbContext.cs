@@ -54,6 +54,10 @@ namespace SysBase.Repository
         public DbSet<SupportDeskLanguageInfo> SupportDeskLanguageInfos { get; set; }
         public DbSet<SoftwareCategory> SoftwareCategories { get; set; }
         public DbSet<SoftwareCategoryLanguageInfo> SoftwareCategoryLanguageInfos { get; set; }
+        public DbSet<HelperVideo> HelperVideos { get; set; }
+        public DbSet<HelperVideoLanguageInfo> HelperVideoLanguageInfos { get; set; }
+        public DbSet<ProductSoftware> ProductSoftwares { get; set; }
+        public DbSet<ProductSoftwareLanguageInfo> ProductSoftwareLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

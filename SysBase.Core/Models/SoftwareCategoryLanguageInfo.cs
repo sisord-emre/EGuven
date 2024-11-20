@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SysBase.Core.Models
+﻿namespace SysBase.Core.Models
 {
     public class SoftwareCategoryLanguageInfo : BaseEntityMultiLanguage
     {

@@ -16,24 +16,22 @@ namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class SoftwareController : BaseController
+    public class HelperVideoController : BaseController
     {
-        // SoftwareController specific dependencies
-        protected readonly IService<Software> _service;
-        protected readonly IService<SoftwareLanguageInfo> _pageLanguageInfoService;
+        // HelperVideoController specific dependencies
+        protected readonly IService<HelperVideo> _service;
+        protected readonly IService<HelperVideoLanguageInfo> _pageLanguageInfoService;
         protected readonly IService<Language> _languageService;
-        protected readonly ILogger<SoftwareController> _logger;
-        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareCategoryLanguageInfoService;
+        protected readonly ILogger<HelperVideoController> _logger;
 
-        public SoftwareController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Software> service, IService<SoftwareLanguageInfo> pageLanguageInfoService,
-                              IService<Language> languageService, ILogger<SoftwareController> logger, IService<SoftwareCategoryLanguageInfo> softwareCategoryLanguageInfoService) : base(localizer, userManager)
+        public HelperVideoController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<HelperVideo> service, IService<HelperVideoLanguageInfo> pageLanguageInfoService,
+                              IService<Language> languageService, ILogger<HelperVideoController> logger) : base(localizer, userManager)
         {
             _service = service;
             _pageLanguageInfoService = pageLanguageInfoService;
             _languageService = languageService;
             _logger = logger;
-            _softwareCategoryLanguageInfoService = softwareCategoryLanguageInfoService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -45,11 +43,11 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Software model = null;
+            HelperVideo model = null;
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.SoftwareLanguageInfos = await _pageLanguageInfoService.Where(x => x.SoftwareId == model.Id).ToListAsync();
+                model.HelperVideoLanguageInfos = await _pageLanguageInfoService.Where(x => x.HelperVideoId == model.Id).ToListAsync();
             }
 
             //log işleme alanı     
@@ -59,17 +57,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
             var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
             var langCode = rqf.RequestCulture.Culture;
 
-            return View(new SoftwareAddViewModel
+            return View(new HelperVideoAddViewModel
             {
                 MenuPermission = menuPermission,
-                Software = model,
+                HelperVideo = model,
                 Languages = await _languageService.GetAllAsync(),
-                SoftwareCategoryLanguageInfos = await _softwareCategoryLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Language).ToListAsync()
             });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Software model)
+        public async Task<IActionResult> Add(HelperVideo model, IFormFile Image)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -78,18 +75,17 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            var uploadedFiles = HttpContext.Request.Form.Files;
-            for (int i = 0; i < model.SoftwareLanguageInfos.Count; i++)
+            if (Image != null && Image.Length > 0)
             {
-                var file = uploadedFiles.FirstOrDefault(f => f.Name == $"SoftwareLanguageInfos[{i}].File");
-                if (file != null && file.Length > 0)
-                {
-                    string[] allowedExtensions = { ".pdf", ".xls", ".xlsx", ".doc", ".docx", ".txt" };
-                    model.SoftwareLanguageInfos[i].File = await functions.FileUpload(file, "Images/Software", Guid.NewGuid().ToString("N"), allowedExtensions);
-                }
+                model.Image = await functions.ImageUpload(Image, "Images/HelperVideo", Guid.NewGuid().ToString("N"));
+            }
+            else if (model.Id != 0)
+            {
+                var existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                model.Image = existingBlog.Image;  // Eski resim tekrar set ediliyor
             }
 
-            Software isControl;
+            HelperVideo isControl;
             if (model.Id != 0)  // Güncelleme işlemi
             {
                 model.UpdatedDate = DateTime.Now;
@@ -105,7 +101,6 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
             else  // Ekleme işlemi
             {
-                model.Code = Guid.NewGuid().ToString("N");
                 isControl = await _service.AddAsync(model);
 
                 //log işleme alanı
@@ -127,12 +122,11 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
 
-            return View(new SoftwareAddViewModel
+            return View(new HelperVideoAddViewModel
             {
                 MenuPermission = menuPermission,
-                Software = model,
+                HelperVideo = model,
                 Languages = await _languageService.GetAllAsync(),
-                SoftwareCategoryLanguageInfos = await _softwareCategoryLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Language).ToListAsync()
             });
         }
 
@@ -151,7 +145,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new SoftwareListViewModel { MenuPermission = menuPermission, SoftwareLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Software).ToListAsync() });
+            return View(new HelperVideoListViewModel { MenuPermission = menuPermission, HelperVideoLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HelperVideo).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -160,7 +154,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.Software.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.Software).FirstOrDefaultAsync());
+                return View(await _pageLanguageInfoService.Where(x => x.HelperVideo.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.HelperVideo).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -184,7 +178,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                Software item = await _service.GetByIdAsync(Int32.Parse(Id));
+                HelperVideo item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);

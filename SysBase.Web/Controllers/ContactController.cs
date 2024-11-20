@@ -49,11 +49,18 @@ namespace SysBase.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ResultJson> Kayit(Form model, string soyad)
+        public async Task<ResultJson> Kayit(Form model, string soyad, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
         {
             ResultJson resultJson = new ResultJson();
             resultJson.status = "error";
             resultJson.message = "Kayıt İşlemi Sırasında Hata Oluştu.";
+
+            string resCT = await functions.CloudflareTurnstile(cfTurnstileResponse);
+            if (resCT != "1")
+            {
+                resultJson.message = resCT;
+                return resultJson;
+            }
 
             model.Name = model.Name + " " + soyad;
             model.Status = false;

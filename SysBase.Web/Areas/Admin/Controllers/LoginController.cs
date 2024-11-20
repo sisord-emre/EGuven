@@ -32,8 +32,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
             return View(await _service.GetByIdAsync(1));
         }
         [HttpPost]
-        public async Task<IActionResult> Index(AppUser model)
+        public async Task<IActionResult> Index(AppUser model, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
         {
+            string resCT = await functions.CloudflareTurnstile(cfTurnstileResponse);
+            if (resCT != "1")
+            {
+                ModelState.AddModelError(string.Empty, resCT);
+                TempData["message"] = resCT;
+                return View(model);
+            }
+
             var hasUser = await _userManager.FindByEmailAsync(model.Email);
             if (hasUser == null)
             {

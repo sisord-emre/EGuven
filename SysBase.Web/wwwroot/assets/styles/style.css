@@ -4492,6 +4492,10 @@ select{
   height:100vh
 }
 
+.h-\[315px\]{
+  height:315px
+}
+
 .max-h-14{
   max-height:3.5rem
 }
@@ -6394,6 +6398,10 @@ select{
 
   .md\:block{
     display:block
+  }
+
+  .md\:h-\[600px\]{
+    height:600px
   }
 
   .md\:max-h-\[600px\]{
