@@ -11,18 +11,18 @@ using System.Globalization;
 
 namespace SysBase.Web.Controllers
 {
-    public class SoftwareCategoryController : BaseController
+    public class SoftwareCategoryDetailController : BaseController
     {
-        protected readonly ILogger<SoftwareCategoryController> _logger;
+        protected readonly ILogger<SoftwareCategoryDetailController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareLanguageInfoService;
+        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareCategoryLanguageInfoService;
 
-        public SoftwareCategoryController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<SoftwareCategoryController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<SoftwareCategoryLanguageInfo> softwareLanguageInfoService)
+        public SoftwareCategoryDetailController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
+            ILogger<SoftwareCategoryDetailController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<SoftwareCategoryLanguageInfo> softwareCategoryLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -30,10 +30,10 @@ namespace SysBase.Web.Controllers
             _footerMenuService = footerMenuService;
             _quickMenuService = quickMenuService;
             _languageService = languageService;
-            _softwareLanguageInfoService = softwareLanguageInfoService;
+            _softwareCategoryLanguageInfoService = softwareCategoryLanguageInfoService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Slug)
         {
             var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
             var langCode = rqf.RequestCulture.Culture;
@@ -46,18 +46,24 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
-            SoftwareCategoryViewModel model = new SoftwareCategoryViewModel
+            SoftwareCategoryDetailViewModel model = new SoftwareCategoryDetailViewModel
             {
                 Config = uiLayoutViewModel.Config,
                 SiteMenus = uiLayoutViewModel.SiteMenus,
                 FooterMenus = uiLayoutViewModel.FooterMenus,
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
-                SoftwareCategoryLanguageInfos = await _softwareLanguageInfoService
-                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.SoftwareCategory.Status)
-                .Include(x => x.SoftwareCategory)
-                .OrderBy(x => x.SoftwareCategory.Sequence)
-                .ToListAsync(),
+                SoftwareCategoryLanguageInfo = await _softwareCategoryLanguageInfoService
+                    .Where(x => x.Language.Code == langCode.ToString() && x.Status && x.SoftwareCategory.Status && x.SoftwareCategory.ScreenShow)
+                    .Include(x => x.SoftwareCategory)
+                    .Include(x => x.SoftwareCategoryLanguageInfoContents)
+                    .FirstOrDefaultAsync(),
+
+                SoftwareCategoryLanguageInfos = await _softwareCategoryLanguageInfoService
+                    .Where(x => x.Language.Code == langCode.ToString() && x.Status && x.SoftwareCategory.Status && x.SoftwareCategory.ScreenShow)
+                    .Include(x => x.SoftwareCategory)
+                    .Include(x => x.SoftwareCategoryLanguageInfoContents)
+                    .ToListAsync()
             };
 
             return View(model);

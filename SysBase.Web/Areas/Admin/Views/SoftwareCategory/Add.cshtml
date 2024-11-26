@@ -59,6 +59,29 @@
                                         </a>
                                     }
                                 </div>
+                                <div class="mb-3 col-md-3 col-sm-10">
+                                    <label for="ContentImage" class="form-label">@Localizer["admin.Detay Görsel"] (400x365px)</label>
+                                    <input class="form-control" type="file" name="ContentImage" id="ContentImage" />
+                                </div>
+                                <div class="mb-3 col-md-1 col-sm-2">
+                                    @if (Model.SoftwareCategory?.ContentImage != null)
+                                    {
+                                        <a href="/Images/SoftwareCategory/@Model.SoftwareCategory?.ContentImage" target="_blank">
+                                            <img src="/Images/SoftwareCategory/@Model.SoftwareCategory?.ContentImage" style="width: 100%" />
+                                        </a>
+                                    }
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Video" class="form-label">@Localizer["admin.Video"]</label>
+                                    <input class="form-control" type="text" name="Video" id="Video" value="@Model.SoftwareCategory?.Video" autocomplete="off" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="ScreenShow" class="form-label">@Localizer["admin.Tab Menu Gösterimi"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="ScreenShow" id="ScreenShow" value="True" @(Model.SoftwareCategory?.ScreenShow == true ? "checked" : "") />
+                                        <label class="form-check-label" for="ScreenShow">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
@@ -89,25 +112,27 @@
                                                         <input type="hidden" name="SoftwareCategoryLanguageInfos[@i].Id" id="SoftwareCategoryLanguageInfos[@i].Id" value="@languageInfo?.Id" />
                                                         <input type="hidden" name="SoftwareCategoryLanguageInfos[@i].LanguageId" id="SoftwareCategoryLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
                                                         <div class="row">
-                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                            <div class="mb-3 col-md-6 col-sm-6">
                                                                 <label for="SoftwareCategoryLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Baslık"]</label>
                                                                 <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].Title" id="SoftwareCategoryLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" />
                                                             </div>
-                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                            <div class="mb-3 col-md-6 col-sm-6">
                                                                 <label for="SoftwareCategoryLanguageInfos[@i].SubTitle" class="form-label">@Localizer["admin.Alt Başlık"]</label>
-                                                                <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].SubTitle" id="SoftwareCategoryLanguageInfos[@i].SubTitle" value="@languageInfo?.SubTitle" autocomplete="off" onkeyup="toSeo('SoftwareCategoryLanguageInfos[@i].SubTitle','SoftwareCategoryLanguageInfos[@i].Slug')"/>
+                                                                <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].SubTitle" id="SoftwareCategoryLanguageInfos[@i].SubTitle" value="@languageInfo?.SubTitle" autocomplete="off" onkeyup="toSeo('SoftwareCategoryLanguageInfos[@i].SubTitle','SoftwareCategoryLanguageInfos[@i].Slug')" />
                                                             </div>
-                                                            <div class="mb-3 col-md-10 col-sm-10">
+                                                            <div class="mb-3 col-md-6 col-sm-6">
                                                                 <label for="SoftwareCategoryLanguageInfos[@i].Slug" class="form-label">@Localizer["admin.Slug"]</label>
                                                                 <input class="form-control" type="text" name="SoftwareCategoryLanguageInfos[@i].Slug" id="SoftwareCategoryLanguageInfos[@i].Slug" value="@languageInfo?.Slug" autocomplete="off" />
                                                             </div>
-                                                            <div class="mb-3 col-md-2 col-sm-2">
+                                                            <div class="mb-3 col-md-3 col-sm-3">
                                                                 <label for="SoftwareCategoryLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
                                                                 <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input" name="SoftwareCategoryLanguageInfos[@i].Status" id="SoftwareCategoryLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
                                                                     <label class="form-check-label" for="SoftwareCategoryLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
                                                                 </div>
                                                             </div>
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -124,9 +149,86 @@
                     </form>
                 </div>
             </div>
-            <!-- [ form-element ] end -->
+           
+            @if (Model.SoftwareCategory?.Id != 0 && Model.SoftwareCategory?.Id != null)
+            {
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title" id="basic-layout-colored-form-control">Software Category Detay Ekle</h4>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <form id="subUnitPost" class="form" action="" method="post" autocomplete="off">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="Title" class="form-label">@Localizer["admin.Başlık"]</label>
+                                                <input class="form-control" type="text" name="Title" id="Title" value="" autocomplete="off" required />
+                                            </div>
+
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="SoftwareCategoryLanguageInfoId" class="form-label">@Localizer["admin.İlgili Yazı"]</label>
+                                                <select class="select2 form-control block" name="SoftwareCategoryLanguageInfoId" id="SoftwareCategoryLanguageInfoId" required>
+                                                    <option value="">@Localizer["admin.Seçiniz"]</option>
+                                                    @if (pageLanguageInfos != null)
+                                                    {
+                                                        foreach (var item in pageLanguageInfos)
+                                                        {
+                                                            <option value="@item.Id">@item.Title</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="SoftwareCategoryLanguageInfoContentSequence" class="form-label">@Localizer["admin.Sırası"]</label>
+                                                <input class="form-control" type="number" name="Sequence" id="SoftwareCategoryLanguageInfoContentSequence" value="" autocomplete="off" required />
+                                            </div>
+                                          
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="SoftwareCategoryLanguageInfoContentStatus" class="form-label">@Localizer["admin.Durum"]</label>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="Status" id="SoftwareCategoryLanguageInfoContentStatus" value="True" />
+                                                    <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                <label for="Body" class="form-label">@Localizer["admin.İçerik"]</label>
+                                                <textarea id="Body-2" name="Body" class="form-control editorCk2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <input type="hidden" name="Id" id="Id" value="" />
+                                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Software Category Detay Listele</h4>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard" id="subUnitList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        SubUnitList('@Model.SoftwareCategory?.Id');
+                    });
+                </script>
+            }
         </div>
-        <!-- [ Main Content ] end -->
     </div>
 </section>
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
@@ -148,6 +250,7 @@
             data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
         });
         $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        console.log(data);
         $.ajax({
             type: "POST",
             url: "@addUrl",
@@ -162,4 +265,87 @@
             }
         });
     });
+
+    $(".editorCk2").each(function () {
+        let editorId2 = $(this).attr('id');
+        CKEDITOR.replace(editorId2, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    //Alt Birim
+    $('#subUnitPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk2").each(function () {
+            let editorId2 = $(this).attr('id');
+            data.set("Body", CKEDITOR.instances[editorId2].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $.ajax({
+            type: "POST",
+            url: "Admin/SoftwareCategory/SubUnitRecord",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.status == "success") {
+                    document.getElementById("subUnitPost").reset();
+                    $(".editorCk2").each(function () {
+                        let editorId2 = $(this).attr('id');
+                        data.set("Body", CKEDITOR.instances[editorId2].setData(""));//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+                    });
+                    SubUnitList('@Model.SoftwareCategory?.Id');
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+
+    function SubUnitList(Id) {
+        $.ajax({
+            type: "POST",
+            url: "Admin/SoftwareCategory/SubUnitList",
+            data: { 'Id': Id },
+            success: function (res) {
+                $('#subUnitList').html(res);
+            }
+        });
+    }
+
+    function SubUnitUpdate(Id, SoftwareCategoryLanguageInfoId, Title, Sequence, Status) {
+        $('#subUnitPost').find('#Id').val(Id)
+        $('#subUnitPost').find('#SoftwareCategoryLanguageInfoId').val(SoftwareCategoryLanguageInfoId).trigger('change'); // Seçili hale getir
+        $('#subUnitPost').find('#Title').val(Title)
+        $('#subUnitPost').find('#SoftwareCategoryLanguageInfoContentSequence').val(Sequence)
+        if (Status === true || Status === "True") {
+            $('#subUnitPost').find('#SoftwareCategoryLanguageInfoContentStatus').prop('checked', true)
+        } else {
+            $('#subUnitPost').find('#SoftwareCategoryLanguageInfoContentStatus').prop('checked', false)
+        }
+        var gContent = document.getElementById("gContent-" + Id).value;
+        CKEDITOR.instances["Body-2"].setData(gContent);
+    }
+
+    function SubUnitDelete(Id) {
+        if (confirm('Silmek İstediğinize Emin misiniz ?')) {
+            $.ajax({
+                type: "POST",
+                url: "Admin/SoftwareCategory/SubUnitDelete",
+                data: { 'Id': Id },
+                success: function (res) {
+                    if (res.status == "success") {
+                        document.getElementById("lineSubUnit_" + Id).style.display = "none";
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        }
+    }
 </script>

@@ -166,7 +166,6 @@ app.MapControllerRoute(
     name: "Blog",
     pattern: "blog-list/{controller=Blog}/{action=Index}");
 
-
 app.MapControllerRoute(
     name: "BlogListRow",
     pattern: "blog-list-row/{controller=BlogListRow}/{action=Index}");
@@ -174,5 +173,13 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "BlogDetail",
     pattern: "blog-detay/{slug}/{controller=BlogDetail}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "SoftwareCategory",
+    pattern: "e-imza-yazilimlar/{controller=SoftwareCategory}/{action=Index}");
+
+app.MapControllerRoute(
+    name: "SoftwareCategoryDetail",
+    pattern: "e-imza-yazilimlar-detay/{slug}/{controller=SoftwareCategoryDetail}/{action=Index}");
 
 app.Run();

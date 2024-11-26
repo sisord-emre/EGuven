@@ -252,5 +252,38 @@ namespace SysBase.Service.Functions
                 return stream.ToArray(); // Dosya içeriğini byte array olarak döndür
             }
         }
+
+
+        public string ConvertToEmbedUrl(string youtubeUrl)
+        {
+            if (string.IsNullOrEmpty(youtubeUrl))
+            {
+                return string.Empty;
+            }
+
+            // YouTube URL'sinden video ID'sini çıkar
+            var videoId = string.Empty;
+            var uri = new Uri(youtubeUrl);
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                // Short URL için video ID'si yolu
+                videoId = uri.Segments.LastOrDefault()?.Trim('/');
+            }
+
+            if (string.IsNullOrEmpty(videoId))
+            {
+                return string.Empty; // Geçerli bir video ID'si yoksa boş döner
+            }
+
+            // Embed URL formatına dönüştür
+            return $"https://www.youtube.com/embed/{videoId}";
+        }
+
     }
 }

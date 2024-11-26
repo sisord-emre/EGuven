@@ -1,0 +1,85 @@
+﻿@model SoftwareCategoryDetailViewModel
+@{
+    ViewData["Title"] = "E-imza Yazilimlar";
+    int index = 0;
+    int sayac = 1;
+}
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item animated-background bg-gradient-to-r from-primary-red via-red-800 to-red-900">
+                <div class="hero-slider-item-content !bg-transparent">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            E-Güven
+                        </div>
+                        <div class="hero-slider-item-title !text-5xl">
+                            @Model.SoftwareCategoryLanguageInfo?.Title
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Content -->
+<section class="e-imza-yazilimlar-detay mt-10" data-aos="fade-up">
+    <div class="container pt-12">
+        <div class="tab-container">
+            <!-- Tab Buttons -->
+            <div class="tab-buttons border-b border-tab-inactive">
+                @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
+                {
+                    <button class="tab-button py-4 md:px-20 px-2 md:text-2xl text-sm font-extrabold text-center @(index == 0 ? "active" : "")" data-tab="@item.Slug">
+                        @item.SubTitle
+                    </button>
+                    index++;
+                }
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
+                {
+                    <div id="@item.Slug" class="tab-pane active md:px-10 pt-7 px-4 overflow-hidden">
+                        <div>
+                            <figure class="float-right ml-12 md:block hidden">
+                                <img src="/Images/SoftwareCategory/@item.SoftwareCategory.ContentImage" alt="@item.Title" />
+                            </figure>
+                            @foreach (var content in item.SoftwareCategoryLanguageInfoContents.Where(c => c.Status).OrderBy(c => c.Sequence))
+                            {
+                                <div class="flex gap-3 mb-10">
+                                    <div class="w-[50px] h-[50px] rounded-full bg-primary-red flex items-cemter justify-center text-white text-3xl font-medium p-2 shrink-0">
+                                        @sayac
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <div class="text-primary-dark text-xl font-bold">
+                                            @content.Title
+                                        </div>
+                                        <p class="text-primary-dark text-xl">
+                                            @Html.Raw(content.Body)
+                                        </p>
+                                    </div>
+                                </div>
+                                sayac++;
+                            }
+                        </div>
+                        <div class="my-12">
+                            <iframe width="100%"
+                                    height="594"
+                                    src="@item.SoftwareCategory.Video"
+                                    title="@item.Title"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

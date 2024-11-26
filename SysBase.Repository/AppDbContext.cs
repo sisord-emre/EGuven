@@ -58,6 +58,7 @@ namespace SysBase.Repository
         public DbSet<HelperVideoLanguageInfo> HelperVideoLanguageInfos { get; set; }
         public DbSet<ProductSoftware> ProductSoftwares { get; set; }
         public DbSet<ProductSoftwareLanguageInfo> ProductSoftwareLanguageInfos { get; set; }
+        public DbSet<SoftwareCategoryLanguageInfoContent> SoftwareCategoryLanguageInfoContents { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,16 +22,19 @@ namespace SysBase.Web.Areas.Admin.Controllers
     {
         // SoftwareCategoryController specific dependencies
         protected readonly IService<SoftwareCategory> _service;
-        protected readonly IService<SoftwareCategoryLanguageInfo> _pageLanguageInfoService;
+        protected readonly IService<SoftwareCategoryLanguageInfo> _softwareCategoryLanguageInfo;
+        protected readonly IService<SoftwareCategoryLanguageInfoContent> _softwareCategoryLanguageInfoContentService;
         protected readonly IService<Language> _languageService;
         protected readonly ILogger<SoftwareCategoryController> _logger;
 
         public SoftwareCategoryController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<SoftwareCategory> service, IService<SoftwareCategoryLanguageInfo> pageLanguageInfoService,
+                              IService<SoftwareCategory> service, IService<SoftwareCategoryLanguageInfo> softwareCategoryLanguageInfo,
+                              IService<SoftwareCategoryLanguageInfoContent> softwareCategoryLanguageInfoContentService,
                               IService<Language> languageService, ILogger<SoftwareCategoryController> logger) : base(localizer, userManager)
         {
             _service = service;
-            _pageLanguageInfoService = pageLanguageInfoService;
+            _softwareCategoryLanguageInfo = softwareCategoryLanguageInfo;
+            _softwareCategoryLanguageInfoContentService = softwareCategoryLanguageInfoContentService;
             _languageService = languageService;
             _logger = logger;
         }
@@ -47,7 +52,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.SoftwareCategoryLanguageInfos = await _pageLanguageInfoService.Where(x => x.SoftwareCategoryId == model.Id).ToListAsync();
+                model.SoftwareCategoryLanguageInfos = await _softwareCategoryLanguageInfo
+                    .Where(x => x.SoftwareCategoryId == model.Id)
+                    .Include(x => x.SoftwareCategoryLanguageInfoContents)
+                    .ToListAsync();
             }
 
             //log işleme alanı     
@@ -58,7 +66,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(SoftwareCategory model, IFormFile Image)
+        public async Task<IActionResult> Add(SoftwareCategory model, IFormFile Image, IFormFile ContentImage)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -67,15 +75,31 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
+            SoftwareCategory existingBlog = null;
+            if (model.Id != 0)
+            {
+                existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+            }
+
+            // Resim Yükleme
             if (Image != null && Image.Length > 0)
             {
                 model.Image = await functions.ImageUpload(Image, "Images/SoftwareCategory", Guid.NewGuid().ToString("N"));
             }
-            else if (model.Id != 0)
+            else if (existingBlog != null)
             {
-                var existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
-                model.Image = existingBlog.Image;  // Eski resim tekrar set ediliyor
+                model.Image = existingBlog.Image;
             }
+
+            if (ContentImage != null && ContentImage.Length > 0)
+            {
+                model.ContentImage = await functions.ImageUpload(ContentImage, "Images/SoftwareCategory", Guid.NewGuid().ToString("N"));
+            }
+            else if (existingBlog != null)
+            {
+                model.ContentImage = existingBlog.ContentImage;
+            }
+            model.Video = functions.ConvertToEmbedUrl(model.Video);
 
             SoftwareCategory isControl;
             if (model.Id != 0)  // Güncelleme işlemi
@@ -132,7 +156,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new SoftwareCategoryListViewModel { MenuPermission = menuPermission, SoftwareCategoryLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.SoftwareCategory).ToListAsync() });
+            return View(new SoftwareCategoryListViewModel { MenuPermission = menuPermission, SoftwareCategoryLanguageInfos = await _softwareCategoryLanguageInfo.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.SoftwareCategory).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -141,7 +165,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.SoftwareCategory.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.SoftwareCategory).FirstOrDefaultAsync());
+                return View(await _softwareCategoryLanguageInfo.Where(x => x.SoftwareCategory.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.SoftwareCategory).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -180,5 +204,88 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             return resultJson;
         }
+
+        [HttpPost]
+        public async Task<ResultJson> SubUnitRecord(SoftwareCategoryLanguageInfoContent model)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+
+            try
+            {
+                SoftwareCategoryLanguageInfoContent isControl;
+                if (model.Id != 0)
+                {
+                    // Güncelleme işlemi
+                    isControl = await _softwareCategoryLanguageInfoContentService.UpdateAsync(model);
+                  
+                }
+                else
+                {
+                    isControl = await _softwareCategoryLanguageInfoContentService.AddAsync(model);
+                }
+
+                // Veritabanı değişikliklerini kaydetme
+                if (isControl.Id != 0)
+                {
+                    resultJson.status = "success";
+                }
+                else
+                {
+                    resultJson.message = "Bir hata oluştu.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultJson.message = $"Hata: {ex.Message}";
+            }
+
+            return resultJson;
+        }
+
+        public async Task<IActionResult> SubUnitList(int id)
+        {
+            var subUnits = await _softwareCategoryLanguageInfoContentService
+                .Where(x => x.Sequence > 0)
+                .Include(x => x.SoftwareCategoryLanguageInfo.SoftwareCategory)
+                .Where(x => x.SoftwareCategoryLanguageInfo.SoftwareCategoryId == id)
+                .ToListAsync();
+
+            var viewModel = new SoftwareCategoryLanguageInfoContentSubUnitViewModel
+            {
+                SoftwareCategoryLanguageInfoContents = subUnits
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<ResultJson> SubUnitDelete(int id)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+
+            try
+            {
+                var item = await _softwareCategoryLanguageInfoContentService.GetByIdAsync(id);
+                if (item != null)
+                {
+                    await _softwareCategoryLanguageInfoContentService.RemoveAsync(item);
+                    resultJson.status = "success";
+                  
+                }
+                else
+                {
+                    resultJson.message = "Silinecek kayıt bulunamadı.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultJson.message = $"Hata: {ex.Message}";
+            }
+
+            return resultJson;
+        }
+
+
+
     }
 }

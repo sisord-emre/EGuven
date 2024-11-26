@@ -7,5 +7,6 @@
         public string SubTitle { get; set; }
         public string Slug { get; set; }
         public SoftwareCategory SoftwareCategory { get; set; }
+        public List<SoftwareCategoryLanguageInfoContent> SoftwareCategoryLanguageInfoContents { get; set; }
     }
 }
