@@ -24,12 +24,9 @@
     </div>
 </div>
 
-
-<!-- Content -->
 <section class="e-imza-yazilimlar-detay mt-10" data-aos="fade-up">
     <div class="container pt-12">
         <div class="tab-container">
-            <!-- Tab Buttons -->
             <div class="tab-buttons border-b border-tab-inactive">
                 @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
                 {
@@ -39,12 +36,10 @@
                     index++;
                 }
             </div>
-
-            <!-- Tab Content -->
             <div class="tab-content">
                 @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
                 {
-                    <div id="@item.Slug" class="tab-pane active md:px-10 pt-7 px-4 overflow-hidden">
+                    <div id="@item.Slug" class="tab-pane @(sayac == 1 ? "active" : "")" md:px-10 pt-7 px-4 overflow-hidden">
                         <div>
                             <figure class="float-right ml-12 md:block hidden">
                                 <img src="/Images/SoftwareCategory/@item.SoftwareCategory.ContentImage" alt="@item.Title" />
@@ -83,3 +78,23 @@
         </div>
     </div>
 </section>
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

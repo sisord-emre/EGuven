@@ -99,7 +99,11 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 model.ContentImage = existingBlog.ContentImage;
             }
-            model.Video = functions.ConvertToEmbedUrl(model.Video);
+
+            if(model.Video != null)
+            {
+                model.Video = functions.ConvertToEmbedUrl(model.Video);
+            }
 
             SoftwareCategory isControl;
             if (model.Id != 0)  // Güncelleme işlemi

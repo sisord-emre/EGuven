@@ -180,6 +180,6 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "SoftwareCategoryDetail",
-    pattern: "e-imza-yazilimlar-detay/{slug}/{controller=SoftwareCategoryDetail}/{action=Index}");
+    pattern: "e-imza-yazilimlar-detay/{controller=SoftwareCategoryDetail}/{action=Index}");
 
 app.Run();
