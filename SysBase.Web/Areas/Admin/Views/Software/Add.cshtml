@@ -52,13 +52,13 @@
                                     <select class="select2 form-control block" name="SoftwareCategoryId" id="SoftwareCategoryId" required>
                                         @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
                                         {
-                                            if (item.Id == Model.Software?.SoftwareCategoryId)
+                                            if (item.SoftwareCategoryId == Model.Software?.SoftwareCategoryId)
                                             {
-                                                <option value="@item.Id" selected>@item.SubTitle</option>
+                                                <option value="@item.SoftwareCategoryId" selected>@item.SubTitle</option>
                                             }
                                             else
                                             {
-                                                <option value="@item.Id">@item.SubTitle</option>
+                                                <option value="@item.SoftwareCategoryId">@item.SubTitle</option>
                                             }
                                         }
                                     </select>
