@@ -64,6 +64,20 @@
                                     <input class="form-control" type="url" name="Video" id="Video" value="@Model.HelperVideo?.Video" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="HomeVisibility" class="form-label">@Localizer["admin.Anasayfa Gösterim"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="HomeVisibility" id="HomeVisibility" value="True" @(Model.HelperVideo?.HomeVisibility == true ? "checked" : "") />
+                                        <label class="form-check-label" for="HomeVisibility">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="MasterVideo" class="form-label">@Localizer["admin.Master Video"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="MasterVideo" id="MasterVideo" value="True" @(Model.HelperVideo?.MasterVideo == true ? "checked" : "") />
+                                        <label class="form-check-label" for="MasterVideo">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.HelperVideo?.Status == true ? "checked" : "") />
@@ -93,6 +107,10 @@
                                                         <input type="hidden" name="HelperVideoLanguageInfos[@i].Id" id="HelperVideoLanguageInfos[@i].Id" value="@languageInfo?.Id" />
                                                         <input type="hidden" name="HelperVideoLanguageInfos[@i].LanguageId" id="HelperVideoLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
                                                         <div class="row">
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="HelperVideoLanguageInfos[@i].UpTitle" class="form-label">@Localizer["admin.Üst Başlık"]</label>
+                                                                <input class="form-control" type="text" name="HelperVideoLanguageInfos[@i].UpTitle" id="HelperVideoLanguageInfos[@i].UpTitle" value="@languageInfo?.UpTitle" autocomplete="off" />
+                                                            </div>
                                                             <div class="mb-3 col-md-5 col-sm-12">
                                                                 <label for="HelperVideoLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
                                                                 <input class="form-control" type="text" name="HelperVideoLanguageInfos[@i].Title" id="HelperVideoLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" onkeyup="toSeo('HelperVideoLanguageInfos[@i].Title','HelperVideoLanguageInfos[@i].Slug')" />

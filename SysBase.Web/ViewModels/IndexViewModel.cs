@@ -8,5 +8,7 @@ namespace SysBase.Web.ViewModels
         public List<AnnouncementLanguageInfo> Announcements { get; set; }
         public List<Brand> Brands { get; set; }
         public List<BlogLanguageInfo> BlogLanguageInfos { get; set; }
+        public List<HelperVideoLanguageInfo> HelperVideoLanguageInfos { get; set; }
+        public HelperVideoLanguageInfo HelperVideoLanguageInfo { get; set; }
     }
 }

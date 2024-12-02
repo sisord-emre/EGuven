@@ -26,12 +26,13 @@ namespace SysBase.Web.Controllers
         protected readonly IService<AnnouncementLanguageInfo> _announcementService;
         protected readonly IService<Brand> _brandService;
         protected readonly IService<BlogLanguageInfo> _blogLanguageInfoService;
+        protected readonly IService<HelperVideoLanguageInfo> _helperVideoLanguageInfoService;
 
         public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService, 
-            IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService, 
-            IService<AnnouncementLanguageInfo> announcementService, IService<Brand> brandService, 
-            IService<BlogLanguageInfo> blogLanguageInfoService)
+            ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+            IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService,
+            IService<AnnouncementLanguageInfo> announcementService, IService<Brand> brandService,
+            IService<BlogLanguageInfo> blogLanguageInfoService, IService<HelperVideoLanguageInfo> helperVideoLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -43,6 +44,7 @@ namespace SysBase.Web.Controllers
             _announcementService = announcementService;
             _brandService = brandService;
             _blogLanguageInfoService = blogLanguageInfoService;
+            _helperVideoLanguageInfoService = helperVideoLanguageInfoService;
         }
 
 
@@ -75,7 +77,9 @@ namespace SysBase.Web.Controllers
                 Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
                 Announcements = _announcementService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList(),
                 Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
-                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).Take(3).ToListAsync()
+                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Blog.HomeVisibility).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).ToListAsync(),
+                HelperVideoLanguageInfos = _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.HomeVisibility).Include(x => x.HelperVideo).ToList(),
+                HelperVideoLanguageInfo = await _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.MasterVideo).Include(x => x.HelperVideo).FirstOrDefaultAsync()
             };
 
             return View(model);

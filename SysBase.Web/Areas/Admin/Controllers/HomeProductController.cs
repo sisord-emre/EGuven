@@ -10,23 +10,22 @@ using SysBase.Core.Models;
 using SysBase.Core.Services;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
-using System.Globalization;
 
 namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class HelperVideoController : BaseController
+    public class HomeProductController : BaseController
     {
-        // HelperVideoController specific dependencies
-        protected readonly IService<HelperVideo> _service;
-        protected readonly IService<HelperVideoLanguageInfo> _pageLanguageInfoService;
+        // HomeProductController specific dependencies
+        protected readonly IService<HomeProduct> _service;
+        protected readonly IService<HomeProductLanguageInfo> _pageLanguageInfoService;
         protected readonly IService<Language> _languageService;
-        protected readonly ILogger<HelperVideoController> _logger;
+        protected readonly ILogger<HomeProductController> _logger;
 
-        public HelperVideoController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<HelperVideo> service, IService<HelperVideoLanguageInfo> pageLanguageInfoService,
-                              IService<Language> languageService, ILogger<HelperVideoController> logger) : base(localizer, userManager)
+        public HomeProductController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<HomeProduct> service, IService<HomeProductLanguageInfo> pageLanguageInfoService,
+                              IService<Language> languageService, ILogger<HomeProductController> logger) : base(localizer, userManager)
         {
             _service = service;
             _pageLanguageInfoService = pageLanguageInfoService;
@@ -43,30 +42,22 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            HelperVideo model = null;
+            HomeProduct model = null;
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.HelperVideoLanguageInfos = await _pageLanguageInfoService.Where(x => x.HelperVideoId == model.Id).ToListAsync();
+                model.HomeProductLanguageInfos = await _pageLanguageInfoService.Where(x => x.HomeProductId == model.Id).ToListAsync();
             }
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
-            var langCode = rqf.RequestCulture.Culture;
-
-            return View(new HelperVideoAddViewModel
-            {
-                MenuPermission = menuPermission,
-                HelperVideo = model,
-                Languages = await _languageService.GetAllAsync(),
-            });
+            return View(new HomeProductAddViewModel { MenuPermission = menuPermission, HomeProduct = model, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(HelperVideo model, IFormFile Image)
+        public async Task<IActionResult> Add(HomeProduct model)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -75,17 +66,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            if (Image != null && Image.Length > 0)
-            {
-                model.Image = await functions.ImageUpload(Image, "Images/HelperVideo", Guid.NewGuid().ToString("N"));
-            }
-            else if (model.Id != 0)
-            {
-                var existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
-                model.Image = existingBlog.Image;  // Eski resim tekrar set ediliyor
-            }
-
-            HelperVideo isControl;
+            HomeProduct isControl;
             if (model.Id != 0)  // Güncelleme işlemi
             {
                 model.UpdatedDate = DateTime.Now;
@@ -114,15 +95,6 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (isControl.Id != 0)
             {
-                if (model.MasterVideo == true)
-                {
-                    List<HelperVideo> list = await _service.Where(x => x.Id != isControl.Id).ToListAsync();
-                    foreach (HelperVideo video in list)
-                    {
-                        video.MasterVideo = false;
-                        await _service.UpdateAsync(video);
-                    }
-                }
                 TempData["SuccessMessage"] = _localizer["admin.Kayıt İşlemi Başarıyle Gerçekleşmiştir."].Value;
             }
             else
@@ -131,12 +103,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
 
-            return View(new HelperVideoAddViewModel
-            {
-                MenuPermission = menuPermission,
-                HelperVideo = model,
-                Languages = await _languageService.GetAllAsync(),
-            });
+            return View(new HomeProductAddViewModel { MenuPermission = menuPermission, HomeProduct = model, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -154,7 +121,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new HelperVideoListViewModel { MenuPermission = menuPermission, HelperVideoLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HelperVideo).ToListAsync() });
+            return View(new HomeProductListViewModel { MenuPermission = menuPermission, HomeProductLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HomeProduct).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -163,7 +130,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.HelperVideo.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.HelperVideo).FirstOrDefaultAsync());
+                return View(await _pageLanguageInfoService.Where(x => x.HomeProduct.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.HomeProduct).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -187,7 +154,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                HelperVideo item = await _service.GetByIdAsync(Int32.Parse(Id));
+                HomeProduct item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);
@@ -202,6 +169,5 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             return resultJson;
         }
-
     }
 }

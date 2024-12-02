@@ -8,6 +8,7 @@
         public int ReadTime { get; set; }
         public DateTime PublicationTime { get; set; }
         public int Sequence { get; set; }
+        public bool HomeVisibility { get; set; }
         public List<BlogLanguageInfo> BlogLanguageInfos { get; set; }
     }
 }
