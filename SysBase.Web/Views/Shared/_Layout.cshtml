@@ -3,6 +3,7 @@
     var emails = model.Config.Mail?.Split(';');
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentUICulture;
     List<Language> languages = model.Languages.Where(x => x.Status).ToList();
+    string assetsVersiyon = "1.1";
 }
 <!DOCTYPE html>
 <html lang="@cultureInfo.Name">
@@ -12,8 +13,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] | E-Güven</title>
-    <link rel="stylesheet" href="/assets/styles/style.css" />
-    <link rel="stylesheet" href="/assets/icons/style.css" />
+    <link rel="stylesheet" href="/assets/styles/style.css?v=@assetsVersiyon" />
+    <link rel="stylesheet" href="/assets/icons/style.css?v=@assetsVersiyon" />
     <link rel="icon" type="image/png" href="/assets/icons/favicon.png" />
 </head>
 <body class="overflow-x-hidden overflow-y-auto">
@@ -580,8 +581,8 @@
         </a>
     </div>
 
-    <script src="~/assets/js/swiper-bundle.min.js"></script>
-    <script src="~/assets/js/aos/aos.js"></script>
+    <script src="~/assets/js/swiper-bundle.min.js?v=@assetsVersiyon"></script>
+    <script src="~/assets/js/aos/aos.js?v=@assetsVersiyon"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

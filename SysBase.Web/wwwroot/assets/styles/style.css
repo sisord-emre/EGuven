@@ -3728,6 +3728,7 @@ select{
 .card{
   position:relative;
   z-index:50;
+  height:100%;
   cursor:pointer;
   overflow:hidden;
   transition-property:all;
@@ -3745,7 +3746,7 @@ select{
   width:100%;
   --tw-bg-opacity:1;
   background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1));
-  content: "";
+  content: '';
   transform: scale(1, 0);
   transition: transform 500ms ease;
   transform-origin: bottom center;
@@ -3760,6 +3761,7 @@ select{
 .card:hover::before {
   transform: scale(1, 1);
   transform-origin: top center;
+  height: 100%;
 }
 
 .card-shadow {
@@ -4463,6 +4465,10 @@ select{
   height:175px
 }
 
+.h-\[315px\]{
+  height:315px
+}
+
 .h-\[50px\]{
   height:50px
 }
@@ -4492,10 +4498,6 @@ select{
   height:100vh
 }
 
-.h-\[315px\]{
-  height:315px
-}
-
 .max-h-14{
   max-height:3.5rem
 }
@@ -4506,10 +4508,6 @@ select{
 
 .max-h-\[150px\]{
   max-height:150px
-}
-
-.max-h-\[315px\]{
-  max-height:315px
 }
 
 .max-h-full{
@@ -6402,10 +6400,6 @@ select{
 
   .md\:h-\[600px\]{
     height:600px
-  }
-
-  .md\:max-h-\[600px\]{
-    max-height:600px
   }
 
   .md\:w-1\/3{

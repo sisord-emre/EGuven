@@ -83,7 +83,7 @@
             <div class="grid lg:grid-cols-3 md:grid-cols-4 grid-cols-1 gap-4">
                 <div class="rounded-5 lg:col-span-1 md:col-span-2">
                     <a href="urun-eimza.html"
-                       class="group block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl from-primary-red-from to-primary-red-to overflow-hidden card-shadow">
+                       class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl from-primary-red-from to-primary-red-to overflow-hidden card-shadow">
                         <div class="card">
                             <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-red overflow-hidden">
                                 <div class="text-6xl">
@@ -104,7 +104,7 @@
                 </div>
                 <div class="lg:col-span-1 md:col-span-2">
                     <a href="urun-eimza.html"
-                       class="group block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl from-primary-gray-from to-primary-gray-to card-shadow">
+                       class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl from-primary-gray-from to-primary-gray-to card-shadow">
                         <div class="card">
                             <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-dark overflow-hidden">
                                 <div class="text-6xl">
@@ -388,14 +388,14 @@
     <div class="container">
         <div class="flex xl:flex-row flex-col gap-5">
             <!-- Single Video -->
-            <div class="xl:max-w-sm bg-primary-gray rounded-5 shadow-md group h-full shrink-0 xl:w-1/3 w-full" data-aos="fade-up" data-video-id="@Model.HelperVideoLanguageInfo?.HelperVideo.Video.Split("?v=")[1]" data-title="@Model.HelperVideoLanguageInfo?.Title" data-modal-target="video-modal" data-modal-toggle="video-modal">
-                <a href="javascript:;" class="relative overflow-hidden block rounded-t-5">
+            <div class="xl:max-w-sm bg-primary-gray rounded-5 shadow-md group h-full shrink-0 xl:w-1/3 w-full video-item" data-aos="fade-up" data-video-id="@Model.HelperVideoLanguageInfo?.HelperVideo.Video.Split("?v=")[1]" data-title="@Model.HelperVideoLanguageInfo?.Title" data-modal-target="video-modal" data-modal-toggle="video-modal">
+                <a class="relative overflow-hidden block rounded-t-5">
                     <img class="rounded-t-5 group-hover:scale-150 transition-all duration-150 ease-linear" src="/Images/HelperVideo/@Model.HelperVideoLanguageInfo?.HelperVideo.Image" alt="@Model.HelperVideoLanguageInfo?.Title" />
                     <div class="absolute inset-0 flex items-center justify-center text-white text-6xl transition-colors duration-150 ease-in group-hover:text-primary-red group-hover:animate-pulse">
                         <span class="icon-play"></span>
                     </div>
                 </a>
-                <a href="javascript:;" class="p-5 text-center text-primary-dark block">
+                <a class="p-5 text-center text-primary-dark block">
                     <div class="inline-flex flex-col gap-1">
                         <h5 class="tracking-tight">@Model.HelperVideoLanguageInfo?.UpTitle</h5>
                         <p class="text-2xl font-bold line-clamp-1">
@@ -422,14 +422,14 @@
                         {
                             <!-- Slide1 -->
                             <div class="swiper-slide">
-                                <div class="max-w-xs bg-primary-gray rounded-5 shadow-md group" data-aos="fade-up" data-video-id="@item.HelperVideo.Video.Split("?v=")[1]" data-title="@item.Title" data-modal-target="video-modal" data-modal-toggle="video-modal">
-                                    <a href="javascript:;" class="relative overflow-hidden block max-h-44 min-h-44 rounded-t-5">
+                                <div class="max-w-xs bg-primary-gray rounded-5 shadow-md group video-item" data-aos="fade-up" data-video-id="@item.HelperVideo.Video.Split("?v=")[1]" data-title="@item.Title" data-modal-target="video-modal" data-modal-toggle="video-modal">
+                                    <a class="relative overflow-hidden block max-h-44 min-h-44 rounded-t-5">
                                         <img class="rounded-t-5 group-hover:scale-150 transition-all duration-150 ease-linear" src="/Images/HelperVideo/@item.HelperVideo.Image" alt="@item.Title" />
                                         <div class="absolute inset-0 flex items-center justify-center text-white text-3xl transition-colors duration-150 ease-in group-hover:text-primary-red group-hover:animate-pulse">
                                             <span class="icon-play"></span>
                                         </div>
                                     </a>
-                                    <a href="javascript:;" class="p-5 text-center text-primary-dark block">
+                                    <a class="p-5 text-center text-primary-dark block">
                                         <div class="inline-flex flex-col gap-1">
                                             <h5 class="tracking-tight">
                                                 @item.UpTitle
