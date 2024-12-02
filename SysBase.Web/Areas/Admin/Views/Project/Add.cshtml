@@ -49,25 +49,18 @@
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="CompanyId" class="form-label">@Localizer["admin.Firma Adı"]</label>
                                     <select class="select2 form-control block" name="CompanyId" id="CompanyId">
-                                        @if (Model.Project != null && Model.Companys != null)
+                                        <option>@Localizer["admin.Seçiniz"]</option>
+                                        @foreach (var company in Model.Companys)
                                         {
-                                            @foreach (var company in Model.Companys)
-                                            {
-                                                var isSelected = Model.Project.CompanyId != null && Model.Project.CompanyId != 0 && Model.Project.CompanyId == company.Id;
 
-                                                if (isSelected)
-                                                {
-                                                    <option value="@company.Id" selected>@company.Name</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@company.Id">@company.Name</option>
-                                                }
+                                            if (Model.Project?.CompanyId == company.Id)
+                                            {
+                                                <option value="@company.Id" selected>@company.Name</option>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <p>Project or Company data is not available.</p>
+                                            else
+                                            {
+                                                <option value="@company.Id">@company.Name</option>
+                                            }
                                         }
                                     </select>
                                 </div>
