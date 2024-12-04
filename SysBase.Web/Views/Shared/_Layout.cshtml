@@ -80,15 +80,18 @@
                          data-modal-toggle="searchDialog">
                         <span class="icon-search"></span>
                     </div>
-                    <!-- cmp-language -->
-                    <button id="languageSelectHeader"
+                    @if (languages.Count>1)
+                    {
+                        <!-- cmp-language -->
+                        <button id="languageSelectHeader"
                             data-dropdown-toggle="dropdownLanguageHeaderMenu"
                             class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
                             type="button">
-                        <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
-                        <span class="icon-chevron-down"></span>
-                    </button>
-
+                            <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
+                            <span class="icon-chevron-down"></span>
+                        </button>
+                    }
+                    
                     <!-- Dropdown menu -->
                     <div id="dropdownLanguageHeaderMenu"
                          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-24 border border-primary-gray">
@@ -382,15 +385,17 @@
                                      height="26" />
                             </button>
                         </div>
-                        <!-- cmp-language -->
-                        <button id="dropdownLanguageFooter"
+                        @if (languages.Count > 1)
+                        {
+                            <!-- cmp-language -->
+                            <button id="dropdownLanguageFooter"
                                 data-dropdown-toggle="dropdownLanguageFooterMenu"
                                 class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
                                 type="button">
-                            <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
-                            <span class="icon-chevron-down"></span>
-                        </button>
-
+                                <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
+                                <span class="icon-chevron-down"></span>
+                            </button>
+                        }
                         <!-- Dropdown menu -->
                         <div id="dropdownLanguageFooterMenu"
                              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-md w-24 border border-primary-gray">
