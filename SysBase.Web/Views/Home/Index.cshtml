@@ -1,5 +1,9 @@
-﻿@{
+﻿@using System.Linq
+@{
     ViewData["Title"] = "Anasayfa";
+    int index = 0;
+    int sayac = 1;
+    List<HomeProductLanguageInfo> homeProductLanguageInfos = Model.HomeProductLanguageInfos;
 }
 
 <!-- Hero Slider -->
@@ -81,118 +85,195 @@
             </div>
 
             <div class="grid lg:grid-cols-3 md:grid-cols-4 grid-cols-1 gap-4">
-                <div class="rounded-5 lg:col-span-1 md:col-span-2">
-                    <a href="urun-eimza.html"
-                       class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl from-primary-red-from to-primary-red-to overflow-hidden card-shadow">
-                        <div class="card">
-                            <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-red overflow-hidden">
-                                <div class="text-6xl">
-                                    <span class="icon-e-imza"></span>
-                                </div>
-                                <div class="font-semibold">E-imza</div>
-                                <div class="line-clamp-4 text-sm">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
+                @if (Model.Config.HomeProductSequenceId == 1)
+                {
+
+                    foreach (HomeProductLanguageInfo item in homeProductLanguageInfos.Take(12))
+                    {
+                        @if (index % 4 == 0)
+                        {
+                            @Html.Raw("<div class='grid grid-cols-2 gap-4 lg:col-span-1 md:col-span-4'>")
+                        }
+                            <div>
+                                <a href="#"
+                                   class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
+                                    <div class="card card-small">
+                                        <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
+                                            <div class="text-4xl text-primary-red group-hover:text-white">
+                                                <span class="@item.HomeProduct.Image"></span>
+                                            </div>
+                                            <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
+                                                @item.Title
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="lg:col-span-1 md:col-span-2">
-                    <a href="urun-eimza.html"
-                       class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl from-primary-gray-from to-primary-gray-to card-shadow">
-                        <div class="card">
-                            <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-dark overflow-hidden">
-                                <div class="text-6xl">
-                                    <span class="icon-e-imza"></span>
-                                </div>
-                                <div class="font-semibold">E-İmza Yenileme</div>
-                                <div class="line-clamp-4 text-sm">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
+                        @if (index % 4 == 3)
+                        {
+                            @Html.Raw("</div>")
+                        }
+                        index++;
+                    }
+                }
+
+                @if (Model.Config.HomeProductSequenceId == 2)
+                {
+                    foreach (HomeProductLanguageInfo item in homeProductLanguageInfos.Take(6))
+                    {
+                        index++;
+                        if (index < 3)
+                        {
+                            <div class="rounded-5 lg:col-span-1 md:col-span-2">
+                                <a href="#" class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl
+                            @(index == 1 ? "from-primary-red-from to-primary-red-to" : "from-primary-gray-from to-primary-gray-to")
+                            overflow-hidden card-shadow">
+                                    <div class="card">
+                                        <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-red overflow-hidden">
+                                            <div class="text-6xl">
+                                                <span class="@item.HomeProduct.Image"></span>
+                                            </div>
+                                            <div class="font-semibold">@item.Title</div>
+                                            <div class="line-clamp-4 text-sm">
+                                                @item.Description
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid grid-cols-2 gap-4 lg:col-span-1 md:col-span-4">
-                    <div>
-                        <a href="urun-eimza.html"
-                           class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
-                            <div class="card card-small">
-                                <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
-                                    <div class="text-4xl text-primary-red group-hover:text-white">
-                                        <span class="icon-paperzero"></span>
-                                    </div>
-                                    <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
-                                        Paperzero
-                                    </div>
-                                </div>
+                        }
+                        else if (index == 3)
+                        {
+                            <div class="grid grid-cols-2 gap-4 lg:col-span-1 md:col-span-4">
+                                @for (int i = 2; i < 6; i++)
+                                {
+                                    var homeProduct = Model.HomeProductLanguageInfos[i];
+                                    if (homeProduct != null)
+                                    {
+                                        <div>
+                                            <a href="#"
+                                                class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
+                                                <div class="card card-small">
+                                                    <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
+                                                        <div class="text-4xl text-primary-red group-hover:text-white">
+                                                            <span class="@homeProduct.HomeProduct.Image"></span>
+                                                        </div>
+                                                        <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
+                                                            @homeProduct.Title
+                                                        </div>
+                                                        <div class="line-clamp-4 text-sm">
+                                                            @homeProduct.Description
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                }
                             </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="urun-eimza.html"
-                           class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
-                            <div class="card card-small">
-                                <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
-                                    <div class="text-4xl text-primary-red group-hover:text-white">
-                                        <span class="icon-hsm"></span>
+                        }
+                    }
+                }
+
+                @if (Model.Config.HomeProductSequenceId == 3)
+                {
+                    foreach (HomeProductLanguageInfo item in homeProductLanguageInfos.Take(9))
+                    {
+                        if (index < 1)
+                        {
+                            <div class="rounded-5 lg:col-span-1 md:col-span-2">
+                                <a href="#" class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl
+                            @(index == 0 ? "from-primary-red-from to-primary-red-to" : "from-primary-gray-from to-primary-gray-to")
+                            overflow-hidden card-shadow">
+                                    <div class="card">
+                                        <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-red overflow-hidden">
+                                            <div class="text-6xl">
+                                                <span class="@item.HomeProduct.Image"></span>
+                                            </div>
+                                            <div class="font-semibold">@item.Title</div>
+                                            <div class="line-clamp-4 text-sm">
+                                                @item.Description
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
-                                        HSM Çözümleri
-                                    </div>
-                                </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="urun-eimza.html"
-                           class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
-                            <div class="card card-small">
-                                <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
-                                    <div class="text-4xl text-primary-red group-hover:text-white">
-                                        <span class="icon-zaman_damgasi"></span>
+                        }
+                        else if (index == 1)
+                        {
+                            for (int i = 1; i < 6; i++)
+                            {
+                                var homeProduct = Model.HomeProductLanguageInfos[i];
+                                if (homeProduct != null)
+                                {
+                                    @if (i % 4 == 1)
+                                    {
+                                        @Html.Raw("<div class='grid grid-cols-2 gap-4 lg:col-span-1 md:col-span-4'>")
+                                    }
+                                    <div>
+                                        <a href="#"
+                                            class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
+                                            <div class="card card-small">
+                                                <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
+                                                    <div class="text-4xl text-primary-red group-hover:text-white">
+                                                        <span class="@homeProduct.HomeProduct.Image"></span>
+                                                    </div>
+                                                    <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
+                                                        @homeProduct.Title
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
-                                    <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
-                                        Zaman Damgası
+                                    @if (i % 4 == 0)
+                                    {
+                                        @Html.Raw("</div>")
+                                    }
+                                }
+                            }
+                        }
+                        index++;
+                    }
+                }
+
+                @if (Model.Config.HomeProductSequenceId == 4)
+                {
+                    foreach (HomeProductLanguageInfo item in homeProductLanguageInfos.Take(3))
+                    {
+                        if(index < 3)
+                        {
+                            <div class="@(index == 0 ? "rounded-5 lg:col-span-1 md:col-span-2" : "lg:col-span-1 md:col-span-2")">
+                               
+                                <a href="#" class="group h-full block relative rounded-5 transition duration-300 ease-in bg-gradient-to-bl
+                                @(index % 2 == 0 ? "from-primary-red-from to-primary-red-to" : "from-primary-gray-from to-primary-gray-to")
+                                overflow-hidden card-shadow">
+                                    <div class="card">
+                                        <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative text-white group-hover:text-primary-red overflow-hidden">
+                                            <div class="text-6xl">
+                                                <span class="@item.HomeProduct.Image"></span>
+                                            </div>
+                                            <div class="font-semibold">@item.Title</div>
+                                            <div class="line-clamp-4 text-sm">
+                                                @item.Description
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="urun-eimza.html"
-                           class="group block relative rounded-5 transition duration-300 ease-in bg-primary-gray shadow-md overflow-hidden">
-                            <div class="card card-small">
-                                <div class="flex flex-col items-center justify-center gap-4 h-full rounded-5 py-7 px-6 text-center transition duration-300 ease-in relative overflow-hidden">
-                                    <div class="text-4xl text-primary-red group-hover:text-white">
-                                        <span class="icon-yazilim_kutuphanesi"></span>
-                                    </div>
-                                    <div class="font-semibold text-primary-dark group-hover:text-white text-sm">
-                                        Yazılım Kütüphanesi
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+                            index++;
+                        }
+                    }
+                }
             </div>
 
-            <a href="urunler.html"
-               class="btn mx-auto mt-3 btn-common"
-               data-aos="fade-up">Tümüne göz at</a>
+            <a href="urunler" class="btn mx-auto mt-3 btn-common" data-aos="fade-up">
+                Tümüne göz at
+            </a>
         </div>
     </div>
 </section>
+
+
 
 <!-- Nasıl? -->
 <section class="how-to mt-10" data-aos="fade-up">
@@ -200,184 +281,42 @@
         <div class="tab-container">
             <!-- Tab Buttons -->
             <div class="tab-buttons">
-                <button class="tab-button active py-4 md:px-20 px-2 md:text-2xl text-sm font-extrabold text-center"
-                        data-tab="e-imza">
-                    Nasıl E-imza alınır?
-                </button>
-                <button class="tab-button py-4 md:px-20 px-2 md:text-2xl text-sm font-extrabold text-center"
-                        data-tab="e-muhur">
-                    Nasıl E-İmza Yenilenir?
-                </button>
+                @foreach (HomeTabPostLanguageInfo item in Model.HomeTabPostLanguageInfos)
+                {
+                    <button class="tab-button @(index == 0 ? "active" : "") py-4 md:px-20 px-2 md:text-2xl text-sm font-extrabold text-center" data-tab="@item.Id">
+                        @item.Title
+                    </button>
+                    index++;
+                }
             </div>
 
             <!-- Tab Content -->
             <div class="tab-content">
-                <div id="e-imza"
-                     class="tab-pane active bg-primary-gray rounded-5 shadow-md md:py-16 md:px-10 py-10 px-4 overflow-hidden">
-                    <div class="grid md:grid-cols-2 md:grid-rows-2 grid-cols-1 md:gap-7 gap-4 xl:px-20 px-0">
-                        <div class="flex gap-4" data-aos="fade-up">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                1
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    Birinci Adım
+                @foreach (HomeTabPostLanguageInfo item in Model.HomeTabPostLanguageInfos)
+                {
+                    <div id="@item.Id"
+                         class="tab-pane @(sayac == 1 ? "active" : "") bg-primary-gray rounded-5 shadow-md md:py-16 md:px-10 py-10 px-4 overflow-hidden">
+                        <div class="grid md:grid-cols-2 md:grid-rows-2 grid-cols-1 md:gap-7 gap-4 xl:px-20 px-0">
+                            @foreach (var content in item.HomeTabPostLanguageInfoContents.Where(c => c.Status).OrderBy(c => c.Sequence))
+                            {
+                                <div class="flex gap-4" data-aos="fade-up">
+                                    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
+                                        @sayac
+                                    </div>
+                                    <div class="flex flex-col gap-4">
+                                        <div class="text-primary-dark text-2xl font-semibold">
+                                            @content.Title
+                                        </div>
+                                        <div class="text-primary-dark text-base">
+                                            @Html.Raw(content.Body)
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 md:col-start-1 md:row-start-2"
-                             data-aos="fade-up"
-                             data-aos-delay="100">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                2
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    İkinci Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 md:col-start-2 md:row-start-1"
-                             data-aos="fade-up"
-                             data-aos-delay="200">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                3
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    Üçüncü Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4"
-                             data-aos="fade-up"
-                             data-aos-delay="300">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                4
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    Dördüncü Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
+                                sayac++;
+                            }
                         </div>
                     </div>
-                </div>
-                <div id="e-muhur"
-                     class="tab-pane bg-primary-gray rounded-5 shadow-md md:py-16 md:px-10 py-4 px-4 overflow-hidden">
-                    <div class="grid md:grid-cols-2 md:grid-rows-2 grid-cols-1 md:gap-7 gap-4 xl:px-20 px-0">
-                        <div class="flex gap-4" data-aos="fade-up">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                1
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    Birinci Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 md:col-start-1 md:row-start-2"
-                             data-aos="fade-up"
-                             data-aos-delay="100">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                2
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    İkinci Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 md:col-start-2 md:row-start-1"
-                             data-aos="fade-up"
-                             data-aos-delay="200">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                3
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    Üçüncü Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-4"
-                             data-aos="fade-up"
-                             data-aos-delay="300">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-3xl shrink-0 font-medium text-primary-red">
-                                4
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div class="text-primary-dark text-2xl font-semibold">
-                                    Dördüncü Adım
-                                </div>
-                                <div class="text-primary-dark text-base">
-                                    Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit. Ut elit
-                                    tellus, luctus nec ullamcorper
-                                    mattis, pulvinar dapibus leo. Lorem
-                                    ipsum dolor sit amet. Lorem ipsum
-                                    dolor sit amet.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>

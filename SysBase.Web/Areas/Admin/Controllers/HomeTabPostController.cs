@@ -11,30 +11,29 @@ using SysBase.Core.Services;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
 
+
 namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class HomeProductController : BaseController
+    public class HomeTabPostController : BaseController
     {
-        // HomeProductController specific dependencies
-        protected readonly IService<HomeProduct> _service;
-        protected readonly IService<HomeProductLanguageInfo> _pageLanguageInfoService;
+        // HomeTabPostController specific dependencies
+        protected readonly IService<HomeTabPost> _service;
+        protected readonly IService<HomeTabPostLanguageInfo> _homeTabPostLanguageInfoService;
+        protected readonly IService<HomeTabPostLanguageInfoContent> _homeTabPostLanguageInfoContentService;
         protected readonly IService<Language> _languageService;
-        protected readonly IService<Config> _configService;
-        protected readonly IService<HomeProductSequence> _homeProductSequenceService;
-        protected readonly ILogger<HomeProductController> _logger;
+        protected readonly ILogger<HomeTabPostController> _logger;
 
-        public HomeProductController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<HomeProduct> service, IService<HomeProductLanguageInfo> pageLanguageInfoService,
-                              IService<Config> configService, IService<HomeProductSequence> homeProductSequenceService,
-                              IService<Language> languageService, ILogger<HomeProductController> logger) : base(localizer, userManager)
+        public HomeTabPostController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<HomeTabPost> service, IService<HomeTabPostLanguageInfo> homeTabPostLanguageInfoService,
+                              IService<HomeTabPostLanguageInfoContent> homeTabPostLanguageInfoContentService,
+                              IService<Language> languageService, ILogger<HomeTabPostController> logger) : base(localizer, userManager)
         {
             _service = service;
-            _pageLanguageInfoService = pageLanguageInfoService;
+            _homeTabPostLanguageInfoService = homeTabPostLanguageInfoService;
+            _homeTabPostLanguageInfoContentService = homeTabPostLanguageInfoContentService;
             _languageService = languageService;
-            _configService = configService;
-            _homeProductSequenceService = homeProductSequenceService;
             _logger = logger;
         }
 
@@ -47,22 +46,25 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            HomeProduct model = null;
+            HomeTabPost model = null;
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.HomeProductLanguageInfos = await _pageLanguageInfoService.Where(x => x.HomeProductId == model.Id).ToListAsync();
+                model.HomeTabPostLanguageInfos = await _homeTabPostLanguageInfoService
+                    .Where(x => x.HomeTabPostId == model.Id)
+                    .Include(x => x.HomeTabPostLanguageInfoContents)
+                    .ToListAsync();
             }
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new HomeProductAddViewModel { MenuPermission = menuPermission, HomeProduct = model, Languages = await _languageService.GetAllAsync() });
+            return View(new HomeTabPostAddViewModel { MenuPermission = menuPermission, HomeTabPost = model, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(HomeProduct model)
+        public async Task<IActionResult> Add(HomeTabPost model)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -71,7 +73,13 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            HomeProduct isControl;
+            HomeTabPost existingBlog = null;
+            if (model.Id != 0)
+            {
+                existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+            }
+
+            HomeTabPost isControl;
             if (model.Id != 0)  // Güncelleme işlemi
             {
                 model.UpdatedDate = DateTime.Now;
@@ -108,7 +116,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
 
-            return View(new HomeProductAddViewModel { MenuPermission = menuPermission, HomeProduct = model, Languages = await _languageService.GetAllAsync() });
+            return View(new HomeTabPostAddViewModel { MenuPermission = menuPermission, HomeTabPost = model, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -126,14 +134,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(
-                new HomeProductListViewModel 
-                { 
-                    MenuPermission = menuPermission, 
-                    HomeProductLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HomeProduct).ToListAsync(),
-                    Config = await _configService.GetByIdAsync(1),
-                    HomeProductSequences = await _homeProductSequenceService.GetAllAsync()
-                });
+            return View(new HomeTabPostListViewModel { MenuPermission = menuPermission, HomeTabPostLanguageInfos = await _homeTabPostLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HomeTabPost).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -142,7 +143,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.HomeProduct.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.HomeProduct).FirstOrDefaultAsync());
+                return View(await _homeTabPostLanguageInfoService.Where(x => x.HomeTabPost.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.HomeTabPost).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -166,7 +167,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                HomeProduct item = await _service.GetByIdAsync(Int32.Parse(Id));
+                HomeTabPost item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);
@@ -182,51 +183,27 @@ namespace SysBase.Web.Areas.Admin.Controllers
             return resultJson;
         }
 
-
         [HttpPost]
-        public async Task<ResultJson> HomeProductSequenceAdd(string Id = null)
+        public async Task<ResultJson> SubUnitRecord(HomeTabPostLanguageInfoContent model)
         {
             ResultJson resultJson = new ResultJson { status = "error" };
 
             try
             {
-                Config isControl = null;
-
-                if (!string.IsNullOrEmpty(Id)) // Id boş değilse
+                HomeTabPostLanguageInfoContent isControl;
+                if (model.Id != 0)
                 {
-                    // string Id'yi int'e dönüştür
-                    if (int.TryParse(Id, out int numericId)) // Güvenli dönüşüm
-                    {
-                        // Önce güncellenecek kaydı bul
-                        var existingConfig = await _configService.GetByIdAsync(1);
-                        if (existingConfig != null)
-                        {
-                            // Güncellenecek alanı değiştir
-                            existingConfig.HomeProductSequenceId = numericId;
+                    // Güncelleme işlemi
+                    isControl = await _homeTabPostLanguageInfoContentService.UpdateAsync(model);
 
-                            // Değişiklikleri kaydet
-                            isControl = await _configService.UpdateAsync(existingConfig);
-                        }
-                        else
-                        {
-                            resultJson.message = "Kayıt bulunamadı.";
-                            return resultJson;
-                        }
-                    }
-                    else
-                    {
-                        resultJson.message = "Geçersiz Id formatı.";
-                        return resultJson;
-                    }
                 }
                 else
                 {
-                    resultJson.message = "Geçersiz Id.";
-                    return resultJson;
+                    isControl = await _homeTabPostLanguageInfoContentService.AddAsync(model);
                 }
 
-                // Güncelleme başarılı mı kontrol et
-                if (isControl != null && isControl.Id != 0)
+                // Veritabanı değişikliklerini kaydetme
+                if (isControl.Id != 0)
                 {
                     resultJson.status = "success";
                 }
@@ -242,6 +219,51 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             return resultJson;
         }
+
+        public async Task<IActionResult> SubUnitList(int id)
+        {
+            var subUnits = await _homeTabPostLanguageInfoContentService
+                .Where(x => x.Sequence > 0)
+                .Include(x => x.HomeTabPostLanguageInfo.HomeTabPost)
+                .Where(x => x.HomeTabPostLanguageInfo.HomeTabPostId == id)
+                .ToListAsync();
+
+            var viewModel = new HomeTabPostLanguageInfoContentSubUnitViewModel
+            {
+                HomeTabPostLanguageInfoContents = subUnits
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<ResultJson> SubUnitDelete(int id)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+
+            try
+            {
+                var item = await _homeTabPostLanguageInfoContentService.GetByIdAsync(id);
+                if (item != null)
+                {
+                    await _homeTabPostLanguageInfoContentService.RemoveAsync(item);
+                    resultJson.status = "success";
+
+                }
+                else
+                {
+                    resultJson.message = "Silinecek kayıt bulunamadı.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultJson.message = $"Hata: {ex.Message}";
+            }
+
+            return resultJson;
+        }
+
+
 
     }
 }

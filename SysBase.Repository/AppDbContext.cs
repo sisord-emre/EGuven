@@ -62,6 +62,9 @@ namespace SysBase.Repository
         public DbSet<HomeProduct> HomeProducts { get; set; }
         public DbSet<HomeProductLanguageInfo> HomeProductLanguageInfos { get; set; }
         public DbSet<HomeProductSequence> HomeProductSequences { get; set; }
+        public DbSet<HomeTabPost> HomeTabPosts { get; set; }
+        public DbSet<HomeTabPostLanguageInfo> HomeTabPostLanguageInfos { get; set; }
+        public DbSet<HomeTabPostLanguageInfoContent> HomeTabPostLanguageInfoContents { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

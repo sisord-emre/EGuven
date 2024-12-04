@@ -14,22 +14,6 @@
                 <div class="card">
                     <div class="card-header custom-page-header">
                         <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Listele"]</h5>
-                        <div class="col-md-8 col-sm-8">
-                            <label for="HomeProductSequenceId" class="form-label">@Localizer["admin.Anasayfa Ürün Dizilimi"]</label>
-                            <select class="select2 form-control block" name="HomeProductSequenceId" id="HomeProductSequenceId" onchange="handleSelectionChange()">
-                                @foreach (HomeProductSequence item in Model.HomeProductSequences)
-                                {
-                                    if (item.Id == Model.Config?.HomeProductSequenceId)
-                                    {
-                                        <option value="@item.Id" selected>@item.Title</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@item.Id">@item.Title</option>
-                                    }
-                                }
-                            </select>
-                        </div>
                         <div class="btn-group" role="group" aria-label="button groups">
                             @if (Model.MenuPermission?.Add)
                             {
@@ -44,9 +28,6 @@
                                     <tr>
                                         <th>@Localizer["admin.ID"]</th>
                                         <th>@Localizer["admin.Başlık"]</th>
-                                        <th>@Localizer["admin.Alt Başlık"]</th>
-                                        <th>@Localizer["admin.Url"]</th>
-                                        <th>@Localizer["admin.Görsel"]</th>
                                         <th>@Localizer["admin.Sırası"]</th>
                                         <th>@Localizer["admin.Durum"]</th>
                                         <th>@Localizer["admin.Kayit Tarihi"]</th>
@@ -54,17 +35,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (HomeProductLanguageInfo item in Model.HomeProductLanguageInfos)
+                                    @foreach (HomeTabPostLanguageInfo item in Model.HomeTabPostLanguageInfos)
                                     {
-                                        <tr id="trSatir-@item.HomeProduct.Id">
-                                            <td>@item.HomeProduct.Id</td>
+                                        <tr id="trSatir-@item.HomeTabPost.Id">
+                                            <td>@item.HomeTabPost.Id</td>
                                             <td>@item.Title</td>
-                                            <td>@item.Description</td>
-                                            <td>@item.Url</td>
-                                            <td>@item.HomeProduct.Image</td>
-                                            <td>@item.HomeProduct.Sequence</td>
+                                            <td>@item.HomeTabPost.Sequence</td>
                                             <td class="text-center">
-                                                @if (item.HomeProduct.Status)
+                                                @if (item.HomeTabPost.Status)
                                                 {
                                                     <div class="badge rounded-pill text-bg-success">@Localizer["admin.Aktif"]</div>
                                                 }
@@ -73,16 +51,16 @@
                                                     <div class="badge rounded-pill text-bg-danger">@Localizer["admin.Pasif"]</div>
                                                 }
                                             </td>
-                                            <td data-sort="@item.HomeProduct.CreatedDate.ToString("yyyyMMddHHmmssfff")">@item.HomeProduct.CreatedDate</td>
+                                            <td data-sort="@item.HomeTabPost.CreatedDate.ToString("yyyyMMddHHmmssfff")">@item.HomeTabPost.CreatedDate</td>
                                             <td style="text-align:center">
                                                 <div class="btn-group btn-group-sm" role="group">
                                                     @if (Model.MenuPermission?.Edit)
                                                     {
-                                                        <button type="button" onclick="GetPage('0','@addUrl','@item.HomeProduct.Id');" class="btn btn-success edit-button">@Localizer["admin.Düzenle"]</button>
+                                                        <button type="button" onclick="GetPage('0','@addUrl','@item.HomeTabPost.Id');" class="btn btn-success edit-button">@Localizer["admin.Düzenle"]</button>
                                                     }
                                                     @if (Model.MenuPermission?.Delete)
                                                     {
-                                                        <button type="button" onclick="dataDelete('0','@item.HomeProduct.Id');" class="btn btn-danger">@Localizer["admin.Sil"]</button>
+                                                        <button type="button" onclick="dataDelete('0','@item.HomeTabPost.Id');" class="btn btn-danger">@Localizer["admin.Sil"]</button>
                                                     }
                                                 </div>
                                             </td>
@@ -103,29 +81,6 @@
 </div>
 <partial name="/Areas/Admin/Views/Shared/_ListScripts.cshtml" />
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#HomeProductSequenceId').select2();
-    });
-
-    function handleSelectionChange() {
-        const Id = document.getElementById('HomeProductSequenceId').value;
-        $.ajax({
-            type: "POST",
-            url: "Admin/HomeProduct/HomeProductSequenceAdd",
-            data: { 'Id': Id },
-            success: function (res) {
-                if (res.status == "success") {
-                    GetPage('0', '@listUrl')
-                } else {
-                    alert(res.message);
-                }
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("Result: " + status + " Status: " + jqXHR.status);
-            }
-        });
-    }
-
     function dataDetail(Id) {
         document.getElementById("detay-" + Id).disabled = true;
         $.ajax({

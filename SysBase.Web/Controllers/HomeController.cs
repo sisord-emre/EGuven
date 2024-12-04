@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
-using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
-using SysBase.Repository.Migrations;
 using SysBase.Web.Models;
 using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
@@ -27,12 +24,15 @@ namespace SysBase.Web.Controllers
         protected readonly IService<Brand> _brandService;
         protected readonly IService<BlogLanguageInfo> _blogLanguageInfoService;
         protected readonly IService<HelperVideoLanguageInfo> _helperVideoLanguageInfoService;
+        protected readonly IService<HomeProductLanguageInfo> _homeProductLanguageInfoService;
+        protected readonly IService<HomeTabPostLanguageInfo> _homeTabPostLanguageInfoService;
 
         public HomeController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
             ILogger<HomeController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
             IService<Language> languageService, IService<Slider> sliderService, IService<QuickMenu> quickMenuService,
             IService<AnnouncementLanguageInfo> announcementService, IService<Brand> brandService,
-            IService<BlogLanguageInfo> blogLanguageInfoService, IService<HelperVideoLanguageInfo> helperVideoLanguageInfoService)
+            IService<BlogLanguageInfo> blogLanguageInfoService, IService<HelperVideoLanguageInfo> helperVideoLanguageInfoService,
+            IService<HomeProductLanguageInfo> homeProductLanguageInfoService, IService<HomeTabPostLanguageInfo> homeTabPostLanguageInfoService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -45,6 +45,8 @@ namespace SysBase.Web.Controllers
             _brandService = brandService;
             _blogLanguageInfoService = blogLanguageInfoService;
             _helperVideoLanguageInfoService = helperVideoLanguageInfoService;
+            _homeProductLanguageInfoService = homeProductLanguageInfoService;
+            _homeTabPostLanguageInfoService = homeTabPostLanguageInfoService;
         }
 
 
@@ -79,7 +81,13 @@ namespace SysBase.Web.Controllers
                 Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
                 BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Blog.HomeVisibility).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).ToListAsync(),
                 HelperVideoLanguageInfos = _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.HomeVisibility).Include(x => x.HelperVideo).ToList(),
-                HelperVideoLanguageInfo = await _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.MasterVideo).Include(x => x.HelperVideo).FirstOrDefaultAsync()
+                HelperVideoLanguageInfo = await _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.MasterVideo).Include(x => x.HelperVideo).FirstOrDefaultAsync(),
+                HomeProductLanguageInfos = await _homeProductLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HomeProduct).ToListAsync(),
+                HomeTabPostLanguageInfos = await _homeTabPostLanguageInfoService
+                    .Where(x => x.Language.Code == langCode.ToString() && x.Status && x.HomeTabPost.Status)
+                    .Include(x => x.HomeTabPost)
+                    .Include(x => x.HomeTabPostLanguageInfoContents)
+                    .ToListAsync()
             };
 
             return View(model);

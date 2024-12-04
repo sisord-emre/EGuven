@@ -42,5 +42,6 @@ namespace SysBase.Core.Models
         public string Instagram { get; set; }
         public string Linkedin { get; set; }
         public string Youtube { get; set; }
+        public int HomeProductSequenceId { get; set; }
     }
 }

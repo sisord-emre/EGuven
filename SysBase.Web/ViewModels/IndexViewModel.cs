@@ -10,5 +10,7 @@ namespace SysBase.Web.ViewModels
         public List<BlogLanguageInfo> BlogLanguageInfos { get; set; }
         public List<HelperVideoLanguageInfo> HelperVideoLanguageInfos { get; set; }
         public HelperVideoLanguageInfo HelperVideoLanguageInfo { get; set; }
+        public List<HomeProductLanguageInfo> HomeProductLanguageInfos { get; set; }
+        public List<HomeTabPostLanguageInfo> HomeTabPostLanguageInfos { get; set; }
     }
 }
