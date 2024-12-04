@@ -84,7 +84,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 var file = uploadedFiles.FirstOrDefault(f => f.Name == $"SoftwareLanguageInfos[{i}].File");
                 if (file != null && file.Length > 0)
                 {
-                    string[] allowedExtensions = { ".pdf", ".xls", ".xlsx", ".doc", ".docx", ".txt" };
+                    string[] allowedExtensions = { ".exe", ".zip", ".rar" };
                     model.SoftwareLanguageInfos[i].File = await functions.FileUpload(file, "Images/Software", Guid.NewGuid().ToString("N"), allowedExtensions);
                 }
             }
