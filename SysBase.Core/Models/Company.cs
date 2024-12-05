@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SysBase.Core.Models
 {
@@ -17,5 +12,6 @@ namespace SysBase.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//sadece insert ederken çalış
         public DateTime CreatedDate { get; set; } = DateTime.Now;//otomatik olarak tarih atar
         public List<Project> Projects { get; set; }
+        public List<CompanyInvoice> CompanyInvoices { get; set; }
     }
 }

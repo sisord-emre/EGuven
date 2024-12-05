@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -48,5 +49,14 @@ namespace SysBase.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//sadece insert ederken çalış
         public DateTime CreatedDate { get; set; } = DateTime.Now;//otomatik olarak tarih atar
         public Company Company { get; set; }
+        [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
+        public DateTime StartDate { get; set; }
+        [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
+        public DateTime EndDate { get; set; }
+        public string Image { get; set; }
+        public bool PaymetForm { get; set; }
+        public bool InvoiceInfoIsVisible { get; set; }
     }
 }
