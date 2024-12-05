@@ -11,5 +11,6 @@ namespace SysBase.Core.Models
         [DataType(DataType.MultilineText)]
         public string FullAddress { get; set; }
         public Company Company { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }

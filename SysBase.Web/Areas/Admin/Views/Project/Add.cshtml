@@ -3,6 +3,11 @@
     string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
     string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
     string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+    List<CompanyInvoice> companyInvoices = Model.CompanyInvoices;
+    if (Model.Project?.CompanyId != null && Model.Project?.CompanyId != 0)
+    {
+        companyInvoices = companyInvoices.Where(x => x.CompanyId == Model.Project?.CompanyId).ToList();
+    }
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -63,6 +68,59 @@
                                             }
                                         }
                                     </select>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="CompanyInvoiceId" class="form-label">@Localizer["admin.Firma Fatura Adresi"]</label>
+                                    <select class="select2 form-control block" name="CompanyInvoiceId" id="CompanyInvoiceId">
+                                        <option>@Localizer["admin.Seçiniz"]</option>
+                                        @foreach (CompanyInvoice companyInvoice in companyInvoices)
+                                        {
+
+                                            if (Model.Project?.CompanyInvoiceId == companyInvoice.Id)
+                                            {
+                                                <option value="@companyInvoice.Id" selected>@companyInvoice.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@companyInvoice.Id">@companyInvoice.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-3 col-sm-10">
+                                    <label for="Image" class="form-label">@Localizer["admin.Görseli"] (1440x600px)</label>
+                                    <input class="form-control" type="file" name="Image" id="Image" />
+                                </div>
+                                <div class="mb-3 col-md-1 col-sm-2">
+                                    @if (Model.Project?.Image != null)
+                                    {
+                                        <a href="/Images/Project/@Model.Project?.Image" target="_blank">
+                                            <img src="/Images/Project/@Model.Project?.Image" style="width: 100%" />
+                                        </a>
+                                        <input class="form-control" type="hidden" name="Image" id="Image" value="@Model.Project?.Image" />
+                                    }
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="StartDate" class="form-label">@Localizer["admin.Başlangıç Tarihi"]</label>
+                                    <input class="form-control" type="date" name="StartDate" id="StartDate" value="@Model.Project?.StartDate.ToString("yyyy-MM-dd")" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="EndDate" class="form-label">@Localizer["admin.Bitiş Tarihi"]</label>
+                                    <input class="form-control" type="date" name="EndDate" id="EndDate" value="@Model.Project?.EndDate.ToString("yyyy-MM-dd")" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="PaymetForm" class="form-label">@Localizer["admin.Ödeme Sayfası"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="PaymetForm" id="PaymetForm" value="True" @(Model.Project?.PaymetForm == true ? "checked" : "") />
+                                        <label class="form-check-label" for="PaymetForm">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="InvoiceInfoIsVisible" class="form-label">@Localizer["admin.Fatura Bilgileri"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="InvoiceInfoIsVisible" id="InvoiceInfoIsVisible" value="True" @(Model.Project?.InvoiceInfoIsVisible == true ? "checked" : "") />
+                                        <label class="form-check-label" for="InvoiceInfoIsVisible">@Localizer["admin.Görünür"]</label>
+                                    </div>
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
@@ -280,6 +338,30 @@
 </section>
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
 <script type="text/javascript">
+    $('#CompanyId').change(function () {
+        var id = $('#CompanyId').val();
+        $('#CompanyInvoiceId').empty();
+        if (id == "") {
+            return false;
+        }
+        var data = new FormData();
+        data.append("id", id);
+        $.ajax({
+            type: "POST",
+            url: "Admin/@ViewContext.RouteData.Values["controller"].ToString()/CompanyInvoicesSelect",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#CompanyInvoiceId').append(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+
+
     $(".editorCk").each(function () {
         let editorId = $(this).attr('id');
         CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır

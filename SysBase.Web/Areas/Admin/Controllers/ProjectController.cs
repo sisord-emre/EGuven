@@ -19,15 +19,17 @@ namespace SysBase.Web.Areas.Admin.Controllers
         // PageController specific dependencies
         protected readonly IService<Project> _service;
         protected readonly IService<Company> _companyService;
+        protected readonly IService<CompanyInvoice> _companyInvoiceService;
         protected readonly ILogger<ProjectController> _logger;
 
         public ProjectController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Project> service, IService<Company> companyService, ILogger<ProjectController> logger)
+                              IService<Project> service, IService<Company> companyService, ILogger<ProjectController> logger, IService<CompanyInvoice> companyInvoiceService)
             : base(localizer, userManager)
         {
             _service = service;
             _companyService = companyService;
             _logger = logger;
+            _companyInvoiceService = companyInvoiceService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -56,7 +58,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     MenuPermission = menuPermission,
                     Project = model,
-                    Companys = await _companyService.Where(x => x.Status).ToListAsync()
+                    Companys = await _companyService.Where(x => x.Status).ToListAsync(),
+                    CompanyInvoices = await _companyInvoiceService.Where(x => x.Status).ToListAsync()
                 }
             );
         }
@@ -109,7 +112,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     MenuPermission = menuPermission,
                     Project = model,
-                    Companys = await _companyService.Where(x => x.Status).ToListAsync()
+                    Companys = await _companyService.Where(x => x.Status).ToListAsync(),
+                    CompanyInvoices = await _companyInvoiceService.Where(x => x.Status).ToListAsync()
                 }
             );
         }
@@ -166,6 +170,17 @@ namespace SysBase.Web.Areas.Admin.Controllers
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, Id));
 
             return resultJson;
+        }
+
+        [HttpPost]
+        public async Task<String> CompanyInvoicesSelect(int id)
+        {
+            string selectOptionList = "<option>" + _localizer["admin.Seçiniz"].Value + "</option>";
+            foreach (CompanyInvoice item in await _companyInvoiceService.Where(x => x.Status && x.CompanyId == id).ToListAsync())
+            {
+                selectOptionList += "<option value='" + item.Id + "'>" + item.Name + "</option>";
+            }
+            return selectOptionList;
         }
     }
 }

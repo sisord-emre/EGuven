@@ -20,13 +20,15 @@ namespace SysBase.Web.Areas.Admin.Controllers
         // PageController specific dependencies
         protected readonly IService<Company> _service;
         protected readonly ILogger<CompanyController> _logger;
+        protected readonly IService<CompanyInvoice> _companyInvoiceService;
 
         public CompanyController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Company> service, ILogger<CompanyController> logger)
+                              IService<Company> service, ILogger<CompanyController> logger, IService<CompanyInvoice> companyInvoiceService)
             : base(localizer, userManager)
         {
             _service = service;
             _logger = logger;
+            _companyInvoiceService = companyInvoiceService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -55,9 +57,9 @@ namespace SysBase.Web.Areas.Admin.Controllers
             (
                 new CompanyAddViewModel
                 {
-                    MenuPermission = menuPermission, 
-                    Company = model, 
-                    UsersInCorporateSalesRepresentative = (List<AppUser>)usersInCorporateSalesRepresentative, 
+                    MenuPermission = menuPermission,
+                    Company = model,
+                    UsersInCorporateSalesRepresentative = (List<AppUser>)usersInCorporateSalesRepresentative,
                     UsersInOperationRepresentative = (List<AppUser>)usersInOperationRepresentative
                 }
             );
@@ -105,9 +107,9 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             return View
             (
-                new CompanyAddViewModel 
-                { 
-                    MenuPermission = menuPermission, 
+                new CompanyAddViewModel
+                {
+                    MenuPermission = menuPermission,
                     Company = model,
                     UsersInCorporateSalesRepresentative = (List<AppUser>)usersInCorporateSalesRepresentative,
                     UsersInOperationRepresentative = (List<AppUser>)usersInOperationRepresentative
@@ -127,16 +129,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
             //log işleme alanı
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
-            
+
             // Şartlara göre kullanıcıları filtrele
             var usersInCorporateSalesRepresentative = await _userManager.GetUsersInRoleAsync("Kurumsal Satış Temsilcisi");
             var usersInOperationRepresentative = await _userManager.GetUsersInRoleAsync("Firma Operasyon Temsilcisi");
 
             return View
             (
-                new CompanyListViewModel 
-                { 
-                    MenuPermission = menuPermission, 
+                new CompanyListViewModel
+                {
+                    MenuPermission = menuPermission,
                     Companys = await _service.ToListAsync(),
                     UsersInCorporateSalesRepresentative = (List<AppUser>)usersInCorporateSalesRepresentative,
                     UsersInOperationRepresentative = (List<AppUser>)usersInOperationRepresentative
@@ -170,6 +172,71 @@ namespace SysBase.Web.Areas.Admin.Controllers
             //log işleme alanı
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, Id));
+
+            return resultJson;
+        }
+
+
+        [HttpPost]
+        public async Task<ResultJson> SubUnitRecord(CompanyInvoice model)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+            try
+            {
+                CompanyInvoice isControl;
+                if (model.Id != 0)
+                {
+                    // Güncelleme işlemi
+                    isControl = await _companyInvoiceService.UpdateAsync(model);
+                }
+                else
+                {
+                    isControl = await _companyInvoiceService.AddAsync(model);
+                }
+                // Veritabanı değişikliklerini kaydetme
+                if (isControl.Id != 0)
+                {
+                    resultJson.status = "success";
+                }
+                else
+                {
+                    resultJson.message = "Bir hata oluştu.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultJson.message = $"Hata: {ex.Message}";
+            }
+
+            return resultJson;
+        }
+
+        public async Task<IActionResult> SubUnitList(int id)
+        {
+            return View(await _companyInvoiceService.Where(x => x.CompanyId == id).ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<ResultJson> SubUnitDelete(int id)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+            try
+            {
+                var item = await _companyInvoiceService.GetByIdAsync(id);
+                if (item != null)
+                {
+                    await _companyInvoiceService.RemoveAsync(item);
+                    resultJson.status = "success";
+                }
+                else
+                {
+                    resultJson.message = "Silinecek kayıt bulunamadı.";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultJson.message = $"Hata: {ex.Message}";
+            }
 
             return resultJson;
         }

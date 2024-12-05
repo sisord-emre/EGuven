@@ -27,7 +27,7 @@
                 <!-- HTML Input Types -->
                 <div class="card">
                     <div class="card-header custom-page-header">
-                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <h5>@Localizer["admin."+ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
                             @if (Model.MenuPermission?.Add)
                             {
@@ -96,6 +96,64 @@
                     </form>
                 </div>
             </div>
+
+            @if (Model.Company?.Id != 0 && Model.Company?.Id != null)
+            {
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Firma Fatura Bilgisi Ekle"]</h4>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <form id="subUnitPost" class="form" action="" method="post" autocomplete="off">
+                                    <div class="form-body">
+                                        <div class="row">
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="Name" class="form-label">@Localizer["admin.Adı"]</label>
+                                                <input class="form-control" type="text" name="Name" id="Name" value="" autocomplete="off" required />
+                                            </div>
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="Status" id="CompanyInvoiceStatus" value="True" />
+                                                    <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                <label for="FullAddress" class="form-label">@Localizer["admin.Tam Adres"]</label>
+                                                <textarea id="FullAddress" name="FullAddress" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <input type="hidden" name="Id" id="Id" value="" />
+                                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">@Localizer["admin.Firma Fatura Bilgileri"]</h4>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard" id="subUnitList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        SubUnitList('@Model.Company?.Id');
+                    });
+                </script>
+            }
             <!-- [ form-element ] end -->
         </div>
         <!-- [ Main Content ] end -->
@@ -134,4 +192,68 @@
             }
         });
     });
+
+    //Alt Birim
+    $('#subUnitPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        data.append("CompanyId", '@Model.Company?.Id');
+        $.ajax({
+            type: "POST",
+            url: "Admin/@ViewContext.RouteData.Values["controller"].ToString()/SubUnitRecord",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.status == "success") {
+                    document.getElementById("subUnitPost").reset();
+                    SubUnitList('@Model.Company?.Id');
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+
+    function SubUnitList(Id) {
+        $.ajax({
+            type: "POST",
+            url: "Admin/@ViewContext.RouteData.Values["controller"].ToString()/SubUnitList",
+            data: { 'Id': Id },
+            success: function (res) {
+                $('#subUnitList').html(res);
+            }
+        });
+    }
+
+    function SubUnitUpdate(Id, Title, Status, FullAddress) {
+        $('#subUnitPost').find('#Id').val(Id)
+        $('#subUnitPost').find('#Title').val(Title)
+        if (Status === true || Status === "True") {
+            $('#subUnitPost').find('#CompanyInvoiceStatus').prop('checked', true)
+        } else {
+            $('#subUnitPost').find('#CompanyInvoiceStatus').prop('checked', false)
+        }
+        $('#subUnitPost').find('#FullAddress').val(FullAddress)
+    }
+
+    function SubUnitDelete(Id) {
+        if (confirm('Silmek İstediğinize Emin misiniz ?')) {
+            $.ajax({
+                type: "POST",
+                url: "Admin/@ViewContext.RouteData.Values["controller"].ToString()/SubUnitDelete",
+                data: { 'Id': Id },
+                success: function (res) {
+                    if (res.status == "success") {
+                        document.getElementById("lineSubUnit_" + Id).style.display = "none";
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        }
+    }
 </script>

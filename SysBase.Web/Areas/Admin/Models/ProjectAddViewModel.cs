@@ -7,5 +7,6 @@ namespace SysBase.Web.Areas.Admin.Models
         public MenuPermission MenuPermission { get; set; }
         public Project Project { get; set; }
         public List<Company> Companys { get; set; }
+        public List<CompanyInvoice> CompanyInvoices { get; set; }
     }
 }

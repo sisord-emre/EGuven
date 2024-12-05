@@ -58,5 +58,7 @@ namespace SysBase.Core.Models
         public string Image { get; set; }
         public bool PaymetForm { get; set; }
         public bool InvoiceInfoIsVisible { get; set; }
+        public int CompanyInvoiceId { get; set; }
+        public CompanyInvoice CompanyInvoice { get; set; }
     }
 }
