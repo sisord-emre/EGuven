@@ -1,0 +1,217 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ form-element ] start -->
+            <div class="col-sm-12">
+                <!-- HTML Input Types -->
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <div class="btn-group" role="group" aria-label="button groups">
+                            @if (Model.MenuPermission?.Add)
+                            {
+                                <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
+                            }
+                        </div>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Title" class="form-label">@Localizer["admin.Başlık"]</label>
+                                    <input class="form-control close-capitalized" type="text" name="Title" id="Title" value="@Model.BlogType?.Title" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="LanguageId" class="form-label">@Localizer["admin.Dil"]</label>
+                                    <select class="select2 form-control block" name="LanguageId" id="LanguageId" required>
+                                        @foreach (Language item in Model.Languages)
+                                        {
+                                            if (item.Id == Model.BlogType?.LanguageId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.BlogType?.Status == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <input type="hidden" name="Id" value="@Model.BlogType?.Id">
+                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- [ form-element ] end -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.BlogType Düzeni"]</h4>
+                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <select class="select2 form-control block" name="blogTypeLanguageIdOrder" id="blogTypeLanguageIdOrder" onchange="blogTypeLayout();" required>
+                                @foreach (Language item in Model.Languages)
+                                {
+                                    if (item.Id == Model.BlogType?.LanguageId)
+                                    {
+                                        <option value="@item.Id" selected>@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-content collapse show">
+                        <div class="card-body" id="blogTypeLayout">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</section>
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        blogTypeLayout();
+    });
+
+    function blogTypeLayout() {
+        var blogTypeLanguageId = $('#blogTypeLanguageIdOrder').val();
+        var data = new FormData();
+        data.append("menuId", '0');
+        data.append("blogTypeLanguageId", blogTypeLanguageId);
+        $.ajax({
+            type: "POST",
+            url: "Admin/BlogType/BlogTypeLayout",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#blogTypeLayout').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    }
+
+    function blogTypeLayoutAdd() {
+        var blogTypeLayoutList = [];
+        var blogTypeList = document.getElementById("card-drag-area").children;
+        for (var i = 0; i < blogTypeList.length; i++) {
+            blogTypeLayoutList.push(blogTypeList[i].id.split("-")[1]);
+        }
+
+        console.log(blogTypeLayoutList); // Test etmek için konsola yazdır
+
+        // JSON formatında veri gönderelim
+        $.ajax({
+            type: "POST",
+            url: "Admin/BlogType/BlogTypeLayoutAdd", // .NET Core URL formatı
+            contentType: "application/json", // JSON gönderiyoruz
+            data: JSON.stringify({ blogTypeLayoutList: blogTypeLayoutList }), // JSON string'e çeviriyoruz
+            success: function (res) {
+                blogTypeLayout();
+                if (res.success) {
+                    toastr.success(res.message);
+                } else {
+                    alert(res.message);
+                }
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    }
+
+
+
+    function blogTypeSil(Id) {
+        if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
+            $.ajax({
+                type: "POST",
+                url: "Admin/BlogType/Delete",
+                data: { 'Id': Id },
+                success: function (res) {
+                    if (res == 1) {
+                        document.getElementById('blogTypeSatir-' + Id).style.display = "none";
+                    } else {
+                        menuLayout();
+                    }
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        }
+    }
+
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+</script>

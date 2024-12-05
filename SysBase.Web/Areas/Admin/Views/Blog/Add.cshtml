@@ -44,36 +44,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="mb-3 col-md-4 col-sm-12">
-                                    <label for="Type" class="form-label">@Localizer["admin.Type"]</label>
-                                    <select class="select2 form-control block" name="Type" id="Type" style="width:100%!important" required>
-                                        @{
-                                            // Seçeneklerin değer ve metinlerini tutan bir liste oluştur
-                                            var options = new List<(string Value, string Text)>
-                                            {
-                                                ("1", "admin.E-Dönüşümde Değişenler"),
-                                                ("2", "admin.Sözü Dinlenenler"),
-                                                ("3", "admin.E-İmzalı Hayat"),
-                                                ("4", "admin.Raporlardan Görünenler"),
-                                                ("5", "admin.Teknoloji Gündemi")
-                                            };
-                                        }
-                                        <option value="">@Localizer["admin.Seçiniz"]</option>
-                                        @foreach (var option in options)
-                                        {
-                                            if (Model.Blog?.Type == int.Parse(option.Value))
-                                            {
-                                                <option value="@option.Value" selected> @Localizer[@option.Text]</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@option.Value">@Localizer[@option.Text]</option>
-                                            }
-                                        }
-                                    </select>
-                                </div>
-                                <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="BlogTypeId" class="form-label">@Localizer["admin.Type"]</label>
-                                    <select class="select2 form-control block" name="BlogTypeId" id="BlogTypeId" required>
+                                    <select class="select2 form-control block" name="BlogTypeId" id="BlogTypeId" style="width:100%!important" required>
                                         @foreach (BlogType item in Model.BlogTypes)
                                         {
                                             if (item.Id == Model.Blog?.BlogTypeId)

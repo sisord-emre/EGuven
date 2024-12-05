@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,6 @@ using SysBase.Web.Models;
 using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
 using System.Diagnostics;
-using System.Drawing.Printing;
 using System.Globalization;
 
 namespace SysBase.Web.Controllers
@@ -22,10 +20,12 @@ namespace SysBase.Web.Controllers
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
         protected readonly IService<BlogLanguageInfo> _blogLanguageInfoService;
+        protected readonly IService<BlogType> _blogTypeService;
 
         public BlogListRowController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
             ILogger<BlogListRowController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<BlogLanguageInfo> blogLanguageInfoService)
+            IService<QuickMenu> quickMenuService, IService<Language> languageService, IService<BlogLanguageInfo> blogLanguageInfoService,
+            IService<BlogType> blogTypeService)
            : base(localizer, service)
         {
             _logger = logger;
@@ -34,6 +34,7 @@ namespace SysBase.Web.Controllers
             _quickMenuService = quickMenuService;
             _languageService = languageService;
             _blogLanguageInfoService = blogLanguageInfoService;
+            _blogTypeService = blogTypeService;
         }
 
 
@@ -52,6 +53,10 @@ namespace SysBase.Web.Controllers
 
 
             // Sayfalama için toplam blog dil bilgilerini say
+            var blogTypes = await _blogTypeService
+               .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+               .ToListAsync();
+
             var totalBlogLanguageInfos = await _blogLanguageInfoService
                 .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
                 .CountAsync();
@@ -81,6 +86,7 @@ namespace SysBase.Web.Controllers
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 BlogLanguageInfos = blogLanguageInfos,
+                BlogTypes = blogTypes,
                 LastPosts = lastPosts,
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling(totalBlogLanguageInfos / (double)pageSize)

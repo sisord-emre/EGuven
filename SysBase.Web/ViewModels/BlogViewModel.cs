@@ -8,5 +8,6 @@ namespace SysBase.Web.ViewModels
         public List<BlogLanguageInfo> LastPosts { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
+        public List<BlogType> BlogTypes { get; set; }
     }
 }

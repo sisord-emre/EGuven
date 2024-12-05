@@ -29,22 +29,10 @@
         <div class="tab-container">
             <!-- Tab Buttons -->
             <div class="tab-buttons border-b border-tab-inactive">
-                @{
-                    // Seçeneklerin değer ve metinlerini tutan bir liste oluştur
-                    var options = new List<(string Value, string Text)>
-                    {
-                        ("1", "site.E-Dönüşümde Değişenler"),
-                        ("2", "site.Sözü Dinlenenler"),
-                        ("3", "site.E-İmzalı Hayat"),
-                        ("4", "site.Raporlardan Görünenler"),
-                        ("5", "site.Teknoloji Gündemi")
-                    };
-                }
-
-                @foreach (var option in options.Select((value, index) => new { value, index }))
+                @foreach (BlogType item in Model.BlogTypes)
                 {
-                    <button class="tab-button @(option.index == 0 ? "active" : "") py-4 xl:px-12 lg:px-6 px-2 text-sm font-extrabold text-center" data-tab="@option.value.Value">
-                        @Localizer[option.value.Text]
+                    <button class="tab-button @(item.Id == 1 ? "active" : "") py-4 xl:px-12 lg:px-6 px-2 text-sm font-extrabold text-center" data-tab="@item.Id">
+                        @item.Title
                     </button>
                 }
             </div>
@@ -52,22 +40,22 @@
             <div class="grid xl:grid-cols-3 grid-cols-1 gap-4 py-11">
                 <div class="xl:col-span-2">
                     <div class="tab-content">
-                        @foreach (var option in options.Select((value, index) => new { value, index }))
+                        @foreach (BlogType item in Model.BlogTypes)
                         {
-                            <div id="@option.value.Value" class="tab-pane @(option.index == 0 ? "active" : "") overflow-hidden">
+                            <div id="@item.Id" class="tab-pane @(item.Id == 1 ? "active" : "") overflow-hidden">
                                 <div class="grid xl:grid-cols-2 grid-cols-1 gap-x-6 gap-y-12">
-                                    @foreach (BlogLanguageInfo item in Model.BlogLanguageInfos)
+                                    @foreach (BlogLanguageInfo items in Model.BlogLanguageInfos)
                                     {
                                         <div class="group">
-                                            <a href="/blog-detay/@item.Slug" class="relative overflow-hidden flex flex-col w-full gap-4">
+                                            <a href="/blog-detay/@items.Slug" class="relative overflow-hidden flex flex-col w-full gap-4">
                                                 <div class="relative overflow-hidden sm:max-h-72 sm:min-h-72 max-h-full min-h-full">
-                                                    <img class="group-hover:scale-150 transition-all duration-150 ease-linear" src="/Images/Blog/@item.Blog.Image" alt="@item.Title" />
+                                                    <img class="group-hover:scale-150 transition-all duration-150 ease-linear" src="/Images/Blog/@items.Blog.Image" alt="@items.Title" />
                                                     <div class="w-12 h-12 absolute flex flex-col items-center justify-center text-white bg-primary-red p-2 text-center font-bold top-5 left-5">
                                                         <span class="text-2xl">
-                                                            @item.Blog.PublicationTime.ToString("dd")
+                                                            @items.Blog.PublicationTime.ToString("dd")
                                                         </span>
                                                         <span class="text-xs">
-                                                            @item.Blog.PublicationTime.ToString("MMMM", new CultureInfo("tr-TR"))
+                                                            @items.Blog.PublicationTime.ToString("MMMM", new CultureInfo("tr-TR"))
                                                         </span>
                                                     </div>
                                                 </div>
@@ -75,24 +63,24 @@
                                                     <div class="flex items-center gap-1">
                                                         <span class="icon-calendar text-primary-red"></span>
                                                         <span class="text-xs text-blog-content font-medium">
-                                                            @item.Blog.PublicationTime.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))
+                                                            @items.Blog.PublicationTime.ToString("dd MMMM yyyy", new CultureInfo("tr-TR"))
                                                         </span>
                                                     </div>
                                                     <div class="flex items-center gap-1">
                                                         <span class="icon-clock text-primary-red"></span>
                                                         <span class="text-xs text-blog-content font-medium">
-                                                            Tahmini Okuma Süresi: @item.Blog.ReadTime dk
+                                                            Tahmini Okuma Süresi: @items.Blog.ReadTime dk
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <h2 class="text-xl font-semibold text-primary-dark line-clamp-2 max-h-14 min-h-14 overflow-hidden">
-                                                    @item.Title
+                                                    @items.Title
                                                 </h2>
                                                 <div class="text-sm text-blog-content line-clamp-5">
-                                                    @item.Description
+                                                    @items.Description
                                                 </div>
                                             </a>
-                                            <a href="/blog-detay/@item.Slug" class="btn btn-blog-read-more mt-4">Devamını Oku</a>
+                                            <a href="/blog-detay/@items.Slug" class="btn btn-blog-read-more mt-4">Devamını Oku</a>
                                         </div>
                                     }
                                 </div>

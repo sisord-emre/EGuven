@@ -57,7 +57,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new BlogAddViewModel { MenuPermission = menuPermission, Blog = model, Languages = await _languageService.GetAllAsync() });
+            return View(new BlogAddViewModel { MenuPermission = menuPermission, Blog = model, Languages = await _languageService.GetAllAsync(), BlogTypes = await _blogTypeService.Where(x => x.Status).ToListAsync() });
         }
 
         [HttpPost]
@@ -118,7 +118,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
            
 
-            return View(new BlogAddViewModel { MenuPermission = menuPermission, Blog = model, Languages = await _languageService.GetAllAsync() });
+            return View(new BlogAddViewModel { MenuPermission = menuPermission, Blog = model, Languages = await _languageService.GetAllAsync(), BlogTypes = await _blogTypeService.Where(x => x.Status).ToListAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -136,7 +136,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new BlogListViewModel { MenuPermission = menuPermission, BlogLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Blog).ToListAsync() });
+            return View(new BlogListViewModel { MenuPermission = menuPermission, BlogLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Blog).ThenInclude(x => x.BlogType).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)

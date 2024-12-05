@@ -29,6 +29,7 @@
                                         <th>@Localizer["admin.ID"]</th>
                                         <th>@Localizer["admin.Kodu"]</th>
                                         <th>@Localizer["admin.Başlık"]</th>
+                                        <th>@Localizer["admin.Tipi"]</th>
                                         <th>@Localizer["admin.Sırası"]</th>
                                         <th>@Localizer["admin.Durum"]</th>
                                         <th>@Localizer["admin.Kayit Tarihi"]</th>
@@ -42,6 +43,7 @@
                                             <td>@item.Blog.Id</td>
                                             <td>@item.Blog.Code</td>
                                             <td>@item.Title</td>
+                                            <td>@item.Blog.BlogType.Title</td>
                                             <td>@item.Blog.Sequence</td>
                                             <td class="text-center">
                                                 @if (item.Blog.Status)
