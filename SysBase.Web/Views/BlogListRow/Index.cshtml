@@ -44,7 +44,7 @@
                         {
                             <div id="@item.Id" class="tab-pane @(item.Id == 1 ? "active" : "") overflow-hidden">
                                 <div class="grid grid-cols-1 gap-x-6 gap-y-12">
-                                    @foreach (BlogLanguageInfo items in Model.BlogLanguageInfos)
+                                    @foreach (BlogLanguageInfo items in Model.BlogLanguageInfos.Where(x => x.Blog.BlogTypeId == item.Id))
                                     {
                                         <div class="group">
                                             <a href="/blog-detay/@items.Slug"
