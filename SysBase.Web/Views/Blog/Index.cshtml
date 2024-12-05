@@ -56,7 +56,7 @@
                         {
                             <div id="@option.value.Value" class="tab-pane @(option.index == 0 ? "active" : "") overflow-hidden">
                                 <div class="grid xl:grid-cols-2 grid-cols-1 gap-x-6 gap-y-12">
-                                    @foreach (BlogLanguageInfo item in Model.BlogLanguageInfos.Where(x => x.Blog.Type.ToString() == option.value.Value))
+                                    @foreach (BlogLanguageInfo item in Model.BlogLanguageInfos)
                                     {
                                         <div class="group">
                                             <a href="/blog-detay/@item.Slug" class="relative overflow-hidden flex flex-col w-full gap-4">

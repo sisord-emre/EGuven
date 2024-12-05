@@ -30,6 +30,8 @@
                                         <th>@Localizer["admin.Description"]</th>
                                         <th>@Localizer["admin.Sırası"]</th>
                                         <th>@Localizer["admin.Durum"]</th>
+                                        <th>@Localizer["admin.Başlangıç Tarihi"]</th>
+                                        <th>@Localizer["admin.Bitiş Tarihi"]</th>
                                         <th>@Localizer["admin.Kayit Tarihi"]</th>
                                         <th style="width:220px;text-align:center">@Localizer["admin.İşlemler"]</th>
                                     </tr>
@@ -51,6 +53,8 @@
                                                     <div class="badge rounded-pill text-bg-danger">@Localizer["admin.Pasif"]</div>
                                                 }
                                             </td>
+                                            <td data-sort="@item.Announcement.StartDate.ToString("yyyyMMdd")">@item.Announcement.StartDate.ToString("dd.MM.yyyy")</td>
+                                            <td data-sort="@item.Announcement.EndDate.ToString("yyyyMMdd")">@item.Announcement.EndDate.ToString("dd.MM.yyyy")</td>
                                             <td data-sort="@item.Announcement.CreatedDate.ToString("yyyyMMddHHmmssfff")">@item.Announcement.CreatedDate</td>
                                             <td style="text-align:center">
                                                 <div class="btn-group btn-group-sm" role="group">

@@ -71,6 +71,22 @@
                                         }
                                     </select>
                                 </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="BlogTypeId" class="form-label">@Localizer["admin.Type"]</label>
+                                    <select class="select2 form-control block" name="BlogTypeId" id="BlogTypeId" required>
+                                        @foreach (BlogType item in Model.BlogTypes)
+                                        {
+                                            if (item.Id == Model.Blog?.BlogTypeId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Title</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Title</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
                                 <div class="mb-3 col-md-3 col-sm-10">
                                     <label for="Image" class="form-label">@Localizer["admin.Blog Görseli"]</label>
                                     <input class="form-control" type="file" name="Image" id="Image" />

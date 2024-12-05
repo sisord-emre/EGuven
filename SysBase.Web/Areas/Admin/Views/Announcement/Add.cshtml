@@ -48,6 +48,14 @@
                                     <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Announcement?.Sequence" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="StartDate" class="form-label">@Localizer["admin.Başlangıç Tarihi"]</label>
+                                    <input class="form-control" type="date" name="StartDate" value="@Model.Announcement?.StartDate?.ToString("yyyy-MM-dd")" id="demo-date-only" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="EndDate" class="form-label">@Localizer["admin.Bitiş Tarihi"]</label>
+                                    <input class="form-control" type="date" name="EndDate" value="@Model.Announcement?.EndDate?.ToString("yyyy-MM-dd")" id="demo-date-only" />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.Announcement?.Status == true ? "checked" : "") />

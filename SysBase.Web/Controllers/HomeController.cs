@@ -77,7 +77,13 @@ namespace SysBase.Web.Controllers
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 Sliders = _sliderService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList(),
-                Announcements = _announcementService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Announcement.Sequence).ToList(),
+                Announcements = _announcementService
+                    .Where(x => x.Status
+                                && x.Language.Code == CultureInfo.CurrentCulture.Name
+                                && x.Announcement.StartDate <= DateTime.Now
+                                && x.Announcement.EndDate >= DateTime.Now)
+                    .OrderBy(x => x.Announcement.Sequence)
+                    .ToList(),
                 Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
                 BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Blog.HomeVisibility).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).ToListAsync(),
                 HelperVideoLanguageInfos = _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.HomeVisibility).Include(x => x.HelperVideo).ToList(),

@@ -4,15 +4,12 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
-using SysBase.Service.Functions;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
-using System.Diagnostics;
 
 namespace SysBase.Web.Areas.Admin.Controllers
 {
@@ -24,16 +21,19 @@ namespace SysBase.Web.Areas.Admin.Controllers
         protected readonly IService<Blog> _service;
         protected readonly IService<BlogLanguageInfo> _pageLanguageInfoService;
         protected readonly IService<Language> _languageService;
+        protected readonly IService<BlogType> _blogTypeService;
         protected readonly ILogger<BlogController> _logger;
 
         public BlogController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
                               IService<Blog> service, IService<BlogLanguageInfo> pageLanguageInfoService,
-                              IService<Language> languageService, ILogger<BlogController> logger)
+                              IService<Language> languageService, IService<BlogType> blogTypeService, 
+                              ILogger<BlogController> logger)
             : base(localizer, userManager)
         {
             _service = service;
             _pageLanguageInfoService = pageLanguageInfoService;
             _languageService = languageService;
+            _blogTypeService = blogTypeService;
             _logger = logger;
         }
 
