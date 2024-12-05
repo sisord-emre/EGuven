@@ -62,13 +62,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Project model)
+        public async Task<IActionResult> Add(Project model, IFormFile Image)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
             if (!functions.MenuPermControl(menuPermission, ControllerContext.ActionDescriptor.ActionName))
             {
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
+            }
+
+            if (Image != null && Image.Length > 0)
+            {
+                model.Image = await functions.ImageUpload(Image, "Images/Project", Guid.NewGuid().ToString("N"));
             }
 
             Project isControl;
