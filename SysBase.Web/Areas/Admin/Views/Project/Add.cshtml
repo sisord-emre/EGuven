@@ -8,6 +8,7 @@
     {
         companyInvoices = companyInvoices.Where(x => x.CompanyId == Model.Project?.CompanyId).ToList();
     }
+    List<ProjectProduct> projectProducts = Model.ProjectProducts;
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -57,7 +58,6 @@
                                         <option>@Localizer["admin.Seçiniz"]</option>
                                         @foreach (var company in Model.Companys)
                                         {
-
                                             if (Model.Project?.CompanyId == company.Id)
                                             {
                                                 <option value="@company.Id" selected>@company.Name</option>
@@ -75,7 +75,6 @@
                                         <option>@Localizer["admin.Seçiniz"]</option>
                                         @foreach (CompanyInvoice companyInvoice in companyInvoices)
                                         {
-
                                             if (Model.Project?.CompanyInvoiceId == companyInvoice.Id)
                                             {
                                                 <option value="@companyInvoice.Id" selected>@companyInvoice.Name</option>
@@ -129,6 +128,71 @@
                                         <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
                                     </div>
                                 </div>
+                                <hr />
+                                <div class="row">
+                                    <h4 class="form-label"><b>@Localizer["admin.Satın Alma Paketleri"]</b></h4>
+                                    @{
+                                        int i = 0;
+                                    }
+                                    @foreach (ProductLanguageInfo item in Model.ProductLanguageInfos)
+                                    {
+                                        if (item.Product.Type == 2)
+                                        {
+                                            continue;
+                                        }
+                                        ProjectProduct projectProduct = projectProducts.Where(x => x.ProjectId == Convert.ToInt32(Model.Project?.Id) && x.ProductId == item.Product.Id).FirstOrDefault();
+                                        float amount = item.Product.Amount;
+                                        if (projectProduct?.Product.Amount != null)
+                                        {
+                                            amount = projectProduct.Amount;
+                                        }
+                                        <div class="col-md-3" id="item-@item.Id">
+                                            <div class="card grab" style="border: 1px solid #cacfe7;">
+                                                <div class="card-content">
+                                                    <img class="card-img-top img-fluid" src="/Images/Product/@item.Product.Image" style="height:150px;">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">@item.Title (@item.Product.Year @Localizer["admin.Yıl"])</h4>
+                                                        <input type="hidden" name="ProductInfos[@i].ProductId" value="@item.Product.Id" />
+                                                        <input type="checkbox" class="form-check-input" name="ProductInfos[@i].Secim" id="ProductInfos[@i].Secim" value="True" @(projectProduct != null ? "checked" : "") style="float: right;margin-top: -30px;" />
+                                                        <input class="form-control" type="number" step="0.01" min="0" name="ProductInfos[@i].Amount" id="ProductInfos[@i].Amount" value="@amount" autocomplete="off" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        i++;
+                                    }
+                                </div>
+                                <div class="row">
+                                    <h4 class="form-label"><b>@Localizer["admin.Yenileme Paketleri"]</b></h4>
+                                    @foreach (ProductLanguageInfo item in Model.ProductLanguageInfos)
+                                    {
+                                        if (item.Product.Type == 1)
+                                        {
+                                            continue;
+                                        }
+                                        ProjectProduct projectProduct = projectProducts.Where(x => x.ProjectId == Convert.ToInt32(Model.Project?.Id) && x.ProductId == item.Product.Id).FirstOrDefault();
+                                        float amount = item.Product.Amount;
+                                        if (projectProduct?.Product.Amount != null)
+                                        {
+                                            amount = projectProduct.Amount;
+                                        }
+                                        <div class="col-md-3" id="item-@item.Id">
+                                            <div class="card grab" style="border: 1px solid #cacfe7;">
+                                                <div class="card-content">
+                                                    <img class="card-img-top img-fluid" src="/Images/Product/@item.Product.Image" style="height:150px;">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">@item.Title (@item.Product.Year @Localizer["admin.Yıl"])</h4>
+                                                        <input type="hidden" name="ProductInfos[@i].ProductId" value="@item.Product.Id" />
+                                                        <input type="checkbox" class="form-check-input" name="ProductInfos[@i].Secim" id="ProductInfos[@i].Secim" value="True" @(projectProduct != null ? "checked" : "") style="float: right;margin-top: -30px;" />
+                                                        <input class="form-control" type="number" step="0.01" min="0" name="ProductInfos[@i].Amount" id="ProductInfos[@i].Amount" value="@amount" autocomplete="off" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        i++;
+                                    }
+                                </div>
+                                <hr />
                                 <div class="row">
                                     <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
                                         <p><b>@Localizer["admin.Name"]</b></p>
@@ -348,7 +412,7 @@
         data.append("id", id);
         $.ajax({
             type: "POST",
-            url: "Admin/@ViewContext.RouteData.Values["controller"].ToString()/CompanyInvoicesSelect",
+            url: "/Admin/@ViewContext.RouteData.Values["controller"].ToString()/CompanyInvoicesSelect",
             data: data,
             contentType: false,
             processData: false,

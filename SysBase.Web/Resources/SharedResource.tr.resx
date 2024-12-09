@@ -219,4 +219,7 @@
   <data name="admin.Marka Listele"><value>Marka Listele</value></data>
   <data name="admin.Marka Ekle"><value>Marka Ekle</value></data>
   <data name="admin.Description"><value>Açıklama</value></data>
+  <data name="admin.Yıl"><value>Yıl</value></data>
+  <data name="admin.Kayıt İşlemi Başarıyle Gerçekleşmiştir."><value>Kayıt İşlemi Başarıyle Gerçekleşmiştir.</value></data>
+  <data name="admin.Hızlı Erişim Menuler"><value>Hızlı Erişim Menuler</value></data>
   </root>

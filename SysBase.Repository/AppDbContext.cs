@@ -32,7 +32,7 @@ namespace SysBase.Repository
         public DbSet<Company> Companys { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<SiteMenu> SiteMenus { get; set; }
-        public DbSet<FooterMenu> FooterMenus{ get; set; }
+        public DbSet<FooterMenu> FooterMenus { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<BlogLanguageInfo> BlogLanguageInfos { get; set; }
@@ -67,8 +67,10 @@ namespace SysBase.Repository
         public DbSet<HomeTabPostLanguageInfoContent> HomeTabPostLanguageInfoContents { get; set; }
         public DbSet<CompanyInvoice> CompanyInvoices { get; set; }
         public DbSet<BlogType> BlogTypes { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductLanguageInfo> ProductLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {         
+        {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
 
             base.OnModelCreating(modelBuilder);

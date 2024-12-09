@@ -60,5 +60,7 @@ namespace SysBase.Core.Models
         public bool InvoiceInfoIsVisible { get; set; }
         public int CompanyInvoiceId { get; set; }
         public CompanyInvoice CompanyInvoice { get; set; }
+        public List<ProjectProduct> ProjectProducts { get; set; }
+        public List<ProjectField> ProjectFields { get; set; }
     }
 }

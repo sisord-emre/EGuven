@@ -145,7 +145,7 @@
         data.append("sliderLanguageId", sliderLanguageId);
         $.ajax({
             type: "POST",
-            url: "Admin/Slider/SliderLayout",
+            url: "/Admin/Slider/SliderLayout",
             data: data,
             contentType: false,
             processData: false,
@@ -170,7 +170,7 @@
         // JSON formatında veri gönderelim
         $.ajax({
             type: "POST",
-            url: "Admin/Slider/SliderLayoutAdd", // .NET Core URL formatı
+            url: "/Admin/Slider/SliderLayoutAdd", // .NET Core URL formatı
             contentType: "application/json", // JSON gönderiyoruz
             data: JSON.stringify({ sliderLayoutList: sliderLayoutList }), // JSON string'e çeviriyoruz
             success: function (res) {
@@ -193,7 +193,7 @@
         if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
             $.ajax({
                 type: "POST",
-                url: "Admin/Slider/Delete",
+                url: "/Admin/Slider/Delete",
                 data: { 'Id': Id },
                 success: function (res) {
                     if (res == 1) {

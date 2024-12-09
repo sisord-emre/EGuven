@@ -111,7 +111,7 @@
         const Id = document.getElementById('HomeProductSequenceId').value;
         $.ajax({
             type: "POST",
-            url: "Admin/HomeProduct/HomeProductSequenceAdd",
+            url: "/Admin/HomeProduct/HomeProductSequenceAdd",
             data: { 'Id': Id },
             success: function (res) {
                 if (res.status == "success") {

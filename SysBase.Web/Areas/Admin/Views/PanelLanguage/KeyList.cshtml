@@ -92,7 +92,7 @@
         $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
         $.ajax({
             type: "POST",
-            url: "Admin/PanelLanguage/KeyAdd",
+            url: "/Admin/PanelLanguage/KeyAdd",
             data: data,
             contentType: false,
             processData: false,
@@ -109,7 +109,7 @@
         if (confirm('Silmek İstediğinize Emin misiniz ?')) {
             $.ajax({
                 type: "GET",
-                url: "Admin/PanelLanguage/KeyDelete",
+                url: "/Admin/PanelLanguage/KeyDelete",
                 data: { 'menuId': menuId, 'Id': Id },
                 success: function (res) {
                     console.log(res);

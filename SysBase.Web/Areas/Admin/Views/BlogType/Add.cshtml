@@ -119,7 +119,7 @@
         data.append("blogTypeLanguageId", blogTypeLanguageId);
         $.ajax({
             type: "POST",
-            url: "Admin/BlogType/BlogTypeLayout",
+            url: "/Admin/BlogType/BlogTypeLayout",
             data: data,
             contentType: false,
             processData: false,
@@ -144,7 +144,7 @@
         // JSON formatında veri gönderelim
         $.ajax({
             type: "POST",
-            url: "Admin/BlogType/BlogTypeLayoutAdd", // .NET Core URL formatı
+            url: "/Admin/BlogType/BlogTypeLayoutAdd", // .NET Core URL formatı
             contentType: "application/json", // JSON gönderiyoruz
             data: JSON.stringify({ blogTypeLayoutList: blogTypeLayoutList }), // JSON string'e çeviriyoruz
             success: function (res) {
@@ -167,7 +167,7 @@
         if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
             $.ajax({
                 type: "POST",
-                url: "Admin/BlogType/Delete",
+                url: "/Admin/BlogType/Delete",
                 data: { 'Id': Id },
                 success: function (res) {
                     if (res == 1) {

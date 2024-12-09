@@ -127,7 +127,7 @@
         data.append("QuickMenuLanguageId", QuickMenuLanguageId);
         $.ajax({
             type: "POST",
-            url: "Admin/QuickMenu/MenuLayout",
+            url: "/Admin/QuickMenu/MenuLayout",
             data: data,
             contentType: false,
             processData: false,
@@ -166,7 +166,7 @@
         data.append("QuickMenuLayout", QuickMenuLayout);
         $.ajax({
             type: "POST",
-            url: "Admin/QuickMenu/MenuLayoutAdd",
+            url: "/Admin/QuickMenu/MenuLayoutAdd",
             data: data,
             contentType: false,
             processData: false,
@@ -188,7 +188,7 @@
         if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
             $.ajax({
                 type: "POST",
-                url: "Admin/QuickMenu/Delete",
+                url: "/Admin/QuickMenu/Delete",
                 data: { 'Id': Id },
                 success: function (res) {
                     if (res == 1) {

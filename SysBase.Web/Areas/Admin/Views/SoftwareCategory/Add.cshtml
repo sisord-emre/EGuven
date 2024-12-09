@@ -285,7 +285,7 @@
         });
         $.ajax({
             type: "POST",
-            url: "Admin/SoftwareCategory/SubUnitRecord",
+            url: "/Admin/SoftwareCategory/SubUnitRecord",
             data: data,
             contentType: false,
             processData: false,
@@ -310,7 +310,7 @@
     function SubUnitList(Id) {
         $.ajax({
             type: "POST",
-            url: "Admin/SoftwareCategory/SubUnitList",
+            url: "/Admin/SoftwareCategory/SubUnitList",
             data: { 'Id': Id },
             success: function (res) {
                 $('#subUnitList').html(res);
@@ -336,7 +336,7 @@
         if (confirm('Silmek İstediğinize Emin misiniz ?')) {
             $.ajax({
                 type: "POST",
-                url: "Admin/SoftwareCategory/SubUnitDelete",
+                url: "/Admin/SoftwareCategory/SubUnitDelete",
                 data: { 'Id': Id },
                 success: function (res) {
                     if (res.status == "success") {

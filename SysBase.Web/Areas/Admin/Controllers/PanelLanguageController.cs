@@ -337,7 +337,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             // ResXResourceWriter nesnesi oluşturuluyor
             using (ResXResourceWriter resxWriter = new ResXResourceWriter(resxFile))
             {
-                foreach (LanguageValuesWithLanguageKeyDto item in languageValuesWithLanguageKeyDtos)
+                foreach (LanguageValuesWithLanguageKeyDto item in languageValuesWithLanguageKeyDtos.OrderBy(x=>x.Id))
                 {
                     // Veriler ekleniyor
                     resxWriter.AddResource(item.LanguageKey.Code, item.Text);

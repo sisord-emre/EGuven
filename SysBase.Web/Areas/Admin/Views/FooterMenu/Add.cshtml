@@ -127,7 +127,7 @@
         data.append("footerMenuLanguageId", footerMenuLanguageId);
         $.ajax({
             type: "POST",
-            url: "Admin/FooterMenu/MenuLayout",
+            url: "/Admin/FooterMenu/MenuLayout",
             data: data,
             contentType: false,
             processData: false,
@@ -166,7 +166,7 @@
         data.append("siteMenuLayout", siteMenuLayout);
         $.ajax({
             type: "POST",
-            url: "Admin/FooterMenu/MenuLayoutAdd",
+            url: "/Admin/FooterMenu/MenuLayoutAdd",
             data: data,
             contentType: false,
             processData: false,
@@ -188,7 +188,7 @@
         if (confirm('Silmek İstediğinize Emin misiniz ? Eğer Alt Menüler Var İse Onlarda Silinecektir.')) {
             $.ajax({
                 type: "POST",
-                url: "Admin/FooterMenu/Delete",
+                url: "/Admin/FooterMenu/Delete",
                 data: { 'Id': Id },
                 success: function (res) {
                     if (res == 1) {

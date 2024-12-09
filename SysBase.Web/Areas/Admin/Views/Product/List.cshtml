@@ -13,7 +13,7 @@
                 <!-- HTML Input Types -->
                 <div class="card">
                     <div class="card-header custom-page-header">
-                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Dil Kodları"]</h5>
+                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Listele"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
                             @if (Model.MenuPermission?.Add)
                             {
@@ -21,39 +21,62 @@
                             }
                         </div>
                     </div>
-                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="mb-3 col-md-6 col-sm-12">
-                                    <label for="Code" class="form-label">@Localizer["admin.Dil Kodu"]</label>
-                                    <input class="form-control close-capitalized" type="text" name="Code" id="Code" value="@Model.LanguageKey?.Code" autocomplete="off" required />
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                <input type="hidden" name="Id" value="@Model.LanguageKey?.Id">
-                                <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
-                            </div>
-                        </div>
-                    </form>
                     <div class="card-body">
                         <div class="dt-responsive table-responsive">
                             <table class="table table-striped table-bordered nowrap" id="listTable">
                                 <thead>
                                     <tr>
-                                        <th style="width:40px;text-align:center">@Localizer["admin.ID"]</th>
-                                        <th>@Localizer["admin.Dil Kodu"]</th>
-                                        <th style="width:120px;text-align:center">@Localizer["admin.İşlemler"]</th>
+                                        <th>@Localizer["admin.ID"]</th>
+                                        <th>@Localizer["admin.Tipi"]</th>
+                                        <th>@Localizer["admin.Başlık"]</th>
+                                        <th>@Localizer["admin.Sırası"]</th>
+                                        <th>@Localizer["admin.Fiyat"]</th>
+                                        <th>@Localizer["admin.Paket Yılı"]</th>
+                                        <th>@Localizer["admin.Durum"]</th>
+                                        <th>@Localizer["admin.Kayit Tarihi"]</th>
+                                        <th style="width:220px;text-align:center">@Localizer["admin.İşlemler"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (LanguageKey item in Model.LanguageKeys)
+                                    @foreach (ProductLanguageInfo item in Model.ProductLanguageInfos)
                                     {
-                                        <tr id="trSatir-@item.Id">
-                                            <td>@item.Id</td>
-                                            <td onclick="kopyala('key-@item.Id',2)" id="key-@item.Id">@item.Code</td>
+                                        <tr id="trSatir-@item.Product.Id">
+                                            <td>@item.Product.Id</td>
+                                            <td>
+                                                @if (item.Product.Type == 1)
+                                                {
+                                                    @Localizer["admin.Satın Alma"]
+                                                }
+                                                else if (item.Product.Type == 2)
+                                                {
+                                                    @Localizer["admin.Yenileme"]
+                                                }
+                                            </td>
+                                            <td>@item.Title</td>
+                                            <td>@item.Product.Sequence</td>
+                                            <td>@item.Product.Amount</td>
+                                            <td>@item.Product.Year</td>
+                                            <td class="text-center">
+                                                @if (item.Product.Status)
+                                                {
+                                                    <div class="badge rounded-pill text-bg-success">@Localizer["admin.Aktif"]</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="badge rounded-pill text-bg-danger">@Localizer["admin.Pasif"]</div>
+                                                }
+                                            </td>
+                                            <td data-sort="@item.Product.CreatedDate.ToString("yyyyMMddHHmmssfff")">@item.Product.CreatedDate</td>
                                             <td style="text-align:center">
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <button type="button" onclick="dataDelete('0','@item.Id');" class="btn btn-danger">@Localizer["admin.Sil"]</button>
+                                                    @if (Model.MenuPermission?.Edit)
+                                                    {
+                                                        <button type="button" onclick="GetPage('0','@addUrl','@item.Product.Id');" class="btn btn-success edit-button">@Localizer["admin.Düzenle"]</button>
+                                                    }
+                                                    @if (Model.MenuPermission?.Delete)
+                                                    {
+                                                        <button type="button" onclick="dataDelete('0','@item.Product.Id');" class="btn btn-danger">@Localizer["admin.Sil"]</button>
+                                                    }
                                                 </div>
                                             </td>
                                         </tr>
@@ -73,43 +96,28 @@
 </div>
 <partial name="/Areas/Admin/Views/Shared/_ListScripts.cshtml" />
 <script type="text/javascript">
-    $(".editorCk").each(function () {
-        let editorId = $(this).attr('id');
-        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
-            height: '350px',
-            extraPlugins: 'forms',
-            uiColor: '#CCEAEE'
-        });
-    });
-
-    $('#formPost').submit(function (e) {
-        e.preventDefault(); //submit postu kesyoruz
-        var data = new FormData(this);
-        $(".editorCk").each(function () {
-            let editorId = $(this).attr('id');
-            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
-        });
-        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+    function dataDetail(Id) {
+        document.getElementById("detay-" + Id).disabled = true;
         $.ajax({
-            type: "POST",
-            url: "/Admin/Language/KeyAdd",
-            data: data,
-            contentType: false,
-            processData: false,
+            type: "GET",
+            url: "@detailUrl",
+            data: { 'Id': Id },
             success: function (res) {
-                $('#Pages').html(res);
+                $('#detailModalDiv').html(res);
+                $("#detailModal").modal("show");
+                document.getElementById("detay-" + Id).disabled = false;
             },
             error: function (jqXHR, status, errorThrown) {
                 alert("Result: " + status + " Status: " + jqXHR.status);
             }
         });
-    });
+    }
 
     function dataDelete(menuId, Id) {
         if (confirm('Silmek İstediğinize Emin misiniz ?')) {
             $.ajax({
                 type: "GET",
-                url: "/Admin/Language/KeyDelete",
+                url: "@deleteUrl",
                 data: { 'menuId': menuId, 'Id': Id },
                 success: function (res) {
                     console.log(res);
@@ -176,9 +184,9 @@
     }
     $(document).ready(function () {
         table = $('#listTable').DataTable({
-            order: [0, 'desc'],
+            order: [1, 'asc'],
             dom: 'Bfrtip',
-            pageLength: -1,
+            pageLength: 25,
             buttons: buttonlar,
         });
     });

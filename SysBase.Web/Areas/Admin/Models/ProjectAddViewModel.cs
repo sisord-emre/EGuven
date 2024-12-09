@@ -8,5 +8,7 @@ namespace SysBase.Web.Areas.Admin.Models
         public Project Project { get; set; }
         public List<Company> Companys { get; set; }
         public List<CompanyInvoice> CompanyInvoices { get; set; }
+        public List<ProductLanguageInfo> ProductLanguageInfos { get; set; }
+        public List<ProjectProduct> ProjectProducts { get; set; }
     }
 }
