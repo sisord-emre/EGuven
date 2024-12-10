@@ -10,5 +10,7 @@ namespace SysBase.Web.Areas.Admin.Models
         public List<CompanyInvoice> CompanyInvoices { get; set; }
         public List<ProductLanguageInfo> ProductLanguageInfos { get; set; }
         public List<ProjectProduct> ProjectProducts { get; set; }
+        public List<FieldGroup> FieldGroups { get; set; }
+        public List<ProjectField> ProjectFields { get; set; }
     }
 }

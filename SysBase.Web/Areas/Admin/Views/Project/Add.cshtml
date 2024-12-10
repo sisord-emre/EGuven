@@ -9,6 +9,8 @@
         companyInvoices = companyInvoices.Where(x => x.CompanyId == Model.Project?.CompanyId).ToList();
     }
     List<ProjectProduct> projectProducts = Model.ProjectProducts;
+    List<FieldGroup> fieldGroups = Model.FieldGroups;
+    List<ProjectField> projectFields = Model.ProjectFields;
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -194,197 +196,52 @@
                                 </div>
                                 <hr />
                                 <div class="row">
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Name"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="NameHideShow" id="NameHideShow" value="True" @(Model.Project?.NameHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="NameHideShow">@Localizer["admin.Göster/Gizle"]</label>
+                                    @{
+                                        i = 0;
+                                    }
+                                    @foreach (FieldGroup item in fieldGroups.Where(x => x.UpId == 0))
+                                    {
+                                        <div class="col-md-12 col-sm-12 mb-4">
+                                            <legend>
+                                                <input type="checkbox" class="form-check-input" name="grupSecGorunurluk-@item.Id" id="grupSecGorunurluk-@item.Id" value="True" />
+                                                <input type="checkbox" class="form-check-input ml-1 mr-1" name="grupSecZorunluluk-@item.Id" id="grupSecZorunluluk-@item.Id" value="True" />
+                                                <u>@Localizer["admin."+item.Title]</u>
+                                            </legend>
+                                            <div class="row">
+                                                @foreach (FieldGroup itemSub in fieldGroups.Where(x => x.UpId == item.Id))
+                                                {
+                                                    <div class="col-md-4 col-sm-6">
+                                                        <fieldset style="border: 1px solid #696969;padding: 8px;border-radius: 6px;">
+                                                            <p>
+                                                                <h5>
+                                                                    <input type="checkbox" class="form-check-input grupGorunurluk-@item.Id" name="sutunSecGorunurluk-@itemSub.Id" id="sutunSecGorunurluk-@itemSub.Id" value="True" />
+                                                                    <input type="checkbox" class="form-check-input ml-1 mr-1 grupZorunluluk-@item.Id" name="sutunSecZorunluluk-@itemSub.Id" id="sutunSecZorunluluk-@itemSub.Id" value="True" />
+                                                                    <b>@Localizer["admin."+itemSub.Title]</b>
+                                                                </h5>
+                                                            </p>
+                                                            @foreach (Field field in itemSub.Fields.Where(x => x.Status))
+                                                            {
+                                                                ProjectField projectField = projectFields.Where(x => x.ProjectId == Convert.ToInt32(Model.Project?.Id) && x.FieldId == field.Id).FirstOrDefault();
+                                                                <p style="margin-bottom:0px"><b>@Localizer["admin."+field.Name]</b></p>
+                                                                <div style="display:inline-flex">
+                                                                    <input type="hidden" name="ProjectFieldViewModels[@i].FieldId" value="@field.Id" />
+                                                                    <div class="form-check" style="margin-right: 1rem;">
+                                                                        <input type="checkbox" class="form-check-input grupGorunurluk-@item.Id sutunGorunurluk-@itemSub.Id" name="ProjectFieldViewModels[@i].Visible" id="sutunGorunurluk-@field.Id" value="True" @(projectField.Visible == true ? "checked" : "") />
+                                                                        <label class="form-check-label" for="sutunGorunurluk-@field.Id">@Localizer["admin.Göster/Gizle"]</label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input type="checkbox" class="form-check-input grupZorunluluk-@item.Id sutunZorunluluk-@itemSub.Id" name="ProjectFieldViewModels[@i].Required" id="sutunZorunluluk-@field.Id" value="True" @(projectField.Required == true ? "checked" : "") />
+                                                                        <label class="form-check-label" for="sutunZorunluluk-@field.Id">@Localizer["admin.Zorunlu Alan"]</label>
+                                                                    </div>
+                                                                </div>
+                                                                i++;
+                                                            }
+                                                        </fieldset>
+                                                    </div>
+                                                }
+                                            </div>
                                         </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="NameRequiredField" id="NameRequiredField" value="True" @(Model.Project?.NameRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="NameRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Surname"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="SurnameHideShow" id="SurnameHideShow" value="True" @(Model.Project?.SurnameHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="SurnameHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="SurnameRequiredField" id="SurnameRequiredField" value="True" @(Model.Project?.SurnameRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="SurnameRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Date Birth"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="DateBirthHideShow" id="DateBirthHideShow" value="True" @(Model.Project?.DateBirthHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="DateBirthHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="DateBirthRequiredField" id="DateBirthRequiredField" value="True" @(Model.Project?.DateBirthRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="DateBirthRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Nationality"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="NationalityHideShow" id="NationalityHideShow" value="True" @(Model.Project?.NationalityHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="NationalityHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="NationalityRequiredField" id="NationalityRequiredField" value="True" @(Model.Project?.NationalityRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="NationalityRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Tckn"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="TcknHideShow" id="TcknHideShow" value="True" @(Model.Project?.TcknHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="TcknHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="TcknRequiredField" id="TcknRequiredField" value="True" @(Model.Project?.TcknRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="TcknRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Email"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="EmailHideShow" id="EmailHideShow" value="True" @(Model.Project?.EmailHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="EmailHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="EmailRequiredField" id="EmailRequiredField" value="True" @(Model.Project?.EmailRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="EmailRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Place Birth"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="PlaceBirthHideShow" id="PlaceBirthHideShow" value="True" @(Model.Project?.PlaceBirthHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="PlaceBirthHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="PlaceBirthRequiredField" id="PlaceBirthRequiredField" value="True" @(Model.Project?.PlaceBirthRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="PlaceBirthRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Identity Card Serial Number"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="IdentityCardSerialNumberHideShow" id="IdentityCardSerialNumberHideShow" value="True" @(Model.Project?.IdentityCardSerialNumberHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="IdentityCardSerialNumberHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="IdentityCardSerialNumberRequiredField" id="IdentityCardSerialNumberRequiredField" value="True" @(Model.Project?.IdentityCardSerialNumberRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="IdentityCardSerialNumberRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Safety Word"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="SafetyWordHideShow" id="SafetyWordHideShow" value="True" @(Model.Project?.SafetyWordHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="SafetyWordHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="SafetyWordRequiredField" id="SafetyWordRequiredField" value="True" @(Model.Project?.SafetyWordRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="SafetyWordRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.City"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="CityHideShow" id="CityHideShow" value="True" @(Model.Project?.CityHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="CityHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="CityRequiredField" id="CityRequiredField" value="True" @(Model.Project?.CityRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="CityRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.County"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="CountyHideShow" id="CountyHideShow" value="True" @(Model.Project?.CountyHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="CountyHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="CountyRequiredField" id="CountyRequiredField" value="True" @(Model.Project?.CountyRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="CountyRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Post Code"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="PostcodeHideShow" id="PostcodeHideShow" value="True" @(Model.Project?.PostcodeHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="PostcodeHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="PostcodeRequiredField" id="PostcodeRequiredField" value="True" @(Model.Project?.PostcodeRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="PostcodeRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Address"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="AddressHideShow" id="AddressHideShow" value="True" @(Model.Project?.AddressHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="AddressHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="AddressRequiredField" id="AddressRequiredField" value="True" @(Model.Project?.AddressRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="AddressRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Phone"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="PhoneHideShow" id="PhoneHideShow" value="True" @(Model.Project?.Status == true ? "checked" : "") />
-                                            <label class="form-check-label" for="PhoneHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="PhoneRequiredField" id="PhoneRequiredField" value="True" @(Model.Project?.Status == true ? "checked" : "") />
-                                            <label class="form-check-label" for="PhoneRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Fax"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="FaxHideShow" id="FaxHideShow" value="True" @(Model.Project?.FaxHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="FaxHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="FaxRequiredField" id="FaxRequiredField" value="True" @(Model.Project?.FaxRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="FaxRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3 col-sm-6" style="padding-top: 10px;">
-                                        <p><b>@Localizer["admin.Gsm"]</b></p>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="GsmHideShow" id="GsmHideShow" value="True" @(Model.Project?.GsmHideShow == true ? "checked" : "") />
-                                            <label class="form-check-label" for="GsmHideShow">@Localizer["admin.Göster/Gizle"]</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" name="GsmRequiredField" id="GsmRequiredField" value="True" @(Model.Project?.GsmRequiredField == true ? "checked" : "") />
-                                            <label class="form-check-label" for="GsmRequiredField">@Localizer["admin.Zorunlu Alan"]</label>
-                                        </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -402,6 +259,40 @@
 </section>
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
 <script type="text/javascript">
+    $('input[type=checkbox]').change(function () {
+        var Id = event.target.id.split("-")[1];
+        console.log(Id);
+        console.log(event.target.id);
+        if (event.target.id.split("-")[0] == "sutunSecGorunurluk") {
+            if (event.target.checked) {
+                $('.sutunGorunurluk-' + Id).prop('checked', true);
+            } else {
+                $('.sutunGorunurluk-' + Id).prop('checked', false);
+            }
+        }
+        else if (event.target.id.split("-")[0] == "sutunSecZorunluluk") {
+            if (event.target.checked) {
+                $('.sutunZorunluluk-' + Id).prop('checked', true);
+            } else {
+                $('.sutunZorunluluk-' + Id).prop('checked', false);
+            }
+        }
+        else if (event.target.id.split("-")[0] == "grupSecGorunurluk") {
+            if (event.target.checked) {
+                $('.grupGorunurluk-' + Id).prop('checked', true);
+            } else {
+                $('.grupGorunurluk-' + Id).prop('checked', false);
+            }
+        }
+        else if (event.target.id.split("-")[0] == "grupSecZorunluluk") {
+            if (event.target.checked) {
+                $('.grupZorunluluk-' + Id).prop('checked', true);
+            } else {
+                $('.grupZorunluluk-' + Id).prop('checked', false);
+            }
+        }
+    });
+
     $('#CompanyId').change(function () {
         var id = $('#CompanyId').val();
         $('#CompanyInvoiceId').empty();

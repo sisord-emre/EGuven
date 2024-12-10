@@ -25,10 +25,12 @@ namespace SysBase.Web.Areas.Admin.Controllers
         protected readonly IService<CompanyInvoice> _companyInvoiceService;
         protected readonly IService<ProductLanguageInfo> _productLanguageInfosService;
         protected readonly IService<ProjectProduct> _projectProductService;
+        protected readonly IService<FieldGroup> _fieldGroupService;
+        protected readonly IService<ProjectField> _projectFieldService;
         protected readonly ILogger<ProjectController> _logger;
 
         public ProjectController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Project> service, IService<Company> companyService, ILogger<ProjectController> logger, IService<CompanyInvoice> companyInvoiceService, IService<ProductLanguageInfo> productLanguageInfosService, IService<ProjectProduct> projectProductService)
+                              IService<Project> service, IService<Company> companyService, ILogger<ProjectController> logger, IService<CompanyInvoice> companyInvoiceService, IService<ProductLanguageInfo> productLanguageInfosService, IService<ProjectProduct> projectProductService, IService<FieldGroup> fieldGroupService, IService<ProjectField> projectFieldService)
             : base(localizer, userManager)
         {
             _service = service;
@@ -37,6 +39,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
             _companyInvoiceService = companyInvoiceService;
             _productLanguageInfosService = productLanguageInfosService;
             _projectProductService = projectProductService;
+            _fieldGroupService = fieldGroupService;
+            _projectFieldService = projectFieldService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -68,6 +72,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 .ThenInclude(x => x.ProductLanguageInfos)
                 .ToListAsync();
             }
+
+            List<ProjectField> projectFields = new List<ProjectField>();
+            if (Id != null)
+            {
+                projectFields = await _projectFieldService
+                 .Where(x => x.ProjectId == Convert.ToInt32(Id))
+                 .Include(x => x.Field)
+                 .ToListAsync();
+            }
+
             return View
             (
                 new ProjectAddViewModel
@@ -77,13 +91,15 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     Companys = await _companyService.Where(x => x.Status).ToListAsync(),
                     CompanyInvoices = await _companyInvoiceService.Where(x => x.Status).ToListAsync(),
                     ProductLanguageInfos = await _productLanguageInfosService.Where(x => x.Status && x.Product.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Product).OrderBy(x => x.Product.Sequence).ToListAsync(),
-                    ProjectProducts = projectProducts
+                    ProjectProducts = projectProducts,
+                    FieldGroups = await _fieldGroupService.Where(x => x.Status).Include(x => x.Fields).ToListAsync(),
+                    ProjectFields = projectFields
                 }
             );
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Project model, IFormFile Image, List<ProductInfoViewModel> ProductInfos)
+        public async Task<IActionResult> Add(Project model, IFormFile Image, List<ProductInfoViewModel> ProductInfos, List<ProjectFieldViewModel> ProjectFieldViewModels)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -142,6 +158,25 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
             await _projectProductService.AddRangeAsync(projectProductList);
 
+
+            List<ProjectField> _projectFieldServiceDilList = await _projectFieldService.Where(x => x.ProjectId == isControl.Id).ToListAsync();
+            if (_projectFieldServiceDilList.Count > 0)
+            {
+                await _projectFieldService.RemoveRangeAsync(_projectFieldServiceDilList);
+            }
+            List<ProjectField> projectFieldList = new List<ProjectField>();
+            foreach (ProjectFieldViewModel productInfo in ProjectFieldViewModels)
+            {
+                ProjectField projectField = new ProjectField();
+                projectField.ProjectId = isControl.Id;
+                projectField.FieldId = productInfo.FieldId;
+                projectField.Visible = productInfo.Visible;
+                projectField.Required = productInfo.Required;
+                projectFieldList.Add(projectField);
+            }
+            await _projectFieldService.AddRangeAsync(projectFieldList);
+
+
             List<ProjectProduct> projectProducts = new List<ProjectProduct>();
             if (isControl.Id != 0)
             {
@@ -151,6 +186,16 @@ namespace SysBase.Web.Areas.Admin.Controllers
                  .ThenInclude(x => x.ProductLanguageInfos)
                  .ToListAsync();
             }
+
+            List<ProjectField> projectFields = new List<ProjectField>();
+            if (isControl.Id != 0)
+            {
+                projectFields = await _projectFieldService
+                 .Where(x => x.ProjectId == Convert.ToInt32(isControl.Id))
+                 .Include(x => x.Field)
+                 .ToListAsync();
+            }
+
             return View
             (
                 new ProjectAddViewModel
@@ -160,7 +205,9 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     Companys = await _companyService.Where(x => x.Status).ToListAsync(),
                     CompanyInvoices = await _companyInvoiceService.Where(x => x.Status).ToListAsync(),
                     ProductLanguageInfos = await _productLanguageInfosService.Where(x => x.Status && x.Product.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Product).OrderBy(x => x.Product.Sequence).ToListAsync(),
-                    ProjectProducts = projectProducts
+                    ProjectProducts = projectProducts,
+                    FieldGroups = await _fieldGroupService.Where(x => x.Status).Include(x => x.Fields).ToListAsync(),
+                    ProjectFields = projectFields
                 }
             );
         }
