@@ -792,4 +792,11 @@ $(document).ready(function () {
         });
     }
 });
+
+document.querySelectorAll('.amount').forEach(input => {
+    input.addEventListener('input', function () {
+        this.value = this.value.replace('.', ',');
+        this.value = this.value.replace(/[^0-9,]/g, '');
+    });
+});
 /*Emre ARIĞ*/

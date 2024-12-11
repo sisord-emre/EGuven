@@ -12,5 +12,6 @@ namespace SysBase.Web.Areas.Admin.Models
         public List<ProjectProduct> ProjectProducts { get; set; }
         public List<FieldGroup> FieldGroups { get; set; }
         public List<ProjectField> ProjectFields { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }

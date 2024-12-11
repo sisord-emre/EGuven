@@ -93,7 +93,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     ProductLanguageInfos = await _productLanguageInfosService.Where(x => x.Status && x.Product.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Product).OrderBy(x => x.Product.Sequence).ToListAsync(),
                     ProjectProducts = projectProducts,
                     FieldGroups = await _fieldGroupService.Where(x => x.Status).Include(x => x.Fields).ToListAsync(),
-                    ProjectFields = projectFields
+                    ProjectFields = projectFields,
+                    Projects = await _service.Where(x => x.Status).Include(x => x.ProjectFields).ThenInclude(x => x.Field).ToListAsync(),
                 }
             );
         }
@@ -114,7 +115,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
             Project isControl;
-            if (ModelState.IsValid)
+            if (model.Id != 0)
             {
                 isControl = await _service.UpdateAsync(model);
 
@@ -207,7 +208,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     ProductLanguageInfos = await _productLanguageInfosService.Where(x => x.Status && x.Product.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Product).OrderBy(x => x.Product.Sequence).ToListAsync(),
                     ProjectProducts = projectProducts,
                     FieldGroups = await _fieldGroupService.Where(x => x.Status).Include(x => x.Fields).ToListAsync(),
-                    ProjectFields = projectFields
+                    ProjectFields = projectFields,
+                    Projects = await _service.Where(x => x.Status).Include(x => x.ProjectFields).ThenInclude(x => x.Field).ToListAsync(),
                 }
             );
         }

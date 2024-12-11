@@ -79,7 +79,11 @@
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Amount" class="form-label">@Localizer["admin.Fiyat"]</label>
-                                    <input class="form-control" type="number" step="0.01" min="0" name="Amount" id="Amount" value="@Model.Product?.Amount" autocomplete="off" required />
+                                    <input class="form-control amount" type="text" placeholder="0,0" name="Amount" id="Amount" value="@Model.Product?.Amount" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Tax" class="form-label">@Localizer["admin.Vergi Oranı (%)"]</label>
+                                    <input class="form-control amount" type="text" placeholder="0,0" name="Tax" id="Tax" value="@Model.Product?.Tax" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Year" class="form-label">@Localizer["admin.Paket Yılı"]</label>
@@ -133,6 +137,10 @@
                                                                     <input type="checkbox" class="form-check-input" name="ProductLanguageInfos[@i].Status" id="ProductLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
                                                                     <label class="form-check-label" for="ProductLanguageInfos[@i].Status">@Localizer["admin.Aktif"]</label>
                                                                 </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md-5 col-sm-12">
+                                                                <label for="ProductLanguageInfos[@i].EDevletEmail" class="form-label">@Localizer["admin.E-Devlet Mail İçeriği"]</label>
+                                                                <textarea class="form-control" name="ProductLanguageInfos[@i].EDevletEmail" id="ProductLanguageInfos[@i].EDevletEmail">@languageInfo?.EDevletEmail</textarea>
                                                             </div>
                                                         </div>
                                                     </div>

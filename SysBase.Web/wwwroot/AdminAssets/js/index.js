@@ -443,7 +443,7 @@ function UnseenNotificationCount() {
         url: "/Admin/Notification/UnseenNotificationCount",
         type: 'GET',
         success: function (res) {
-            console.log(res); // Yanıtı kontrol edin
+            //console.log(res); // Yanıtı kontrol edin
             if (res && res.unseenNotificationCount !== undefined) {
                 $('#UnseenNotificationCount').text(res.unseenNotificationCount);
             } else {

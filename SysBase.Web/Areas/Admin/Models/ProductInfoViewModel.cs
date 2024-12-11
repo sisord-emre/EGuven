@@ -2,8 +2,8 @@
 {
     public class ProductInfoViewModel
     {
-        public int ProductId { get; set; } // `@item.Id` değerine denk gelir.
-        public bool Secim { get; set; } // Checkbox değeri.
-        public float Amount { get; set; } // Miktar bilgisi.
+        public int ProductId { get; set; }
+        public bool Secim { get; set; }
+        public decimal Amount { get; set; }
     }
 }

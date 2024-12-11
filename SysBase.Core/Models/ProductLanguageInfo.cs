@@ -8,6 +8,7 @@ namespace SysBase.Core.Models
         public string Title { get; set; }
         public string Slug { get; set; }
         public string Description { get; set; }
+        public string EDevletEmail { get; set; }
         public Product Product { get; set; }
     }
 }

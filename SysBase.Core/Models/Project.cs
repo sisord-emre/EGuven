@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SysBase.Core.Models
 {
@@ -26,8 +21,8 @@ namespace SysBase.Core.Models
         public string Image { get; set; }
         public bool PaymetForm { get; set; }
         public bool InvoiceInfoIsVisible { get; set; }
-        public int CompanyInvoiceId { get; set; }
-        public CompanyInvoice CompanyInvoice { get; set; }
+        public int? CompanyInvoiceId { get; set; }
+        //public CompanyInvoice CompanyInvoice { get; set; }
         public List<ProjectProduct> ProjectProducts { get; set; }
         public List<ProjectField> ProjectFields { get; set; }
     }

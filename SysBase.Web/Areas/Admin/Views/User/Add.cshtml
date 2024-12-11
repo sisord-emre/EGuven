@@ -90,7 +90,6 @@
                                             </select>
                                         </div>
                                     </div>
-
                                     @foreach (var item in Model.AppRoles)
                                     {
                                         <input type="hidden" id="authorisationType_@item.Id" value="@item.MenuPermissions" />
@@ -110,76 +109,76 @@
                                         <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
                                     </div>
                                 </div>
-                               
+
                                 <div class="row">
                                     <div class="row skin skin-square" id="authorisationsDiv">
-                                    @foreach (Menu item in Model.Menus)
-                                    {
-                                        string allCheck = "";
-                                        string listCheck = "";
-                                        string addCheck = "";
-                                        string editCheck = "";
-                                        string deleteCheck = "";
-                                        string exportCheck = "";
-                                        foreach (MenuPermission menuPermission in menuPermissions)
+                                        @foreach (Menu item in Model.Menus)
                                         {
-                                            if (menuPermission.MenuId == item.Id)
+                                            string allCheck = "";
+                                            string listCheck = "";
+                                            string addCheck = "";
+                                            string editCheck = "";
+                                            string deleteCheck = "";
+                                            string exportCheck = "";
+                                            foreach (MenuPermission menuPermission in menuPermissions)
                                             {
-                                                if (menuPermission.List)
+                                                if (menuPermission.MenuId == item.Id)
                                                 {
-                                                    listCheck = "checked";
+                                                    if (menuPermission.List)
+                                                    {
+                                                        listCheck = "checked";
+                                                    }
+                                                    if (menuPermission.Add)
+                                                    {
+                                                        addCheck = "checked";
+                                                    }
+                                                    if (menuPermission.Edit)
+                                                    {
+                                                        editCheck = "checked";
+                                                    }
+                                                    if (menuPermission.Delete)
+                                                    {
+                                                        deleteCheck = "checked";
+                                                    }
+                                                    if (menuPermission.Export)
+                                                    {
+                                                        exportCheck = "checked";
+                                                    }
+                                                    if (menuPermission.List && menuPermission.Add && menuPermission.Edit && menuPermission.Delete && menuPermission.Export)
+                                                    {
+                                                        allCheck = "checked";
+                                                    }
+                                                    break;
                                                 }
-                                                if (menuPermission.Add)
-                                                {
-                                                    addCheck = "checked";
-                                                }
-                                                if (menuPermission.Edit)
-                                                {
-                                                    editCheck = "checked";
-                                                }
-                                                if (menuPermission.Delete)
-                                                {
-                                                    deleteCheck = "checked";
-                                                }
-                                                if (menuPermission.Export)
-                                                {
-                                                    exportCheck = "checked";
-                                                }
-                                                if (menuPermission.List && menuPermission.Add && menuPermission.Edit && menuPermission.Delete && menuPermission.Export)
-                                                {
-                                                    allCheck = "checked";
-                                                }
-                                                break;
                                             }
+                                            <div class="col-md-4 col-sm-6" style="padding-top: 10px;">
+                                                <p><b>@Localizer["admin."+item.Name]</b></p>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="all_@item.Id" id="all_@item.Id" value="True" @allCheck />
+                                                    <label class="form-check-label" for="all_@item.Id">@Localizer["admin.Tümü"]</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="List" id="List_@item.Id" value="@item.Id" @listCheck />
+                                                    <label class="form-check-label" for="List_@item.Id">@Localizer["admin.Listeleme"]</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="Add" id="Add_@item.Id" value="@item.Id" @addCheck />
+                                                    <label class="form-check-label" for="Add_@item.Id">@Localizer["admin.Ekleme"]</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="Edit" id="Edit_@item.Id" value="@item.Id" @editCheck />
+                                                    <label class="form-check-label" for="Edit_@item.Id">@Localizer["admin.Düzenleme"]</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="Delete" id="Delete_@item.Id" value="@item.Id" @deleteCheck />
+                                                    <label class="form-check-label" for="Delete_@item.Id">@Localizer["admin.Silme"]</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="Export" id="Export_@item.Id" value="@item.Id" @exportCheck />
+                                                    <label class="form-check-label" for="Export_@item.Id">@Localizer["admin.Dışarı Aktar"]</label>
+                                                </div>
+                                            </div>
                                         }
-                                        <div class="col-md-4 col-sm-6" style="padding-top: 10px;">
-                                            <p><b>@Localizer["admin."+item.Name]</b></p>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="all_@item.Id" id="all_@item.Id" value="True" @allCheck />
-                                                <label class="form-check-label" for="all_@item.Id">@Localizer["admin.Tümü"]</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="List" id="List_@item.Id" value="@item.Id" @listCheck />
-                                                <label class="form-check-label" for="List_@item.Id">@Localizer["admin.Listeleme"]</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="Add" id="Add_@item.Id" value="@item.Id" @addCheck />
-                                                <label class="form-check-label" for="Add_@item.Id">@Localizer["admin.Ekleme"]</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="Edit" id="Edit_@item.Id" value="@item.Id" @editCheck />
-                                                <label class="form-check-label" for="Edit_@item.Id">@Localizer["admin.Düzenleme"]</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="Delete" id="Delete_@item.Id" value="@item.Id" @deleteCheck />
-                                                <label class="form-check-label" for="Delete_@item.Id">@Localizer["admin.Silme"]</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" name="Export" id="Export_@item.Id" value="@item.Id" @exportCheck />
-                                                <label class="form-check-label" for="Export_@item.Id">@Localizer["admin.Dışarı Aktar"]</label>
-                                            </div>
-                                        </div>
-                                    }
                                     </div>
                                 </div>
                             </div>
@@ -204,58 +203,46 @@
         checkboxList.forEach((item) => {
             $('#' + item.id).prop('checked', false);
         });
-
         // Seçilen yetkileri al
         var authorisationsSelect = $('#userIdValue').val();
-
         // Her bir yetki tipi için
         authorisationsSelect.forEach((item) => {
             if (item == null) {
                 return false;
             }
-
             // Yetki tiplerini al ve parse et
             var yetkiTipleri = document.getElementById("authorisationType_" + item).value;
             yetkiTipleri = JSON.parse(yetkiTipleri);
-
             yetkiTipleri.forEach((item) => {
                 var tumAdet = 0;
-
                 // Her bir izin tipi için checkbox'ı işaretle
                 if (document.getElementById('List_' + item.MenuId) != null && item.List === true) {
                     $('#List_' + item.MenuId).prop('checked', true);
                     tumAdet++;
                 }
-
                 if (document.getElementById('Add_' + item.MenuId) != null && item.Add === true) {
                     $('#Add_' + item.MenuId).prop('checked', true);
                     tumAdet++;
                 }
-
                 if (document.getElementById('Edit_' + item.MenuId) != null && item.Edit === true) {
                     $('#Edit_' + item.MenuId).prop('checked', true);
                     tumAdet++;
                 }
-
                 if (document.getElementById('Delete_' + item.MenuId) != null && item.Delete === true) {
                     $('#Delete_' + item.MenuId).prop('checked', true);
                     tumAdet++;
                 }
-
                 if (document.getElementById('Export_' + item.MenuId) != null && item.Export === true) {
                     $('#Export_' + item.MenuId).prop('checked', true);
                     tumAdet++;
                 }
-
                 // Tüm izinler seçiliyse "all" checkbox'ını işaretle
                 if (document.getElementById('all_' + item.MenuId) != null && tumAdet === 5) {
                     $('#all_' + item.MenuId).prop('checked', true);
                 }
-
                 // Debug için console log'ları
                 console.log(item.List);
             });
-
         });
     }
 

@@ -8,7 +8,8 @@ namespace SysBase.Core.Models
         public int Type { get; set; }
         public int Sequence { get; set; }
         public string Image { get; set; }
-        public float Amount { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Tax { get; set; }
         [Comment("Paketin Kaç Yıllık Olduğu")]
         public int Year { get; set; }
         public List<ProductLanguageInfo> ProductLanguageInfos { get; set; }
