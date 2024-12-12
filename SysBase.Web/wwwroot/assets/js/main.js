@@ -410,6 +410,17 @@ export function productItemSelect() {
                 goToMusteriBilgileri.disabled = false
             }
 
+            const radioInput = item.querySelector('input[type="radio"]');
+            if (radioInput) {
+                radioInput.checked = true;
+            }
+            /*
+            const selectedRadio = document.querySelector('input[type="radio"]:checked');
+            if (selectedRadio) {
+                const selectedValue = selectedRadio.value;
+                console.log('Seçili değer:', selectedValue);
+            }
+            */
             event.stopPropagation()
         })
     })

@@ -12,14 +12,14 @@ namespace SysBase.Web.Controllers
 {
     public class PukController : BaseController
     {
-        private readonly ILogger<CorporateController> _logger;
+        private readonly ILogger<PukController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
 
         public PukController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-           ILogger<CorporateController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+           ILogger<PukController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
            IService<Language> languageService, IService<QuickMenu> quickMenuService)
           : base(localizer, service)
         {

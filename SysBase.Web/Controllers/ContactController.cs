@@ -12,7 +12,7 @@ namespace SysBase.Web.Controllers
 {
     public class ContactController : BaseController
     {
-        private readonly ILogger<CorporateController> _logger;
+        private readonly ILogger<ContactController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
@@ -20,7 +20,7 @@ namespace SysBase.Web.Controllers
         protected readonly IService<Form> _formService;
 
         public ContactController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-           ILogger<CorporateController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+           ILogger<ContactController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
            IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<Form> formService)
           : base(localizer, service)
         {

@@ -14,7 +14,7 @@ namespace SysBase.Web.Controllers
 {
     public class PinController : BaseController
     {
-        private readonly ILogger<CorporateController> _logger;
+        private readonly ILogger<PinController> _logger;
         protected readonly IService<SiteMenu> _siteMenuService;
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
@@ -22,7 +22,7 @@ namespace SysBase.Web.Controllers
         protected Functions functions = new Functions();
 
         public PinController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
-           ILogger<CorporateController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
+           ILogger<PinController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
            IService<Language> languageService, IService<QuickMenu> quickMenuService)
           : base(localizer, service)
         {

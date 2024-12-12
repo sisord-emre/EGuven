@@ -113,6 +113,11 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 model.Image = await functions.ImageUpload(Image, "Images/Project", Guid.NewGuid().ToString("N"));
             }
+            else if (model.Id != 0)
+            {
+                var existing = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                model.Image = existing.Image;  // Eski resim tekrar set ediliyor
+            }
 
             Project isControl;
             if (model.Id != 0)

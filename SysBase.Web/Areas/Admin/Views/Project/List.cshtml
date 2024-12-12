@@ -67,7 +67,7 @@
                                                     {
                                                         <button type="button" onclick="GetPage('0','@addUrl','@item.Id');" class="btn btn-success edit-button">@Localizer["admin.Düzenle"]</button>
                                                     }
-                                                    @if (Model.MenuPermission?.Delete)
+                                                    @if (Model.MenuPermission?.Delete && item.Id != 1)
                                                     {
                                                         <button type="button" onclick="dataDelete('0','@item.Id');" class="btn btn-danger">@Localizer["admin.Sil"]</button>
                                                     }

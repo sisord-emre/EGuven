@@ -89,7 +89,15 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            model.Image = await functions.ImageUpload(Image, "Images", model.Code);
+            if (Image != null && Image.Length > 0)
+            {
+                model.Image = await functions.ImageUpload(Image, "Images", model.Code);
+            }
+            else if (model.Id != 0)
+            {
+                var existing = await _languageService.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                model.Image = existing.Image;  // Eski resim tekrar set ediliyor
+            }
 
             Language isControl;
             if (ModelState.IsValid)

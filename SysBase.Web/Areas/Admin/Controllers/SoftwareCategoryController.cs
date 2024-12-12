@@ -75,10 +75,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            SoftwareCategory existingBlog = null;
+            SoftwareCategory existing = null;
             if (model.Id != 0)
             {
-                existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                existing = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
             }
 
             // Resim Yükleme
@@ -86,18 +86,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 model.Image = await functions.ImageUpload(Image, "Images/SoftwareCategory", Guid.NewGuid().ToString("N"));
             }
-            else if (existingBlog != null)
+            else if (existing != null)
             {
-                model.Image = existingBlog.Image;
+                model.Image = existing.Image;
             }
 
             if (ContentImage != null && ContentImage.Length > 0)
             {
                 model.ContentImage = await functions.ImageUpload(ContentImage, "Images/SoftwareCategory", Guid.NewGuid().ToString("N"));
             }
-            else if (existingBlog != null)
+            else if (existing != null)
             {
-                model.ContentImage = existingBlog.ContentImage;
+                model.ContentImage = existing.ContentImage;
             }
 
             if(model.Video != null)

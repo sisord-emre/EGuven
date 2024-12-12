@@ -76,8 +76,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
             else if (model.Id != 0)
             {
-                var existingBlog = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
-                model.Image = existingBlog.Image;  // Eski resim tekrar set ediliyor
+                var existing = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                model.Image = existing.Image;  // Eski resim tekrar set ediliyor
             }
 
             Blog isControl;       
