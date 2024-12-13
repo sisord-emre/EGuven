@@ -592,6 +592,27 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
+        function SepetList(Id){
+            const urunList = [];
+            urunList.push(Id);
+            var data = new FormData();
+            data.append("UrunList", urunList);
+            $.ajax({
+                type: "POST",
+                url: "/Form/s/SepetList",
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    //console.log(res);
+                    $('#sepetDiv').html(res);
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        }
+
         $('#pinPukForm').submit(function (e) {
             e.preventDefault(); //submit postu kesyoruz
             document.getElementById("submitButton").disabled = true;
@@ -664,6 +685,24 @@
                 },
                 error: function (jqXHR, status, errorThrown) {
                     alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        });
+
+        $('#il').change(function () {
+            var il = $('#il').val();
+            if (il == "") {
+                return false;
+            }
+            $('#ilce').empty();
+            $.ajax({
+                type: "POST",
+                url: "/Form/s/IlIlce",
+                data: {
+                    'il': il
+                },
+                success: function (data) {
+                    $('#ilce').append(data);
                 }
             });
         });

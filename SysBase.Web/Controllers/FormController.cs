@@ -21,11 +21,13 @@ namespace SysBase.Web.Controllers
         protected readonly IService<QuickMenu> _quickMenuService;
         protected readonly IService<ProjectProduct> _projectProductService;
         protected readonly IService<ProjectField> _projectFieldService;
+        protected readonly IService<City> _cityService;
+        protected readonly IService<County> _countyService;
         protected Functions functions = new Functions();
 
         public FormController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
            ILogger<FormController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService)
+           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService)
           : base(localizer, service)
         {
             _logger = logger;
@@ -35,6 +37,8 @@ namespace SysBase.Web.Controllers
             _quickMenuService = quickMenuService;
             _projectProductService = projectProductService;
             _projectFieldService = projectFieldService;
+            _cityService = cityService;
+            _countyService = countyService;
         }
 
         public async Task<IActionResult> Index(string slug)
@@ -88,7 +92,7 @@ namespace SysBase.Web.Controllers
             }
 
             List<ProjectField> projectFields = new List<ProjectField>();
-            projectFields = await _projectFieldService.Where(x => x.ProjectId == projectProducts[0].ProjectId && x.Visible).Include(x=>x.Field).OrderBy(x => x.Field.Sequence).ToListAsync();
+            projectFields = await _projectFieldService.Where(x => x.ProjectId == projectProducts[0].ProjectId && x.Visible).Include(x => x.Field).OrderBy(x => x.Field.Sequence).ToListAsync();
 
             FormViewModel model = new FormViewModel
             {
@@ -99,9 +103,36 @@ namespace SysBase.Web.Controllers
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 ProjectProducts = projectProducts,
                 ProjectFields = projectFields,
+                Cities = await _cityService.Where(x => x.CountryId == 2).OrderBy(x=>x.Name).ToListAsync()
             };
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<String> IlIlce(int il)
+        {
+            string selectOptionList = "<option>" + _localizer["admin.Seçiniz"].Value + "</option>";
+            foreach (County item in await _countyService.Where(x => x.CityId == il).OrderBy(x => x.Name).ToListAsync())
+            {
+                selectOptionList += "<option value='" + item.Id + "'>" + item.Name + "</option>";
+            }
+            return selectOptionList;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SepetList(string UrunList)
+        {
+            int[] urunArray = UrunList.Split(',').Select(int.Parse).ToArray();
+
+            List<ProjectProduct> projectProducts = await _projectProductService
+                .Where(x => urunArray.Contains(x.Id) && x.Project.Status && x.Product.Status)
+                .Include(x => x.Product)
+                .ThenInclude(x => x.ProductLanguageInfos)
+                .ToListAsync();
+
+            return View(projectProducts);
+        }
+
     }
 }

@@ -104,7 +104,7 @@
                                                     KDV Hariç
                                                 </div>
                                             </div>
-                                            <input class="hidden" type="radio" name="urunler" id="urun-@item.Product.Id" value="@item.Product.Id" />
+                                            <input class="hidden" type="radio" name="urunler" id="urun-@item.Id" value="@item.Id" />
                                         </div>
                                     </div>
                                 }
@@ -120,17 +120,6 @@
 
                 <div id="musteri-bilgileri" class="tab-pane">
                     <form class="base-form">
-                        <div class="flex items-center gap-4">
-                            <label for="e-imza">Elektronik imzanız var mı?</label>
-                            <div>
-                                <input type="radio" id="var" value="1" name="e-imza" />
-                                <label for="var">Var</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="yok" value="0" name="e-imza" />
-                                <label for="yok">Yok</label>
-                            </div>
-                        </div>
                         <fieldset class="mt-10">
                             <div class="text-primary-red font-bold text-xl mb-5">
                                 Kişisel Bilgiler
@@ -155,9 +144,12 @@
                                                         <sup>*</sup>
                                                     }
                                                 </label>
-                                                <select class="!border-primary-red" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" @required>
+                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
                                                     <option value="">Seçiniz</option>
-                                                    <option value="01">01</option>
+                                                    @foreach (City city in Model.Cities.OrderBy(x=>x.Name))
+                                                    {
+                                                        <option value="@city.Id">@city.Name</option>
+                                                    }
                                                 </select>
                                             </div>
 
@@ -172,9 +164,8 @@
                                                         <sup>*</sup>
                                                     }
                                                 </label>
-                                                <select class="!border-primary-red" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" @required>
+                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
                                                     <option value="">Seçiniz</option>
-                                                    <option value="01">01</option>
                                                 </select>
                                             </div>
                                         }
@@ -189,10 +180,7 @@
                                                     <sup>*</sup>
                                                 }
                                             </label>
-                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 !border-primary-red" @required></textarea>
-                                            <div class="text-xs text-primary-red italic font-semibold">
-                                                Zorunlu alan lütfen boş bırakmayınız.
-                                            </div>
+                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
                                         </div>
 
                                     }
@@ -206,10 +194,7 @@
                                                     <sup>*</sup>
                                                 }
                                             </label>
-                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="!border-primary-red" accept="image/png, image/jpeg" @required />
-                                            <div class="text-xs text-primary-red italic font-semibold">
-                                                Zorunlu alan lütfen boş bırakmayınız.
-                                            </div>
+                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
                                         </div>
                                     }
                                     else
@@ -222,10 +207,7 @@
                                                     <sup>*</sup>
                                                 }
                                             </label>
-                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="!border-primary-red" @required/>
-                                            <div class="text-xs text-primary-red italic font-semibold">
-                                                Zorunlu alan lütfen boş bırakmayınız.
-                                            </div>
+                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
                                         </div>
                                     }
                                 }
@@ -305,50 +287,92 @@
                                 Bilgileri
                             </div>
                             <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
-                                <div class="base-form-group">
-                                    <label for="il">İl<sup>*</sup></label>
-                                    <input type="text"
-                                           name="il"
-                                           id="il" />
-                                </div>
-                                <div class="base-form-group">
-                                    <label for="ilce">İlçe<sup>*</sup></label>
-                                    <input type="text"
-                                           name="ilce"
-                                           id="ilce" />
-                                </div>
-                                <div class="base-form-group">
-                                    <label for="posta-kodu">Posta Kodu<sup>*</sup></label>
-                                    <input type="date"
-                                           name="posta-kodu"
-                                           id="posta-kodu" />
-                                </div>
-                                <div class="base-form-group xl:col-span-3">
-                                    <label for="adres">Adres<sup>*</sup></label>
-                                    <textarea name="adres"
-                                              id="adres"
-                                              cols="30"
-                                              rows="10"
-                                              class="!h-32"></textarea>
-                                </div>
-                                <div class="base-form-group">
-                                    <label for="tel">Telefon No<sup>*</sup></label>
-                                    <input type="tel"
-                                           name="tel"
-                                           id="tel" />
-                                </div>
-                                <div class="base-form-group">
-                                    <label for="fax-no">Faks No<sup>*</sup></label>
-                                    <input type="tel"
-                                           name="fax-no"
-                                           id="fax-no" />
-                                </div>
-                                <div class="base-form-group">
-                                    <label for="gsm">Cep Telefonu<sup>*</sup></label>
-                                    <input type="tel"
-                                           name="gsm"
-                                           id="gsm" />
-                                </div>
+                                @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 7))//İletişim, Teslimat, Kurulum Adres Bilgileri
+                                {
+                                    string required = "";
+                                    if (item.Required)
+                                    {
+                                        required = "required";
+                                    }
+                                    if (item.Field.Type == "int")
+                                    {
+                                        if (item.Field.Name == "İl")
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                    <option value="">Seçiniz</option>
+                                                    @foreach (City city in Model.Cities)
+                                                    {
+                                                        <option value="@city.Id">@city.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                        }
+                                        if (item.Field.Name == "İlçe")
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                    <option value="">Seçiniz</option>
+                                                </select>
+                                            </div>
+                                        }
+                                    }
+                                    else if (item.Field.Type == "textarea")
+                                    {
+                                        <div class="base-form-group">
+                                            <label for="@item.Field.ApiColumn">
+                                                @Localizer[item.Field.Name]
+                                                @if (item.Required)
+                                                {
+                                                    <sup>*</sup>
+                                                }
+                                            </label>
+                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                        </div>
+
+                                    }
+                                    else if (item.Field.Type == "file")
+                                    {
+                                        <div class="base-form-group">
+                                            <label for="@item.Field.ApiColumn">
+                                                @Localizer[item.Field.Name]
+                                                @if (item.Required)
+                                                {
+                                                    <sup>*</sup>
+                                                }
+                                            </label>
+                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="base-form-group">
+                                            <label for="@item.Field.ApiColumn">
+                                                @Localizer[item.Field.Name]
+                                                @if (item.Required)
+                                                {
+                                                    <sup>*</sup>
+                                                }
+                                            </label>
+                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                        </div>
+                                    }
+                                }
                             </div>
                         </fieldset>
 
@@ -370,7 +394,7 @@
 
                     <form class="base-form">
                         <div class="max-w-lg mx-auto">
-                            <div class="grid grid-cols-2 gap-10 mt-10">
+                            <div class="grid gap-10 mt-10">
                                 <div class="flex flex-col gap-4 items-center justify-center">
                                     <div class="bg-white rounded-5 sr-item-shadow border border-transparent transition-colors duration-150 ease-in flex items-center flex-col justify-center gap-5 py-8 px-10 cursor-pointer"
                                          id="edevlet-logo">
@@ -383,48 +407,13 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <input type="radio"
-                                               name="edevlet"
-                                               id="edevlet" />
-                                        <label for="edevlet"
-                                               class="text-xl font-bold">Ücretsiz</label>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col gap-4 items-center justify-center">
-                                    <div class="bg-white rounded-5 sr-item-shadow border border-transparent transition-colors duration-150 ease-in flex items-center flex-col justify-center gap-5 py-8 px-10 cursor-pointer"
-                                         id="vip-logo">
-                                        <figure>
-                                            <img src="assets/images/vip-logo.png"
-                                                 alt="Vip Logo" />
-                                        </figure>
-                                        <div class="text-primary-dark text-xl font-black">
-                                            V.I.P HİZMET
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <input type="radio"
-                                               name="vip"
-                                               id="vip" />
-                                        <label for="vip"
-                                               class="text-xl font-bold">1630.00 TL</label>
+                                        <input type="radio" name="edevlet" id="edevlet" value="1" checked />
+                                        <label for="edevlet" class="text-xl font-bold">Ücretsiz</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-stretch justify-center gap-5 mt-10">
-                                <select name="diger-secenekler"
-                                        id="diger-secenekler"
-                                        class="max-w-44">
-                                    <option value="" disabled selected>
-                                        Diğer Seçenekler
-                                    </option>
-                                    <option value="noter">Noter</option>
-                                    <option value="bayi">Bayi</option>
-                                </select>
-                                <button type="button"
-                                        class="btn btn-primary-red px-8"
-                                        id="goToOdemeBilgileri">
-                                    Ödemeye devam et
-                                </button>
+                                <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri">Ödemeye devam et</button>
                             </div>
                         </div>
                     </form>
@@ -436,156 +425,18 @@
                     </div>
                     <form class="base-form">
                         <div class="grid xl:grid-cols-3 grid-cols-1 gap-16">
-                            <div class="xl:col-span-1">
-                                <!-- sepet urunleri -->
-                                <div class="w-full flex flex-col gap-4">
-                                    <div class="rounded-5 bg-white sr-item-shadow flex items-center justify-between gap-5 product-in-basket-item">
-                                        <div class="pl-6">
-                                            <figure class="max-w-28">
-                                                <img src="assets/images/form-urun-secimi-sample.png"
-                                                     alt="1 yıllık e-imza paketi image" />
-                                            </figure>
-                                        </div>
-                                        <div class="text-sm text-primary-dark">
-                                            <div class="font-semibold mb-2">
-                                                1 Yıllık E-imza Paketi
-                                            </div>
-                                            <div class="font-normal product-total-price">
-                                                1630.00 TL
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex flex-col items-center justify-center w-10">
-                                                <button type="button"
-                                                        class="text-primary-dark text-sm py-2 px-3 font-bold w-full text-center border-0 add-product-quantity">
-                                                    +
-                                                </button>
-                                                <input type="text"
-                                                       class="bg-form-product-price text-primary-dark text-sm p-2 font-bold w-full text-center !border-0 product-quantity !h-auto"
-                                                       value="1" />
-                                                <button type="button"
-                                                        class="text-primary-dark text-sm py-2 px-3 font-bold w-full text-center border-0 remove-product-quantity">
-                                                    -
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="rounded-5 bg-white sr-item-shadow flex items-center justify-between gap-5 product-in-basket-item">
-                                        <div class="pl-6">
-                                            <figure class="max-w-28">
-                                                <img src="assets/images/form-urun-secimi-sample.png"
-                                                     alt="1 yıllık e-imza paketi image" />
-                                            </figure>
-                                        </div>
-                                        <div class="text-sm text-primary-dark">
-                                            <div class="font-semibold mb-2">
-                                                1 Yıllık E-imza Paketi
-                                            </div>
-                                            <div class="font-normal product-total-price">
-                                                1630.00 TL
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex flex-col items-center justify-center w-10">
-                                                <button type="button"
-                                                        class="text-primary-dark text-sm py-2 px-3 font-bold w-full text-center border-0 add-product-quantity">
-                                                    +
-                                                </button>
-                                                <input type="text"
-                                                       class="bg-form-product-price text-primary-dark text-sm p-2 font-bold w-full text-center !border-0 product-quantity !h-auto"
-                                                       value="1" />
-                                                <button type="button"
-                                                        class="text-primary-dark text-sm py-2 px-3 font-bold w-full text-center border-0 remove-product-quantity">
-                                                    -
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- sepet toplami -->
-                                <div class="flex flex-col gap-3 mt-8">
-                                    <div class="flex items-center justify-between text-primary-dark text-sm">
-                                        <div>Ürün Fiyatı</div>
-                                        <div>1630.00 TL</div>
-                                    </div>
-                                    <div class="flex items-center justify-between text-primary-dark text-sm">
-                                        <div>KDV</div>
-                                        <div>213 TL</div>
-                                    </div>
-                                    <hr class="border-primary-dark" />
-                                    <div class="flex items-center justify-between text-primary-red text-sm font-bold">
-                                        <div>Toplam Fiyat</div>
-                                        <div>1843 TL</div>
-                                    </div>
-                                </div>
-
-                                <!-- kupon -->
-                                <div class="mt-16">
-                                    <div class="text-primary-dark font-bold text-lg mb-4">
-                                        Kupon / Referans kodu ekle
-                                    </div>
-                                    <div class="flex items-stretch gap-3 flex-wrap w-full">
-                                        <div class="base-form-group">
-                                            <input type="text"
-                                                   placeholder="Kodunuzu girin"
-                                                   class="w-full" />
-                                        </div>
-                                        <button class="btn btn-common h-auto px-8 text-primary-red">
-                                            Uygula
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- kampanyalı ürün -->
-                                <div class="mt-16">
-                                    <div class="bg-white rounded-5 py-8 px-7 sr-item-shadow">
-                                        <div class="flex items-center justify-between w-full gap-10">
-                                            <div class="flex flex-col gap-2 w-full max-w-48">
-                                                <div class="text-primary-dark text-sm font-semibold">
-                                                    VIP Hizmeti
-                                                </div>
-                                                <select name="avantajli-urun"
-                                                        id="avantajli-urun"
-                                                        class="!w-24">
-                                                    <option value="1">
-                                                        1 Yıl
-                                                    </option>
-                                                    <option value="2">
-                                                        2 Yıl
-                                                    </option>
-                                                    <option value="3">
-                                                        3 Yıl
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="flex flex-col gap-2">
-                                                <div class="text-primary-red text-sm font-bold">
-                                                    247.50 TL
-                                                </div>
-                                                <div class="text-xs text-form-product-old-price line-through">
-                                                    356.80TL
-                                                </div>
-                                                <div class="text-primary-red text-xs font-bold">
-                                                    %60 indirim
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="xl:col-span-1" id="sepetDiv">
+                      
                             </div>
                             <div class="xl:col-span-2">
                                 <!-- fatura form -->
                                 <div>
                                     <!-- Bireysel/Kurumsal Buttons -->
                                     <div class="fatura-tab">
-                                        <button id="bireysel-btn"
-                                                class="active"
-                                                type="button">
+                                        <button id="bireysel-btn" class="active" type="button">
                                             BİREYSEL
                                         </button>
-                                        <button id="kurumsal-btn"
-                                                type="button">
+                                        <button id="kurumsal-btn" type="button">
                                             KURUMSAL
                                         </button>
                                     </div>
@@ -593,46 +444,98 @@
                                     <div id="bireysel-tab-content"
                                          class="pt-7">
                                         <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
-                                            <input type="radio"
-                                                   name="fatura-adresi-ortak"
-                                                   id="fatura-adresi-ortak" />
+                                            <input type="radio" name="fatura-adresi-ortak" id="fatura-adresi-ortak" />
                                             <label for="fatura-adresi-ortak">
-                                                Fatura adresim teslimat
-                                                adresim ile aynı
+                                                Fatura adresim teslimat adresim ile aynı
                                             </label>
                                         </div>
                                         <div class="grid grid-cols-1 gap-3">
-                                            <div class="base-form-group">
-                                                <label for="ad-soyad">Ad Soyad</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="ad-soyad" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="tckn">TCKN</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="tckn" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="adres">Adres</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="adres" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="sehir">Şehir</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="sehir" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="posta-kodu">Posta Kodu</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="posta-kodu"
-                                                       class="max-w-64" />
-                                            </div>
+                                            @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 6))//Şirket Bilgileri
+                                            {
+                                                string required = "";
+                                                if (item.Required)
+                                                {
+                                                    required = "required";
+                                                }
+                                                if (item.Field.Type == "int")
+                                                {
+                                                    if (item.Field.Name == "İl")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                                <option value="">Seçiniz</option>
+                                                                @foreach (City city in Model.Cities)
+                                                                {
+                                                                    <option value="@city.Id">@city.Name</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                    }
+                                                    if (item.Field.Name == "İlçe")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                                <option value="">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    }
+                                                }
+                                                else if (item.Field.Type == "textarea")
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup>*</sup>
+                                                            }
+                                                        </label>
+                                                        <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                    </div>
+
+                                                }
+                                                else if (item.Field.Type == "file")
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup>*</sup>
+                                                            }
+                                                        </label>
+                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup>*</sup>
+                                                            }
+                                                        </label>
+                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                    </div>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                     <div id="kurumsal-tab-content"
@@ -642,255 +545,303 @@
                                                    name="fatura-adresi-ortak"
                                                    id="fatura-adresi-ortak" />
                                             <label for="fatura-adresi-ortak">
-                                                Fatura adresim teslimat
-                                                adresim ile aynı
+                                                Fatura adresim teslimat adresim ile aynı
                                             </label>
                                         </div>
                                         <div class="grid grid-cols-1 gap-3">
-                                            <div class="base-form-group">
-                                                <label for="sirket-adi">
-                                                    Şirket Adı &
-                                                    Ünvanı
-                                                </label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="sirket-adi" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="vergi-numarasi">
-                                                    Vergi
-                                                    Numarası
-                                                </label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="vergi-numarasi" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="adres">Adres</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="adres" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="sehir">Şehir</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="sehir" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="posta-kodu">Posta Kodu</label>
-                                                <input type="text"
-                                                       placeholder="Yazınız"
-                                                       id="posta-kodu"
-                                                       class="max-w-64" />
-                                            </div>
+                                            @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 9))//Fatura Bilgileri
+                                            {
+                                                string required = "";
+                                                if (item.Required)
+                                                {
+                                                    required = "required";
+                                                }
+                                                if (item.Field.Type == "int")
+                                                {
+                                                    if (item.Field.Name == "İl")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                                <option value="">Seçiniz</option>
+                                                                @foreach (City city in Model.Cities)
+                                                                {
+                                                                    <option value="@city.Id">@city.Name</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                    }
+                                                    if (item.Field.Name == "İlçe")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                                <option value="">Seçiniz</option>
+                                                            </select>
+                                                        </div>
+                                                    }
+                                                }
+                                                else if (item.Field.Type == "textarea")
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup>*</sup>
+                                                            }
+                                                        </label>
+                                                        <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                    </div>
+
+                                                }
+                                                else if (item.Field.Type == "file")
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup>*</sup>
+                                                            }
+                                                        </label>
+                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup>*</sup>
+                                                            }
+                                                        </label>
+                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                    </div>
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- odeme detay form -->
-                                <div class="mt-16">
-                                    <!-- Kredi Kartı/Havale Buttons -->
-                                    <div class="fatura-tab">
-                                        <button id="kredi-kart-btn"
+                                @if (Model.ProjectFields[0].Project.PaymetForm)
+                                {
+                                    <div class="mt-16">
+                                        <!-- Kredi Kartı/Havale Buttons -->
+                                        <div class="fatura-tab">
+                                            <button id="kredi-kart-btn"
                                                 class="active"
                                                 type="button">
-                                            KREDİ KARTI
-                                        </button>
-                                        <button id="havale-btn"
+                                                KREDİ KARTI
+                                            </button>
+                                            <button id="havale-btn"
                                                 type="button">
-                                            HAVALE
-                                        </button>
-                                    </div>
-                                    <!-- Tab Content -->
-                                    <div id="kredi-kart-tab-content"
+                                                HAVALE
+                                            </button>
+                                        </div>
+                                        <!-- Tab Content -->
+                                        <div id="kredi-kart-tab-content"
                                          class="pt-7">
-                                        <div class="text-primary-dark text-lg font-semibold mb-6">
-                                            Kredi kartı detayları
-                                        </div>
-                                        <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
-                                            <div class="text-primary-dark text-sm font-medium max-w-20">
-                                                Ödeme Yöntemi
+                                            <div class="text-primary-dark text-lg font-semibold mb-6">
+                                                Kredi kartı detayları
                                             </div>
-                                            <div class="flex items-center gap-2">
-                                                <figure>
-                                                    <img src="assets/images/mastercard.png"
+                                            <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
+                                                <div class="text-primary-dark text-sm font-medium max-w-20">
+                                                    Ödeme Yöntemi
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <figure>
+                                                        <img src="assets/images/mastercard.png"
                                                          alt="master card logo" />
-                                                </figure>
-                                                <figure>
-                                                    <img src="assets/images/visa.png"
+                                                    </figure>
+                                                    <figure>
+                                                        <img src="assets/images/visa.png"
                                                          alt="visa logo" />
-                                                </figure>
-                                                <figure>
-                                                    <img src="assets/images/american-express.png"
+                                                    </figure>
+                                                    <figure>
+                                                        <img src="assets/images/american-express.png"
                                                          alt="american express logo" />
-                                                </figure>
-                                                <figure>
-                                                    <img src="assets/images/discover.png"
+                                                    </figure>
+                                                    <figure>
+                                                        <img src="assets/images/discover.png"
                                                          alt="discover logo" />
-                                                </figure>
+                                                    </figure>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="grid grid-cols-1 gap-3">
-                                            <div class="base-form-group">
-                                                <label for="card-ad-soyad">
-                                                    Kartın üzerindeki
-                                                    ad
-                                                </label>
-                                                <input type="text"
+                                            <div class="grid grid-cols-1 gap-3">
+                                                <div class="base-form-group">
+                                                    <label for="card-ad-soyad">
+                                                        Kartın üzerindeki
+                                                        ad
+                                                    </label>
+                                                    <input type="text"
                                                        placeholder="Lorem ipsum"
                                                        id="card-ad-soyad" />
-                                            </div>
-                                            <div class="base-form-group">
-                                                <label for="card-no">
-                                                    Kart
-                                                    Numarası
-                                                </label>
-                                                <input type="text"
+                                                </div>
+                                                <div class="base-form-group">
+                                                    <label for="card-no">
+                                                        Kart
+                                                        Numarası
+                                                    </label>
+                                                    <input type="text"
                                                        placeholder="0000 0000 0000 0000"
                                                        id="card-no" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="flex flex-col gap-3 mt-3">
-                                            <label for="exp-date-month">
-                                                Son Kullanma
-                                                Tarihi
-                                            </label>
-                                            <div class="grid grid-cols-2 gap-3">
-                                                <div class="base-form-group">
-                                                    <select name="exp-date-month"
+                                            <div class="flex flex-col gap-3 mt-3">
+                                                <label for="exp-date-month">
+                                                    Son Kullanma
+                                                    Tarihi
+                                                </label>
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div class="base-form-group">
+                                                        <select name="exp-date-month"
                                                             id="exp-date-month">
-                                                        <option value=""
+                                                            <option value=""
                                                                 disabled
                                                                 selected>
-                                                            Ay
-                                                        </option>
-                                                        <option value="01">
-                                                            01
-                                                        </option>
-                                                        <option value="02">
-                                                            02
-                                                        </option>
-                                                        <option value="03">
-                                                            03
-                                                        </option>
-                                                        <option value="04">
-                                                            04
-                                                        </option>
-                                                        <option value="05">
-                                                            05
-                                                        </option>
-                                                        <option value="06">
-                                                            06
-                                                        </option>
-                                                        <option value="07">
-                                                            07
-                                                        </option>
-                                                        <option value="08">
-                                                            08
-                                                        </option>
-                                                        <option value="09">
-                                                            09
-                                                        </option>
-                                                        <option value="10">
-                                                            10
-                                                        </option>
-                                                        <option value="11">
-                                                            11
-                                                        </option>
-                                                        <option value="12">
-                                                            12
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="base-form-group">
-                                                    <select name="exp-date-year"
+                                                                Ay
+                                                            </option>
+                                                            <option value="01">
+                                                                01
+                                                            </option>
+                                                            <option value="02">
+                                                                02
+                                                            </option>
+                                                            <option value="03">
+                                                                03
+                                                            </option>
+                                                            <option value="04">
+                                                                04
+                                                            </option>
+                                                            <option value="05">
+                                                                05
+                                                            </option>
+                                                            <option value="06">
+                                                                06
+                                                            </option>
+                                                            <option value="07">
+                                                                07
+                                                            </option>
+                                                            <option value="08">
+                                                                08
+                                                            </option>
+                                                            <option value="09">
+                                                                09
+                                                            </option>
+                                                            <option value="10">
+                                                                10
+                                                            </option>
+                                                            <option value="11">
+                                                                11
+                                                            </option>
+                                                            <option value="12">
+                                                                12
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="base-form-group">
+                                                        <select name="exp-date-year"
                                                             id="exp-date-year">
-                                                        <option value=""
+                                                            <option value=""
                                                                 disabled
                                                                 selected>
-                                                            Yıl
-                                                        </option>
-                                                        <option value="2025">
-                                                            2025
-                                                        </option>
-                                                        <option value="2026">
-                                                            2026
-                                                        </option>
-                                                        <option value="2027">
-                                                            2027
-                                                        </option>
-                                                        <option value="2028">
-                                                            2028
-                                                        </option>
-                                                        <option value="2029">
-                                                            2029
-                                                        </option>
-                                                        <option value="2030">
-                                                            2030
-                                                        </option>
-                                                    </select>
+                                                                Yıl
+                                                            </option>
+                                                            <option value="2025">
+                                                                2025
+                                                            </option>
+                                                            <option value="2026">
+                                                                2026
+                                                            </option>
+                                                            <option value="2027">
+                                                                2027
+                                                            </option>
+                                                            <option value="2028">
+                                                                2028
+                                                            </option>
+                                                            <option value="2029">
+                                                                2029
+                                                            </option>
+                                                            <option value="2030">
+                                                                2030
+                                                            </option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="flex flex-col gap-3 mt-3 w-max">
-                                            <label for="exp-date-month">
-                                                Son Kullanma
-                                                Tarihi
-                                            </label>
-                                            <div class="base-form-group">
-                                                <input type="text"
+                                            <div class="flex flex-col gap-3 mt-3 w-max">
+                                                <label for="exp-date-month">
+                                                    Son Kullanma
+                                                    Tarihi
+                                                </label>
+                                                <div class="base-form-group">
+                                                    <input type="text"
                                                        name="code"
                                                        id="code"
                                                        class="max-w-44"
                                                        placeholder="Kod" />
-                                                <button type="button"
+                                                    <button type="button"
                                                         popovertarget="code-popover"
                                                         class="absolute top-[18px] right-3 text-gray-400">
-                                                    <span class="icon-help-circle"></span>
-                                                </button>
-                                                <div popover
+                                                        <span class="icon-help-circle"></span>
+                                                    </button>
+                                                    <div popover
                                                      id="code-popover"
                                                      class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">
-                                                    Lorem ipsum dolor
-                                                    sit amet consectetur
-                                                    adipisicing elit.
-                                                    Soluta,
-                                                    exercitationem.
+                                                        Lorem ipsum dolor
+                                                        sit amet consectetur
+                                                        adipisicing elit.
+                                                        Soluta,
+                                                        exercitationem.
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="havale-tab-content"
+                                        <div id="havale-tab-content"
                                          class="hidden pt-7">
-                                        <div class="text-primary-dark text-sm">
-                                            <p class="py-4">
-                                                Lorem ipsum dolor sit
-                                                amet consectetur
-                                                adipisicing elit.
-                                                Soluta, exercitationem.
-                                            </p>
-                                            <p class="py-4">
-                                                Lorem ipsum, dolor sit
-                                                amet consectetur
-                                                adipisicing elit. Ipsum
-                                                dolore repellat sunt
-                                                assumenda eligendi, quia
-                                                unde explicabo
-                                                exercitationem illum
-                                                mollitia quasi sapiente
-                                                iusto cupiditate ab,
-                                                quibusdam deleniti.
-                                                Deserunt ullam nobis
-                                                sed, molestiae cum
-                                                corporis exercitationem
-                                                maxime. Necessitatibus,
-                                                cum natus. Sint!
-                                            </p>
+                                            <div class="text-primary-dark text-sm">
+                                                <p class="py-4">
+                                                    Lorem ipsum dolor sit
+                                                    amet consectetur
+                                                    adipisicing elit.
+                                                    Soluta, exercitationem.
+                                                </p>
+                                                <p class="py-4">
+                                                    Lorem ipsum, dolor sit
+                                                    amet consectetur
+                                                    adipisicing elit. Ipsum
+                                                    dolore repellat sunt
+                                                    assumenda eligendi, quia
+                                                    unde explicabo
+                                                    exercitationem illum
+                                                    mollitia quasi sapiente
+                                                    iusto cupiditate ab,
+                                                    quibusdam deleniti.
+                                                    Deserunt ullam nobis
+                                                    sed, molestiae cum
+                                                    corporis exercitationem
+                                                    maxime. Necessitatibus,
+                                                    cum natus. Sint!
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
+                                }
                                 <button class="btn btn-primary-red px-8 mt-10">
                                     SİPARİŞİ TAMAMLA
                                 </button>
@@ -911,7 +862,7 @@
         drawerControl,
         productItemSelect,
         formTabControl,
-    } from './assets/js/main.js'
+    } from '/assets/js/main.js'
     document.addEventListener('DOMContentLoaded', function () {
         stickyHeader()
         checkTheme()

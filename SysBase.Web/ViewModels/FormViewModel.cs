@@ -6,5 +6,6 @@ namespace SysBase.Web.ViewModels
     {
         public List<ProjectProduct> ProjectProducts { get; set; }
         public List<ProjectField> ProjectFields { get; set; }
+        public List<City> Cities { get; set; }
     }
 }

@@ -194,5 +194,19 @@ namespace SysBase.Web.Areas.Admin.Controllers
             return resultJson;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GorselKaldir(int id)
+        {
+            var item = _service.Where(x => x.Id == id).FirstOrDefault();
+            if (item == null)
+            {
+                return NotFound($"Bulunamadı: ID = {id}");
+            }
+            item.Image = null;
+            await _service.UpdateAsync(item);
+
+            return Ok(new { message = "Görsel başarıyla kaldırıldı." });
+        }
+
     }
 }

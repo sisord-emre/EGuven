@@ -94,6 +94,10 @@
                                 </div>
                                 <div class="mb-3 col-md-3 col-sm-10">
                                     <label for="Image" class="form-label">@Localizer["admin.Görseli"] (1440x600px)</label>
+                                    @if (Model.Project?.Image != null)
+                                    {
+                                        <small style="float:right"><a href="javascript:GorselKaldir('@Model.Project?.Id')">Kaldır</a></small>
+                                    }
                                     <input class="form-control" type="file" name="Image" id="Image" />
                                 </div>
                                 <div class="mb-3 col-md-1 col-sm-2">
@@ -181,7 +185,7 @@
                                                                     <b>@Localizer["admin."+itemSub.Title]</b>
                                                                 </h5>
                                                             </p>
-                                                            @foreach (Field field in itemSub.Fields.Where(x => x.Status).OrderBy(x=>x.Sequence))
+                                                            @foreach (Field field in itemSub.Fields.Where(x => x.Status).OrderBy(x => x.Sequence))
                                                             {
                                                                 gruopGorunurlukAdet++;
                                                                 gruopZorunlulukAdet++;
@@ -331,6 +335,24 @@
 </section>
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
 <script type="text/javascript">
+    function GorselKaldir(id) {
+        var data = new FormData();
+        data.append("id", id);
+        $.ajax({
+            type: "POST",
+            url: "/Admin/@ViewContext.RouteData.Values["controller"].ToString()/GorselKaldir",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                SayfaYenile();
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    }
+
     function SablonSecim() {
         // Tüm checkbox'ları sıfırla
         let checkboxList = document.getElementById("authorisationsDiv").querySelectorAll('input');

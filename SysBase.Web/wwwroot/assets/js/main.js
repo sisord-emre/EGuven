@@ -413,6 +413,7 @@ export function productItemSelect() {
             const radioInput = item.querySelector('input[type="radio"]');
             if (radioInput) {
                 radioInput.checked = true;
+                SepetList(radioInput.value)
             }
             /*
             const selectedRadio = document.querySelector('input[type="radio"]:checked');

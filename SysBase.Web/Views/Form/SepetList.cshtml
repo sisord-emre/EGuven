@@ -1,0 +1,53 @@
+﻿@model List<ProjectProduct>
+@{
+    Layout = null;
+    decimal toplamFiyat = 0;
+    decimal toplamKdv = 0;
+}
+<!-- sepet urunleri -->
+<div class="w-full flex flex-col gap-4">
+    @foreach (ProjectProduct item in Model)
+    {
+        toplamFiyat += item.Amount;
+        toplamKdv += item.Amount / 100 * item.Product.Tax;
+        <div class="rounded-5 bg-white sr-item-shadow flex items-center justify-between gap-5 product-in-basket-item">
+            <div class="pl-6">
+                <figure class="max-w-28">
+                    <img src="/Images/Product/@item.Product.Image" alt="@item.Product.ProductLanguageInfos[0].Title" />
+                </figure>
+            </div>
+            <div class="text-sm text-primary-dark">
+                <div class="font-semibold mb-2">
+                    @item.Product.ProductLanguageInfos[0].Title
+                </div>
+                <div class="font-normal product-total-price">
+                    @item.Amount TL
+                </div>
+            </div>
+            <div>
+                <div class="flex flex-col items-center justify-center w-10">
+                    <button type="button" class="text-primary-dark text-sm py-2 px-3 font-bold w-full text-center border-0 add-product-quantity">+</button>
+                    <input type="text" class="bg-form-product-price text-primary-dark text-sm p-2 font-bold w-full text-center !border-0 product-quantity !h-auto" value="1" />
+                    <button type="button" class="text-primary-dark text-sm py-2 px-3 font-bold w-full text-center border-0 remove-product-quantity">-</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- sepet toplami -->
+<div class="flex flex-col gap-3 mt-8">
+    <div class="flex items-center justify-between text-primary-dark text-sm">
+        <div>Ürün Fiyatı</div>
+        <div>@toplamFiyat.ToString("N2") TL</div>
+    </div>
+    <div class="flex items-center justify-between text-primary-dark text-sm">
+        <div>KDV</div>
+        <div>@toplamKdv.ToString("N2") TL</div>
+    </div>
+    <hr class="border-primary-dark" />
+    <div class="flex items-center justify-between text-primary-red text-sm font-bold">
+        <div>Toplam Fiyat</div>
+        <div>@((toplamFiyat + toplamKdv).ToString("N2")) TL</div>
+    </div>
+</div>
