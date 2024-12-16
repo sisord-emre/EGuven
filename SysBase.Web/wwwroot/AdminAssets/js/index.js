@@ -1,13 +1,8 @@
 ﻿layout_change('light');
-
 change_box_container('false');
-
 layout_caption_change('true');
-
 layout_rtl_change('false');
-
 preset_change('preset-1');
-
 main_layout_change('vertical');
 //dile Değerleri
 var adminLng;

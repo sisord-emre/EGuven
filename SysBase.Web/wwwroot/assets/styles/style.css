@@ -3257,6 +3257,11 @@ select{
   outline-offset:2px
 }
 
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5
+}
+
 .btn-common{
   --tw-bg-opacity:1;
   background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1));
@@ -5080,6 +5085,16 @@ select{
 .border-white{
   --tw-border-opacity:1;
   border-color:rgb(255 255 255 / var(--tw-border-opacity, 1))
+}
+
+.border-red-500 {
+    --tw-border-opacity: 1;
+    border-color: rgb(240 82 82 / var(--tw-border-opacity, 1))
+}
+
+.\!border-red-500 {
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(240 82 82 / var(--tw-border-opacity, 1)) !important
 }
 
 .\!bg-gray-50{

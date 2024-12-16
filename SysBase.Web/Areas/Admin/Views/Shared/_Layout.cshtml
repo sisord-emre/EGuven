@@ -57,7 +57,7 @@
             <div class="m-header">
                 <a href="/Admin" class="b-brand text-primary">
                     <!-- ========   Change your logo from here   ============ -->
-                    <img src="/Images/logo.png" class="img-fluid logo-lg" style="max-width: 65px;" />
+                    <img src="/Images/logo.png" class="img-fluid logo-lg" style="max-width: 65px;" onclick='sessionStorage.setItem("menuId",""); sessionStorage.setItem("sayfa",""); sessionStorage.setItem("duzenleId",""); sessionStorage.setItem("dPage",""); sessionStorage.setItem("dSearch",""); sessionStorage.setItem("dLink",""); sessionStorage.setItem("editId",""); sessionStorage.setItem("orderDt",""); sessionStorage.setItem("Id","");' />
                     <span class="badge bg-light-success rounded-pill ms-2 theme-version">v1.0.0</span>
                 </a>
             </div>
@@ -150,11 +150,11 @@
                     {
                         <li class="dropdown pc-h-item">
                             <a class="pc-head-link dropdown-toggle arrow-none me-0"
-                            data-bs-toggle="dropdown"
-                            href="#"
-                            role="button"
-                            aria-haspopup="false"
-                            aria-expanded="false">
+                           data-bs-toggle="dropdown"
+                           href="#"
+                           role="button"
+                           aria-haspopup="false"
+                           aria-expanded="false">
                                 <svg class="pc-icon">
                                     <use xlink:href="#custom-notification"></use>
                                 </svg>
@@ -167,7 +167,6 @@
                                 </div>
                                 <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
                                     <div id="NotifacitionList">
-
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +202,7 @@
                                                 </h5>
                                                 <div class="form-check form-switch form-check-reverse m-0">
                                                     <input class="form-check-input f-18" type="checkbox" role="switch" id="notificationSwitch"
-                                                    @(Model.AppUser.NotificationStatus ? "checked" : "") />
+                                                           @(Model.AppUser.NotificationStatus ? "checked" : "") />
                                                 </div>
                                             </div>
                                         </div>

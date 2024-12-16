@@ -8,5 +8,6 @@
         public decimal Amount { get; set; }
         public Project Project { get; set; }
         public Product Product { get; set; }
+        public List<ApiBasvuruRequest> ApiBasvuruRequests { get; set; }
     }
 }

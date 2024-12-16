@@ -6,7 +6,6 @@
 <!doctype html>
 <html lang="en">
 <!-- [Head] start -->
-
 <head>
     <title>@Model.Title</title>
     <!-- [Meta] -->
@@ -14,7 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="@Model.LicenseCompanyName" />
-
     <!-- [Favicon] icon -->
     <link rel="icon" href="/Images/favicon.png" type="image/x-icon" />
     <!-- [Font] Family -->
@@ -32,18 +30,15 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href="/AdminAssets/css/style.css" id="main-style-link" />
     <link rel="stylesheet" href="/AdminAssets/css/style-preset.css" />
-
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
-
 <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
     <!-- [ Pre-loader ] start -->
     <div class="page-loader">
         <div class="bar"></div>
     </div>
     <!-- [ Pre-loader ] End -->
-
     <div class="auth-main">
         <div class="auth-wrapper v1">
             <div class="auth-form">
@@ -88,16 +83,22 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
         layout_change('light');
-
         change_box_container('false');
-
         layout_caption_change('true');
-
         layout_rtl_change('false');
-
         preset_change('preset-1');
-
         main_layout_change('vertical');
+        $(document).ready(function () {
+            sessionStorage.setItem("menuId", "");
+            sessionStorage.setItem("sayfa", "");
+            sessionStorage.setItem("duzenleId", "");
+            sessionStorage.setItem("dPage", "");
+            sessionStorage.setItem("dSearch", "");
+            sessionStorage.setItem("dLink", "");
+            sessionStorage.setItem("editId", "");
+            sessionStorage.setItem("orderDt", "");
+            sessionStorage.setItem("Id", "");
+        });
     </script>
 </body>
 <!-- [Body] end -->

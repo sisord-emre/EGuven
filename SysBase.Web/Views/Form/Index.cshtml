@@ -17,8 +17,7 @@
     <div class="container">
         <div class="tab-container">
             <!-- Tab Buttons -->
-            <div class="tab-buttons border-b border-tab-inactive xl:text-lg text-sm"
-                 data-aos="fade-up">
+            <div class="tab-buttons border-b border-tab-inactive xl:text-lg text-sm">
                 <button class="tab-button active xl:px-20 px-4 py-2 font-extrabold text-center"
                         data-tab="urun-secimi"
                         id="urun-secimi-tab">
@@ -42,814 +41,867 @@
             </div>
 
             <!-- Tab Content -->
-            <div class="tab-content mt-12">
-                <div id="urun-secimi" class="tab-pane active">
-                    <div>
-                        <div class="text-primary-dark text-sm">
-                            <p>
-                                * E-imzanızın kullanım süresi bittikten
-                                sonra yenileme yapmak isterseniz,
-                                yeniden kimlik doğrulama yaptırmanız ve
-                                evrak beyan etmeniz gerekmektedir.
-                            </p>
-                            <p>
-                                ** Yenileme başvurunuzu
-                                gerçekleştirdikten sonraki 24 saat
-                                içerisinde tarafınıza onay
-                                maili ulaşacaktır. Süreniz bitmeden onay
-                                mailinde belirtilen adımları takip
-                                ederek yenileme sürecinizi tamamlamanız
-                                gerekmektedir.
-                            </p>
-                        </div>
-
-                        <div class="mt-5">
-                            <div class="text-primary-dark font-bold text-xl mb-5">
-                                Kupon / Referans kodu ekle
+            <form id="KayitForm" class="base-form">
+                <div class="tab-content mt-12">
+                    <div id="urun-secimi" class="tab-pane active">
+                        <div>
+                            <div class="text-primary-dark text-sm">
+                                <p>
+                                    * E-imzanızın kullanım süresi bittikten
+                                    sonra yenileme yapmak isterseniz,
+                                    yeniden kimlik doğrulama yaptırmanız ve
+                                    evrak beyan etmeniz gerekmektedir.
+                                </p>
+                                <p>
+                                    ** Yenileme başvurunuzu
+                                    gerçekleştirdikten sonraki 24 saat
+                                    içerisinde tarafınıza onay
+                                    maili ulaşacaktır. Süreniz bitmeden onay
+                                    mailinde belirtilen adımları takip
+                                    ederek yenileme sürecinizi tamamlamanız
+                                    gerekmektedir.
+                                </p>
                             </div>
-                            <form method="get" action="" class="base-form">
+
+                            <div class="mt-5">
+                                <div class="text-primary-dark font-bold text-xl mb-5">
+                                    Kupon / Referans kodu ekle
+                                </div>
                                 <div class="flex items-stretch gap-3">
                                     <div class="base-form-group">
                                         <input type="text" name="slug" id="slug" placeholder="Kodunuzu girin" value="@slug" />
                                     </div>
-                                    <button class="btn btn-common h-auto px-8">Uygula</button>
+                                    <button type="button" class="btn btn-common h-auto px-8" onclick="KodSecim()">Uygula</button>
                                 </div>
-                            </form>
 
-                            <div class="grid xl:grid-cols-3 grid-cols-1 xl:gap-14 gap-6 mt-10">
-                                <!-- Urunler -->
-                                @foreach (ProjectProduct item in Model.ProjectProducts)
-                                {
-                                    <div class="bg-white sr-item-shadow rounded-5 border border-transparent transition-colors duration-150 ease-in group product-item">
-                                        <div class="flex flex-col gap-2 items-center justify-center h-full">
-                                            <figure class="pt-6">
-                                                <img src="/Images/Product/@item.Product.Image" alt="@item.Product.ProductLanguageInfos[0].Title" />
-                                            </figure>
-                                            <div class="px-4 text-center">
-                                                <div class="text-xl text-primary-dark font-semibold mb-1">
-                                                    @item.Product.ProductLanguageInfos[0].Title
+                                <div class="grid xl:grid-cols-3 grid-cols-1 xl:gap-14 gap-6 mt-10">
+                                    <!-- Urunler -->
+                                    @foreach (ProjectProduct item in Model.ProjectProducts)
+                                    {
+                                        <div class="bg-white sr-item-shadow rounded-5 border border-transparent transition-colors duration-150 ease-in group product-item">
+                                            <div class="flex flex-col gap-2 items-center justify-center h-full">
+                                                <figure class="pt-6">
+                                                    <img src="/Images/Product/@item.Product.Image" alt="@item.Product.ProductLanguageInfos[0].Title" />
+                                                </figure>
+                                                <div class="px-4 text-center">
+                                                    <div class="text-xl text-primary-dark font-semibold mb-1">
+                                                        @item.Product.ProductLanguageInfos[0].Title
+                                                    </div>
+                                                    <div class="text-xs text-primary-dark mb-1">
+                                                        @item.Product.ProductLanguageInfos[0].Description
+                                                    </div>
+                                                    <div class="text-xs text-primary-red">
+                                                        Otomatik Yenileme
+                                                    </div>
                                                 </div>
-                                                <div class="text-xs text-primary-dark mb-1">
-                                                    @item.Product.ProductLanguageInfos[0].Description
+                                                <div class="bg-form-product-price h-full rounded-b-5 py-4 text-center text-primary-red w-full transition-colors duration-150 ease-in product-item-price flex flex-col items-center justify-center">
+                                                    <div class="text-xl font-bold">
+                                                        @item.Amount TL
+                                                    </div>
+                                                    <div class="text-xs">
+                                                        KDV Hariç
+                                                    </div>
                                                 </div>
-                                                <div class="text-xs text-primary-red">
-                                                    Otomatik Yenileme
-                                                </div>
+                                                <input class="hidden" type="radio" name="ProjectProductId" id="urun-@item.Id" value="@item.Id" />
                                             </div>
-                                            <div class="bg-form-product-price h-full rounded-b-5 py-4 text-center text-primary-red w-full transition-colors duration-150 ease-in product-item-price flex flex-col items-center justify-center">
-                                                <div class="text-xl font-bold">
-                                                    @item.Amount TL
-                                                </div>
-                                                <div class="text-xs">
-                                                    KDV Hariç
-                                                </div>
-                                            </div>
-                                            <input class="hidden" type="radio" name="urunler" id="urun-@item.Id" value="@item.Id" />
                                         </div>
-                                    </div>
-                                }
+                                    }
+                                </div>
+                                <div class="flex items-center justify-center mt-12">
+                                    <button type="button" disabled class="btn btn-primary-red px-10 disabled:cursor-not-allowed disabled:opacity-50" id="goToMusteriBilgileri">
+                                        Devam et
+                                    </button>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-center mt-12">
-                                <button type="button" disabled class="btn btn-primary-red px-10 disabled:cursor-not-allowed disabled:opacity-50" id="goToMusteriBilgileri">
-                                    Devam et
+                        </div>
+                    </div>
+
+                    <div id="musteri-bilgileri" class="tab-pane">
+                        <div class="base-form" id="musteri-bilgileri-form">
+                            <fieldset class="mt-10">
+                                <div class="text-primary-red font-bold text-xl mb-5">
+                                    Kişisel Bilgiler
+                                </div>
+                                <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
+                                    @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 6))//Kişisel Bilgiler
+                                    {
+                                        string required = "";
+                                        if (item.Required)
+                                        {
+                                            required = "required";
+                                        }
+                                        if (item.Field.Type == "int")
+                                        {
+                                            if (item.Field.Name == "İl")
+                                            {
+                                                <div class="base-form-group">
+                                                    <label for="@item.Field.ApiColumn">
+                                                        @Localizer[item.Field.Name]
+                                                        @if (item.Required)
+                                                        {
+                                                            <sup>*</sup>
+                                                        }
+                                                    </label>
+                                                    <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                        <option value="">Seçiniz</option>
+                                                        @foreach (City city in Model.Cities.OrderBy(x => x.Name))
+                                                        {
+                                                            <option value="@city.Name">@city.Name</option>
+                                                        }
+                                                    </select>
+                                                    <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                    </div>
+                                                </div>
+
+                                            }
+                                            if (item.Field.Name == "İlçe")
+                                            {
+                                                <div class="base-form-group">
+                                                    <label for="@item.Field.ApiColumn">
+                                                        @Localizer[item.Field.Name]
+                                                        @if (item.Required)
+                                                        {
+                                                            <sup>*</sup>
+                                                        }
+                                                    </label>
+                                                    <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                        <option value="">Seçiniz</option>
+                                                    </select>
+                                                    <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else if (item.Field.Type == "textarea")
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                </div>
+                                            </div>
+
+                                        }
+                                        else if (item.Field.Type == "file")
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="flex items-center justify-end text-xs mt-4">
+                                    <div>
+                                        <label for="e-posta-gorulme">
+                                            E-posta adresimin sertifika içerisinde görülmesini istiyorum.
+                                        </label>
+                                        <input type="checkbox" class="ml-2" />
+                                    </div>
+                                </div>
+                                <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4">
+                                    <div class="font-bold mb-4">
+                                        ELEKTRONİK BİLGİ GÜVENLİĞİ A.Ş.
+                                        KİŞİSEL VERİLERİN İŞLENMESİNE
+                                        İLİŞKİN AYDINLATMA METNİ
+                                    </div>
+                                    <p class="text-sm mb-4">
+                                        Aydınlatma Metni, Elektronik Bilgi
+                                        Güvenliği Anonim Şirketi ("Şirket”)
+                                        tarafından Şirket’in müşterilerinin
+                                        6698 sayılı Kişisel Verilerin
+                                        Korunması Kanunu (“Kanun”)
+                                        kapsamında kişisel verilerinin
+                                        Şirket tarafından işlenmesine
+                                        ilişkin olarak aydınlatılması
+                                        amacıyla hazırlanmıştır.
+                                    </p>
+                                    <p class="text-sm mb-4">
+                                        Lorem ipsum dolor sit amet
+                                        consectetur adipisicing elit. Sit,
+                                        dolores iure earum dolor fugiat eius
+                                        voluptatibus perspiciatis dicta a
+                                        itaque.
+                                    </p>
+                                    <p class="text-sm mb-4">
+                                        Lorem, ipsum dolor sit amet
+                                        consectetur adipisicing elit. Modi
+                                        cumque quam, soluta, sed perferendis
+                                        explicabo neque hic exercitationem
+                                        culpa vitae, rem dolorum inventore
+                                        eveniet minima ipsa. Quod qui ea
+                                        mollitia esse, minima autem
+                                        architecto, debitis facilis eligendi
+                                        cupiditate ipsam delectus nostrum
+                                        eveniet possimus doloribus alias
+                                        dolorum ducimus ratione eius
+                                        voluptates velit excepturi
+                                        exercitationem? Atque iure, quasi
+                                        repellendus doloremque omnis sed
+                                        accusamus ea, soluta praesentium
+                                        recusandae tenetur sit, beatae ipsam
+                                        odit nam cupiditate dolorem facere
+                                        dolor iste commodi officiis ratione.
+                                        Natus, dolore quod eveniet esse
+                                        culpa odio non doloremque porro
+                                        vitae, debitis fuga voluptate et
+                                        illum nemo illo rem consectetur
+                                        possimus!
+                                    </p>
+                                </div>
+                                <div class="mt-7">
+                                    <input type="checkbox" class="mr-2" name="Izin" id="aydinlatma-metni-kabul" value="True" required />
+                                    <label for="aydinlatma-metni-kabul">Okudum, kabul ediyorum.</label>
+                                    <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                        Zorunlu alan lütfen boş bırakmayınız.
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="mt-10">
+                                <div class="text-primary-red font-bold text-xl mb-5">
+                                    İletişim, Teslimat & Kurulum Adres
+                                    Bilgileri
+                                </div>
+                                <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
+                                    @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 7))//İletişim, Teslimat, Kurulum Adres Bilgileri
+                                    {
+                                        string required = "";
+                                        if (item.Required)
+                                        {
+                                            required = "required";
+                                        }
+                                        if (item.Field.Type == "int")
+                                        {
+                                            if (item.Field.Name == "İl")
+                                            {
+                                                <div class="base-form-group">
+                                                    <label for="@item.Field.ApiColumn">
+                                                        @Localizer[item.Field.Name]
+                                                        @if (item.Required)
+                                                        {
+                                                            <sup>*</sup>
+                                                        }
+                                                    </label>
+                                                    <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                        <option value="">Seçiniz</option>
+                                                        @foreach (City city in Model.Cities)
+                                                        {
+                                                            <option value="@city.Name">@city.Name</option>
+                                                        }
+                                                    </select>
+                                                    <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                    </div>
+                                                </div>
+
+                                            }
+                                            if (item.Field.Name == "İlçe")
+                                            {
+                                                <div class="base-form-group">
+                                                    <label for="@item.Field.ApiColumn">
+                                                        @Localizer[item.Field.Name]
+                                                        @if (item.Required)
+                                                        {
+                                                            <sup>*</sup>
+                                                        }
+                                                    </label>
+                                                    <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                        <option value="">Seçiniz</option>
+                                                    </select>
+                                                    <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else if (item.Field.Type == "textarea")
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                </div>
+                                            </div>
+
+                                        }
+                                        else if (item.Field.Type == "file")
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="base-form-group">
+                                                <label for="@item.Field.ApiColumn">
+                                                    @Localizer[item.Field.Name]
+                                                    @if (item.Required)
+                                                    {
+                                                        <sup>*</sup>
+                                                    }
+                                                </label>
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </fieldset>
+
+                            <div class="mt-11 flex items-center justify-end">
+                                <button type="button" class="btn btn-primary-red px-8" id="goToDogrulamaEkrani" disabled>
+                                    Devam Et
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="musteri-bilgileri" class="tab-pane">
-                    <form class="base-form">
-                        <fieldset class="mt-10">
-                            <div class="text-primary-red font-bold text-xl mb-5">
-                                Kişisel Bilgiler
-                            </div>
-                            <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
-                                @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 6))//Kişisel Bilgiler
-                                {
-                                    string required = "";
-                                    if (item.Required)
-                                    {
-                                        required = "required";
-                                    }
-                                    if (item.Field.Type == "int")
-                                    {
-                                        if (item.Field.Name == "İl")
-                                        {
-                                            <div class="base-form-group">
-                                                <label for="@item.Field.ApiColumn">
-                                                    @Localizer[item.Field.Name]
-                                                    @if (item.Required)
-                                                    {
-                                                        <sup>*</sup>
-                                                    }
-                                                </label>
-                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
-                                                    <option value="">Seçiniz</option>
-                                                    @foreach (City city in Model.Cities.OrderBy(x=>x.Name))
-                                                    {
-                                                        <option value="@city.Id">@city.Name</option>
-                                                    }
-                                                </select>
-                                            </div>
-
-                                        }
-                                        if (item.Field.Name == "İlçe")
-                                        {
-                                            <div class="base-form-group">
-                                                <label for="@item.Field.ApiColumn">
-                                                    @Localizer[item.Field.Name]
-                                                    @if (item.Required)
-                                                    {
-                                                        <sup>*</sup>
-                                                    }
-                                                </label>
-                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
-                                                    <option value="">Seçiniz</option>
-                                                </select>
-                                            </div>
-                                        }
-                                    }
-                                    else if (item.Field.Type == "textarea")
-                                    {
-                                        <div class="base-form-group">
-                                            <label for="@item.Field.ApiColumn">
-                                                @Localizer[item.Field.Name]
-                                                @if (item.Required)
-                                                {
-                                                    <sup>*</sup>
-                                                }
-                                            </label>
-                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
-                                        </div>
-
-                                    }
-                                    else if (item.Field.Type == "file")
-                                    {
-                                        <div class="base-form-group">
-                                            <label for="@item.Field.ApiColumn">
-                                                @Localizer[item.Field.Name]
-                                                @if (item.Required)
-                                                {
-                                                    <sup>*</sup>
-                                                }
-                                            </label>
-                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="base-form-group">
-                                            <label for="@item.Field.ApiColumn">
-                                                @Localizer[item.Field.Name]
-                                                @if (item.Required)
-                                                {
-                                                    <sup>*</sup>
-                                                }
-                                            </label>
-                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
-                                        </div>
-                                    }
-                                }
-                            </div>
-                            <div class="flex items-center justify-end text-xs mt-4">
-                                <div>
-                                    <label for="e-posta-gorulme">
-                                        E-posta adresimin sertifika
-                                        içerisinde görülmesini
-                                        istiyorum.
-                                    </label>
-                                    <input type="checkbox"
-                                           class="ml-2" />
-                                </div>
-                            </div>
-                            <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4">
-                                <div class="font-bold mb-4">
-                                    ELEKTRONİK BİLGİ GÜVENLİĞİ A.Ş.
-                                    KİŞİSEL VERİLERİN İŞLENMESİNE
-                                    İLİŞKİN AYDINLATMA METNİ
-                                </div>
-                                <p class="text-sm mb-4">
-                                    Aydınlatma Metni, Elektronik Bilgi
-                                    Güvenliği Anonim Şirketi ("Şirket”)
-                                    tarafından Şirket’in müşterilerinin
-                                    6698 sayılı Kişisel Verilerin
-                                    Korunması Kanunu (“Kanun”)
-                                    kapsamında kişisel verilerinin
-                                    Şirket tarafından işlenmesine
-                                    ilişkin olarak aydınlatılması
-                                    amacıyla hazırlanmıştır.
-                                </p>
-                                <p class="text-sm mb-4">
-                                    Lorem ipsum dolor sit amet
-                                    consectetur adipisicing elit. Sit,
-                                    dolores iure earum dolor fugiat eius
-                                    voluptatibus perspiciatis dicta a
-                                    itaque.
-                                </p>
-                                <p class="text-sm mb-4">
-                                    Lorem, ipsum dolor sit amet
-                                    consectetur adipisicing elit. Modi
-                                    cumque quam, soluta, sed perferendis
-                                    explicabo neque hic exercitationem
-                                    culpa vitae, rem dolorum inventore
-                                    eveniet minima ipsa. Quod qui ea
-                                    mollitia esse, minima autem
-                                    architecto, debitis facilis eligendi
-                                    cupiditate ipsam delectus nostrum
-                                    eveniet possimus doloribus alias
-                                    dolorum ducimus ratione eius
-                                    voluptates velit excepturi
-                                    exercitationem? Atque iure, quasi
-                                    repellendus doloremque omnis sed
-                                    accusamus ea, soluta praesentium
-                                    recusandae tenetur sit, beatae ipsam
-                                    odit nam cupiditate dolorem facere
-                                    dolor iste commodi officiis ratione.
-                                    Natus, dolore quod eveniet esse
-                                    culpa odio non doloremque porro
-                                    vitae, debitis fuga voluptate et
-                                    illum nemo illo rem consectetur
-                                    possimus!
-                                </p>
-                            </div>
-                            <div class="mt-7">
-                                <input type="checkbox"
-                                       class="mr-2"
-                                       id="aydinlatma-metni-kabul" />
-                                <label for="aydinlatma-metni-kabul">Okudum, kabul ediyorum.</label>
-                            </div>
-                        </fieldset>
-
-                        <fieldset class="mt-10">
-                            <div class="text-primary-red font-bold text-xl mb-5">
-                                İletişim, Teslimat & Kurulum Adres
-                                Bilgileri
-                            </div>
-                            <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
-                                @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 7))//İletişim, Teslimat, Kurulum Adres Bilgileri
-                                {
-                                    string required = "";
-                                    if (item.Required)
-                                    {
-                                        required = "required";
-                                    }
-                                    if (item.Field.Type == "int")
-                                    {
-                                        if (item.Field.Name == "İl")
-                                        {
-                                            <div class="base-form-group">
-                                                <label for="@item.Field.ApiColumn">
-                                                    @Localizer[item.Field.Name]
-                                                    @if (item.Required)
-                                                    {
-                                                        <sup>*</sup>
-                                                    }
-                                                </label>
-                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
-                                                    <option value="">Seçiniz</option>
-                                                    @foreach (City city in Model.Cities)
-                                                    {
-                                                        <option value="@city.Id">@city.Name</option>
-                                                    }
-                                                </select>
-                                            </div>
-
-                                        }
-                                        if (item.Field.Name == "İlçe")
-                                        {
-                                            <div class="base-form-group">
-                                                <label for="@item.Field.ApiColumn">
-                                                    @Localizer[item.Field.Name]
-                                                    @if (item.Required)
-                                                    {
-                                                        <sup>*</sup>
-                                                    }
-                                                </label>
-                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
-                                                    <option value="">Seçiniz</option>
-                                                </select>
-                                            </div>
-                                        }
-                                    }
-                                    else if (item.Field.Type == "textarea")
-                                    {
-                                        <div class="base-form-group">
-                                            <label for="@item.Field.ApiColumn">
-                                                @Localizer[item.Field.Name]
-                                                @if (item.Required)
-                                                {
-                                                    <sup>*</sup>
-                                                }
-                                            </label>
-                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
-                                        </div>
-
-                                    }
-                                    else if (item.Field.Type == "file")
-                                    {
-                                        <div class="base-form-group">
-                                            <label for="@item.Field.ApiColumn">
-                                                @Localizer[item.Field.Name]
-                                                @if (item.Required)
-                                                {
-                                                    <sup>*</sup>
-                                                }
-                                            </label>
-                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="base-form-group">
-                                            <label for="@item.Field.ApiColumn">
-                                                @Localizer[item.Field.Name]
-                                                @if (item.Required)
-                                                {
-                                                    <sup>*</sup>
-                                                }
-                                            </label>
-                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        </fieldset>
-
-                        <div class="mt-11 flex items-center justify-end">
-                            <button type="button"
-                                    class="btn btn-primary-red px-8"
-                                    id="goToDogrulamaEkrani">
-                                Devam Et
-                            </button>
+                    <div id="dogrulama-ekrani" class="tab-pane">
+                        <div class="text-center text-xl text-primary-dark font-bold">
+                            E-imza için kimlik doğrulama gerekmektedir.
+                            Lütfen kimlik doğrulamanızı seçiniz.
                         </div>
-                    </form>
-                </div>
 
-                <div id="dogrulama-ekrani" class="tab-pane">
-                    <div class="text-center text-xl text-primary-dark font-bold">
-                        E-imza için kimlik doğrulama gerekmektedir.
-                        Lütfen kimlik doğrulamanızı seçiniz.
-                    </div>
-
-                    <form class="base-form">
-                        <div class="max-w-lg mx-auto">
-                            <div class="grid gap-10 mt-10">
-                                <div class="flex flex-col gap-4 items-center justify-center">
-                                    <div class="bg-white rounded-5 sr-item-shadow border border-transparent transition-colors duration-150 ease-in flex items-center flex-col justify-center gap-5 py-8 px-10 cursor-pointer"
-                                         id="edevlet-logo">
-                                        <figure>
-                                            <img src="assets/images/e-devlet-logo.png"
-                                                 alt="E-Devlet Logo" />
-                                        </figure>
-                                        <div class="text-primary-dark text-xl font-black">
-                                            E-DEVLET
+                        <div class="base-form">
+                            <div class="max-w-lg mx-auto">
+                                <div class="grid gap-10 mt-10">
+                                    <div class="flex flex-col gap-4 items-center justify-center">
+                                        <div class="bg-white rounded-5 sr-item-shadow border border-transparent transition-colors duration-150 ease-in flex items-center flex-col justify-center gap-5 py-8 px-10 cursor-pointer"
+                                             id="edevlet-logo">
+                                            <figure>
+                                                <img src="assets/images/e-devlet-logo.png"
+                                                     alt="E-Devlet Logo" />
+                                            </figure>
+                                            <div class="text-primary-dark text-xl font-black">
+                                                E-DEVLET
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <input type="radio" name="edevlet" id="edevlet" value="1" checked />
+                                            <label for="edevlet" class="text-xl font-bold">Ücretsiz</label>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <input type="radio" name="edevlet" id="edevlet" value="1" checked />
-                                        <label for="edevlet" class="text-xl font-bold">Ücretsiz</label>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex items-stretch justify-center gap-5 mt-10">
-                                <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri">Ödemeye devam et</button>
+                                <div class="flex items-stretch justify-center gap-5 mt-10">
+                                    <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri">Ödemeye devam et</button>
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-
-                <div id="odeme-bilgileri" class="tab-pane">
-                    <div class="my-10 text-xl font-bold text-primary-dark">
-                        Sipariş Özeti
                     </div>
-                    <form class="base-form">
-                        <div class="grid xl:grid-cols-3 grid-cols-1 gap-16">
-                            <div class="xl:col-span-1" id="sepetDiv">
-                      
-                            </div>
-                            <div class="xl:col-span-2">
-                                <!-- fatura form -->
-                                <div>
-                                    <!-- Bireysel/Kurumsal Buttons -->
-                                    <div class="fatura-tab">
-                                        <button id="bireysel-btn" class="active" type="button">
-                                            BİREYSEL
-                                        </button>
-                                        <button id="kurumsal-btn" type="button">
-                                            KURUMSAL
-                                        </button>
-                                    </div>
-                                    <!-- Tab Content -->
-                                    <div id="bireysel-tab-content"
-                                         class="pt-7">
-                                        <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
-                                            <input type="radio" name="fatura-adresi-ortak" id="fatura-adresi-ortak" />
-                                            <label for="fatura-adresi-ortak">
-                                                Fatura adresim teslimat adresim ile aynı
-                                            </label>
-                                        </div>
-                                        <div class="grid grid-cols-1 gap-3">
-                                            @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 6))//Şirket Bilgileri
-                                            {
-                                                string required = "";
-                                                if (item.Required)
-                                                {
-                                                    required = "required";
-                                                }
-                                                if (item.Field.Type == "int")
-                                                {
-                                                    if (item.Field.Name == "İl")
-                                                    {
-                                                        <div class="base-form-group">
-                                                            <label for="@item.Field.ApiColumn">
-                                                                @Localizer[item.Field.Name]
-                                                                @if (item.Required)
-                                                                {
-                                                                    <sup>*</sup>
-                                                                }
-                                                            </label>
-                                                            <select class="" name="@item.Field.ApiColumn" id="il" @required>
-                                                                <option value="">Seçiniz</option>
-                                                                @foreach (City city in Model.Cities)
-                                                                {
-                                                                    <option value="@city.Id">@city.Name</option>
-                                                                }
-                                                            </select>
-                                                        </div>
 
-                                                    }
-                                                    if (item.Field.Name == "İlçe")
-                                                    {
-                                                        <div class="base-form-group">
-                                                            <label for="@item.Field.ApiColumn">
-                                                                @Localizer[item.Field.Name]
-                                                                @if (item.Required)
-                                                                {
-                                                                    <sup>*</sup>
-                                                                }
-                                                            </label>
-                                                            <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
-                                                                <option value="">Seçiniz</option>
-                                                            </select>
-                                                        </div>
-                                                    }
-                                                }
-                                                else if (item.Field.Type == "textarea")
-                                                {
-                                                    <div class="base-form-group">
-                                                        <label for="@item.Field.ApiColumn">
-                                                            @Localizer[item.Field.Name]
-                                                            @if (item.Required)
-                                                            {
-                                                                <sup>*</sup>
-                                                            }
-                                                        </label>
-                                                        <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
-                                                    </div>
-
-                                                }
-                                                else if (item.Field.Type == "file")
-                                                {
-                                                    <div class="base-form-group">
-                                                        <label for="@item.Field.ApiColumn">
-                                                            @Localizer[item.Field.Name]
-                                                            @if (item.Required)
-                                                            {
-                                                                <sup>*</sup>
-                                                            }
-                                                        </label>
-                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="base-form-group">
-                                                        <label for="@item.Field.ApiColumn">
-                                                            @Localizer[item.Field.Name]
-                                                            @if (item.Required)
-                                                            {
-                                                                <sup>*</sup>
-                                                            }
-                                                        </label>
-                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
-                                                    </div>
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                    <div id="kurumsal-tab-content"
-                                         class="hidden pt-7">
-                                        <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
-                                            <input type="radio"
-                                                   name="fatura-adresi-ortak"
-                                                   id="fatura-adresi-ortak" />
-                                            <label for="fatura-adresi-ortak">
-                                                Fatura adresim teslimat adresim ile aynı
-                                            </label>
-                                        </div>
-                                        <div class="grid grid-cols-1 gap-3">
-                                            @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 9))//Fatura Bilgileri
-                                            {
-                                                string required = "";
-                                                if (item.Required)
-                                                {
-                                                    required = "required";
-                                                }
-                                                if (item.Field.Type == "int")
-                                                {
-                                                    if (item.Field.Name == "İl")
-                                                    {
-                                                        <div class="base-form-group">
-                                                            <label for="@item.Field.ApiColumn">
-                                                                @Localizer[item.Field.Name]
-                                                                @if (item.Required)
-                                                                {
-                                                                    <sup>*</sup>
-                                                                }
-                                                            </label>
-                                                            <select class="" name="@item.Field.ApiColumn" id="il" @required>
-                                                                <option value="">Seçiniz</option>
-                                                                @foreach (City city in Model.Cities)
-                                                                {
-                                                                    <option value="@city.Id">@city.Name</option>
-                                                                }
-                                                            </select>
-                                                        </div>
-
-                                                    }
-                                                    if (item.Field.Name == "İlçe")
-                                                    {
-                                                        <div class="base-form-group">
-                                                            <label for="@item.Field.ApiColumn">
-                                                                @Localizer[item.Field.Name]
-                                                                @if (item.Required)
-                                                                {
-                                                                    <sup>*</sup>
-                                                                }
-                                                            </label>
-                                                            <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
-                                                                <option value="">Seçiniz</option>
-                                                            </select>
-                                                        </div>
-                                                    }
-                                                }
-                                                else if (item.Field.Type == "textarea")
-                                                {
-                                                    <div class="base-form-group">
-                                                        <label for="@item.Field.ApiColumn">
-                                                            @Localizer[item.Field.Name]
-                                                            @if (item.Required)
-                                                            {
-                                                                <sup>*</sup>
-                                                            }
-                                                        </label>
-                                                        <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
-                                                    </div>
-
-                                                }
-                                                else if (item.Field.Type == "file")
-                                                {
-                                                    <div class="base-form-group">
-                                                        <label for="@item.Field.ApiColumn">
-                                                            @Localizer[item.Field.Name]
-                                                            @if (item.Required)
-                                                            {
-                                                                <sup>*</sup>
-                                                            }
-                                                        </label>
-                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="base-form-group">
-                                                        <label for="@item.Field.ApiColumn">
-                                                            @Localizer[item.Field.Name]
-                                                            @if (item.Required)
-                                                            {
-                                                                <sup>*</sup>
-                                                            }
-                                                        </label>
-                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
-                                                    </div>
-                                                }
-                                            }
-                                        </div>
-                                    </div>
+                    <div id="odeme-bilgileri" class="tab-pane">
+                        <div class="my-10 text-xl font-bold text-primary-dark">
+                            Sipariş Özeti
+                        </div>
+                        <div class="base-form">
+                            <div class="grid xl:grid-cols-3 grid-cols-1 gap-16">
+                                <div class="xl:col-span-1" id="sepetDiv">
                                 </div>
-                                @if (Model.ProjectFields[0].Project.PaymetForm)
-                                {
-                                    <div class="mt-16">
-                                        <!-- Kredi Kartı/Havale Buttons -->
+                                <div class="xl:col-span-2">
+                                    <!-- fatura form -->
+                                    <div>
+                                        <!-- Bireysel/Kurumsal Buttons -->
                                         <div class="fatura-tab">
-                                            <button id="kredi-kart-btn"
-                                                class="active"
-                                                type="button">
-                                                KREDİ KARTI
+                                            <button id="bireysel-btn" class="active" type="button">
+                                                BİREYSEL
                                             </button>
-                                            <button id="havale-btn"
-                                                type="button">
-                                                HAVALE
+                                            <button id="kurumsal-btn" type="button">
+                                                KURUMSAL
                                             </button>
                                         </div>
                                         <!-- Tab Content -->
-                                        <div id="kredi-kart-tab-content"
-                                         class="pt-7">
-                                            <div class="text-primary-dark text-lg font-semibold mb-6">
-                                                Kredi kartı detayları
-                                            </div>
-                                            <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
-                                                <div class="text-primary-dark text-sm font-medium max-w-20">
-                                                    Ödeme Yöntemi
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <figure>
-                                                        <img src="assets/images/mastercard.png"
-                                                         alt="master card logo" />
-                                                    </figure>
-                                                    <figure>
-                                                        <img src="assets/images/visa.png"
-                                                         alt="visa logo" />
-                                                    </figure>
-                                                    <figure>
-                                                        <img src="assets/images/american-express.png"
-                                                         alt="american express logo" />
-                                                    </figure>
-                                                    <figure>
-                                                        <img src="assets/images/discover.png"
-                                                         alt="discover logo" />
-                                                    </figure>
-                                                </div>
+                                        <div id="bireysel-tab-content"
+                                             class="pt-7">
+                                            <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
+                                                <input type="radio" name="fatura-adresi-ortak" id="fatura-adresi-ortak" />
+                                                <label for="fatura-adresi-ortak">
+                                                    Fatura adresim teslimat adresim ile aynı
+                                                </label>
                                             </div>
                                             <div class="grid grid-cols-1 gap-3">
-                                                <div class="base-form-group">
-                                                    <label for="card-ad-soyad">
-                                                        Kartın üzerindeki
-                                                        ad
-                                                    </label>
-                                                    <input type="text"
-                                                       placeholder="Lorem ipsum"
-                                                       id="card-ad-soyad" />
-                                                </div>
-                                                <div class="base-form-group">
-                                                    <label for="card-no">
-                                                        Kart
-                                                        Numarası
-                                                    </label>
-                                                    <input type="text"
-                                                       placeholder="0000 0000 0000 0000"
-                                                       id="card-no" />
-                                                </div>
-                                            </div>
-                                            <div class="flex flex-col gap-3 mt-3">
-                                                <label for="exp-date-month">
-                                                    Son Kullanma
-                                                    Tarihi
-                                                </label>
-                                                <div class="grid grid-cols-2 gap-3">
-                                                    <div class="base-form-group">
-                                                        <select name="exp-date-month"
-                                                            id="exp-date-month">
-                                                            <option value=""
-                                                                disabled
-                                                                selected>
-                                                                Ay
-                                                            </option>
-                                                            <option value="01">
-                                                                01
-                                                            </option>
-                                                            <option value="02">
-                                                                02
-                                                            </option>
-                                                            <option value="03">
-                                                                03
-                                                            </option>
-                                                            <option value="04">
-                                                                04
-                                                            </option>
-                                                            <option value="05">
-                                                                05
-                                                            </option>
-                                                            <option value="06">
-                                                                06
-                                                            </option>
-                                                            <option value="07">
-                                                                07
-                                                            </option>
-                                                            <option value="08">
-                                                                08
-                                                            </option>
-                                                            <option value="09">
-                                                                09
-                                                            </option>
-                                                            <option value="10">
-                                                                10
-                                                            </option>
-                                                            <option value="11">
-                                                                11
-                                                            </option>
-                                                            <option value="12">
-                                                                12
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="base-form-group">
-                                                        <select name="exp-date-year"
-                                                            id="exp-date-year">
-                                                            <option value=""
-                                                                disabled
-                                                                selected>
-                                                                Yıl
-                                                            </option>
-                                                            <option value="2025">
-                                                                2025
-                                                            </option>
-                                                            <option value="2026">
-                                                                2026
-                                                            </option>
-                                                            <option value="2027">
-                                                                2027
-                                                            </option>
-                                                            <option value="2028">
-                                                                2028
-                                                            </option>
-                                                            <option value="2029">
-                                                                2029
-                                                            </option>
-                                                            <option value="2030">
-                                                                2030
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex flex-col gap-3 mt-3 w-max">
-                                                <label for="exp-date-month">
-                                                    Son Kullanma
-                                                    Tarihi
-                                                </label>
-                                                <div class="base-form-group">
-                                                    <input type="text"
-                                                       name="code"
-                                                       id="code"
-                                                       class="max-w-44"
-                                                       placeholder="Kod" />
-                                                    <button type="button"
-                                                        popovertarget="code-popover"
-                                                        class="absolute top-[18px] right-3 text-gray-400">
-                                                        <span class="icon-help-circle"></span>
-                                                    </button>
-                                                    <div popover
-                                                     id="code-popover"
-                                                     class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">
-                                                        Lorem ipsum dolor
-                                                        sit amet consectetur
-                                                        adipisicing elit.
-                                                        Soluta,
-                                                        exercitationem.
-                                                    </div>
-                                                </div>
+                                                @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 8))//Şirket Bilgileri
+                                                {
+                                                    string required = "";
+                                                    if (item.Required)
+                                                    {
+                                                        required = "required";
+                                                    }
+                                                    if (item.Field.Type == "int")
+                                                    {
+                                                        if (item.Field.Name == "İl")
+                                                        {
+                                                            <div class="base-form-group">
+                                                                <label for="@item.Field.ApiColumn">
+                                                                    @Localizer[item.Field.Name]
+                                                                    @if (item.Required)
+                                                                    {
+                                                                        <sup>*</sup>
+                                                                    }
+                                                                </label>
+                                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                                    <option value="">Seçiniz</option>
+                                                                    @foreach (City city in Model.Cities)
+                                                                    {
+                                                                        <option value="@city.Name">@city.Name</option>
+                                                                    }
+                                                                </select>
+                                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                </div>
+                                                            </div>
+
+                                                        }
+                                                        if (item.Field.Name == "İlçe")
+                                                        {
+                                                            <div class="base-form-group">
+                                                                <label for="@item.Field.ApiColumn">
+                                                                    @Localizer[item.Field.Name]
+                                                                    @if (item.Required)
+                                                                    {
+                                                                        <sup>*</sup>
+                                                                    }
+                                                                </label>
+                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                                    <option value="">Seçiniz</option>
+                                                                </select>
+                                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else if (item.Field.Type == "textarea")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                    else if (item.Field.Type == "file")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                         </div>
-                                        <div id="havale-tab-content"
-                                         class="hidden pt-7">
-                                            <div class="text-primary-dark text-sm">
-                                                <p class="py-4">
-                                                    Lorem ipsum dolor sit
-                                                    amet consectetur
-                                                    adipisicing elit.
-                                                    Soluta, exercitationem.
-                                                </p>
-                                                <p class="py-4">
-                                                    Lorem ipsum, dolor sit
-                                                    amet consectetur
-                                                    adipisicing elit. Ipsum
-                                                    dolore repellat sunt
-                                                    assumenda eligendi, quia
-                                                    unde explicabo
-                                                    exercitationem illum
-                                                    mollitia quasi sapiente
-                                                    iusto cupiditate ab,
-                                                    quibusdam deleniti.
-                                                    Deserunt ullam nobis
-                                                    sed, molestiae cum
-                                                    corporis exercitationem
-                                                    maxime. Necessitatibus,
-                                                    cum natus. Sint!
-                                                </p>
+                                        <div id="kurumsal-tab-content"
+                                             class="hidden pt-7">
+                                            <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
+                                                <input type="radio"
+                                                       name="fatura-adresi-ortak"
+                                                       id="fatura-adresi-ortak" />
+                                                <label for="fatura-adresi-ortak">
+                                                    Fatura adresim teslimat adresim ile aynı
+                                                </label>
+                                            </div>
+                                            <div class="grid grid-cols-1 gap-3">
+                                                @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 9))//Fatura Bilgileri
+                                                {
+                                                    string required = "";
+                                                    if (item.Required)
+                                                    {
+                                                        required = "required";
+                                                    }
+                                                    if (item.Field.Type == "int")
+                                                    {
+                                                        if (item.Field.Name == "İl")
+                                                        {
+                                                            <div class="base-form-group">
+                                                                <label for="@item.Field.ApiColumn">
+                                                                    @Localizer[item.Field.Name]
+                                                                    @if (item.Required)
+                                                                    {
+                                                                        <sup>*</sup>
+                                                                    }
+                                                                </label>
+                                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                                    <option value="">Seçiniz</option>
+                                                                    @foreach (City city in Model.Cities)
+                                                                    {
+                                                                        <option value="@city.Name">@city.Name</option>
+                                                                    }
+                                                                </select>
+                                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                </div>
+                                                            </div>
+
+                                                        }
+                                                        if (item.Field.Name == "İlçe")
+                                                        {
+                                                            <div class="base-form-group">
+                                                                <label for="@item.Field.ApiColumn">
+                                                                    @Localizer[item.Field.Name]
+                                                                    @if (item.Required)
+                                                                    {
+                                                                        <sup>*</sup>
+                                                                    }
+                                                                </label>
+                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                                    <option value="">Seçiniz</option>
+                                                                </select>
+                                                                <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else if (item.Field.Type == "textarea")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                    else if (item.Field.Type == "file")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup>*</sup>
+                                                                }
+                                                            </label>
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                         </div>
                                     </div>
-                                }
-                                <button class="btn btn-primary-red px-8 mt-10">
-                                    SİPARİŞİ TAMAMLA
-                                </button>
+                                    @if (Model.ProjectFields[0].Project.PaymetForm)
+                                    {
+                                        <div class="mt-16">
+                                            <!-- Kredi Kartı/Havale Buttons -->
+                                            <div class="fatura-tab">
+                                                <button id="kredi-kart-btn"
+                                                    class="active"
+                                                    type="button">
+                                                    KREDİ KARTI
+                                                </button>
+                                                <button id="havale-btn"
+                                                    type="button">
+                                                    HAVALE
+                                                </button>
+                                            </div>
+                                            <!-- Tab Content -->
+                                            <div id="kredi-kart-tab-content"
+                                             class="pt-7">
+                                                <div class="text-primary-dark text-lg font-semibold mb-6">
+                                                    Kredi kartı detayları
+                                                </div>
+                                                <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
+                                                    <div class="text-primary-dark text-sm font-medium max-w-20">
+                                                        Ödeme Yöntemi
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <figure>
+                                                            <img src="assets/images/mastercard.png"
+                                                             alt="master card logo" />
+                                                        </figure>
+                                                        <figure>
+                                                            <img src="assets/images/visa.png"
+                                                             alt="visa logo" />
+                                                        </figure>
+                                                        <figure>
+                                                            <img src="assets/images/american-express.png"
+                                                             alt="american express logo" />
+                                                        </figure>
+                                                        <figure>
+                                                            <img src="assets/images/discover.png"
+                                                             alt="discover logo" />
+                                                        </figure>
+                                                    </div>
+                                                </div>
+                                                <div class="grid grid-cols-1 gap-3">
+                                                    <div class="base-form-group">
+                                                        <label for="card-ad-soyad">
+                                                            Kartın üzerindeki
+                                                            ad
+                                                        </label>
+                                                        <input type="text"
+                                                           placeholder="Lorem ipsum"
+                                                           id="card-ad-soyad" />
+                                                    </div>
+                                                    <div class="base-form-group">
+                                                        <label for="card-no">
+                                                            Kart
+                                                            Numarası
+                                                        </label>
+                                                        <input type="text"
+                                                           placeholder="0000 0000 0000 0000"
+                                                           id="card-no" />
+                                                    </div>
+                                                </div>
+                                                <div class="flex flex-col gap-3 mt-3">
+                                                    <label for="exp-date-month">
+                                                        Son Kullanma
+                                                        Tarihi
+                                                    </label>
+                                                    <div class="grid grid-cols-2 gap-3">
+                                                        <div class="base-form-group">
+                                                            <select name="exp-date-month"
+                                                                id="exp-date-month">
+                                                                <option value=""
+                                                                    disabled
+                                                                    selected>
+                                                                    Ay
+                                                                </option>
+                                                                <option value="01">
+                                                                    01
+                                                                </option>
+                                                                <option value="02">
+                                                                    02
+                                                                </option>
+                                                                <option value="03">
+                                                                    03
+                                                                </option>
+                                                                <option value="04">
+                                                                    04
+                                                                </option>
+                                                                <option value="05">
+                                                                    05
+                                                                </option>
+                                                                <option value="06">
+                                                                    06
+                                                                </option>
+                                                                <option value="07">
+                                                                    07
+                                                                </option>
+                                                                <option value="08">
+                                                                    08
+                                                                </option>
+                                                                <option value="09">
+                                                                    09
+                                                                </option>
+                                                                <option value="10">
+                                                                    10
+                                                                </option>
+                                                                <option value="11">
+                                                                    11
+                                                                </option>
+                                                                <option value="12">
+                                                                    12
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="base-form-group">
+                                                            <select name="exp-date-year"
+                                                                id="exp-date-year">
+                                                                <option value=""
+                                                                    disabled
+                                                                    selected>
+                                                                    Yıl
+                                                                </option>
+                                                                <option value="2025">
+                                                                    2025
+                                                                </option>
+                                                                <option value="2026">
+                                                                    2026
+                                                                </option>
+                                                                <option value="2027">
+                                                                    2027
+                                                                </option>
+                                                                <option value="2028">
+                                                                    2028
+                                                                </option>
+                                                                <option value="2029">
+                                                                    2029
+                                                                </option>
+                                                                <option value="2030">
+                                                                    2030
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex flex-col gap-3 mt-3 w-max">
+                                                    <label for="exp-date-month">
+                                                        Son Kullanma
+                                                        Tarihi
+                                                    </label>
+                                                    <div class="base-form-group">
+                                                        <input type="text"
+                                                           name="code"
+                                                           id="code"
+                                                           class="max-w-44"
+                                                           placeholder="Kod" />
+                                                        <button type="button"
+                                                            popovertarget="code-popover"
+                                                            class="absolute top-[18px] right-3 text-gray-400">
+                                                            <span class="icon-help-circle"></span>
+                                                        </button>
+                                                        <div popover
+                                                         id="code-popover"
+                                                         class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">
+                                                            Lorem ipsum dolor
+                                                            sit amet consectetur
+                                                            adipisicing elit.
+                                                            Soluta,
+                                                            exercitationem.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="havale-tab-content"
+                                             class="hidden pt-7">
+                                                <div class="text-primary-dark text-sm">
+                                                    <p class="py-4">
+                                                        Lorem ipsum dolor sit
+                                                        amet consectetur
+                                                        adipisicing elit.
+                                                        Soluta, exercitationem.
+                                                    </p>
+                                                    <p class="py-4">
+                                                        Lorem ipsum, dolor sit
+                                                        amet consectetur
+                                                        adipisicing elit. Ipsum
+                                                        dolore repellat sunt
+                                                        assumenda eligendi, quia
+                                                        unde explicabo
+                                                        exercitationem illum
+                                                        mollitia quasi sapiente
+                                                        iusto cupiditate ab,
+                                                        quibusdam deleniti.
+                                                        Deserunt ullam nobis
+                                                        sed, molestiae cum
+                                                        corporis exercitationem
+                                                        maxime. Necessitatibus,
+                                                        cum natus. Sint!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    <button type="submit" class="btn btn-primary-red px-8 mt-10" id="submitButton">SİPARİŞİ TAMAMLA</button>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
@@ -862,6 +914,7 @@
         drawerControl,
         productItemSelect,
         formTabControl,
+        musteriBilgileriFormValidation,
     } from '/assets/js/main.js'
     document.addEventListener('DOMContentLoaded', function () {
         stickyHeader()
@@ -871,6 +924,7 @@
         drawerControl()
         productItemSelect()
         formTabControl()
+        musteriBilgileriFormValidation()
         AOS.init({
             duration: 800,
         })

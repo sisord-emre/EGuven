@@ -77,6 +77,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
             FooterMenu isControl;
             if (ModelState.IsValid)
             {
+                var existing = await _service.Where(b => b.Id == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                model.ParentId = existing.ParentId;  // Eski resim tekrar set ediliyor
+                model.Sequence = existing.Sequence;
+
                 isControl = await _service.UpdateAsync(model);
 
                 //log işleme alanı

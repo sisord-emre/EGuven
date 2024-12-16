@@ -671,3 +671,50 @@ export const videoPlayerShow = () => {
         })
     }
 }
+
+export const musteriBilgileriFormValidation = () => {
+    const form = document.getElementById('musteri-bilgileri-form')
+    const requiredInputs = form.querySelectorAll(
+        'input[type="text"], input[type="date"], input[type="tel"], textarea, select, input[type="checkbox"], input[type="file"]'
+    )
+    const submitButton = document.getElementById('goToDogrulamaEkrani')
+
+    const validateForm = () => {
+        let isValid = true
+
+        requiredInputs.forEach((input) => {
+            const errorElement = input.nextElementSibling // Input'un hemen ardından gelen element
+
+            if (input.value.trim() === '') {
+                isValid = false
+                input.classList.add('!border-red-500') // Hata durumunda kırmızı çerçeve
+                if (
+                    errorElement &&
+                    errorElement.classList.contains('error-msg')
+                ) {
+                    errorElement.classList.remove('hidden') // Hata mesajını göster
+                }
+            } else {
+                input.classList.remove('!border-red-500')
+                if (
+                    errorElement &&
+                    errorElement.classList.contains('error-msg')
+                ) {
+                    errorElement.classList.add('hidden') // Hata mesajını gizle
+                }
+            }
+        })
+
+        if (isValid) {
+            submitButton.removeAttribute('disabled')
+        } else {
+            submitButton.setAttribute('disabled', 'true')
+        }
+    }
+
+    // Her input için blur ve input olaylarını dinle
+    requiredInputs.forEach((input) => {
+        input.addEventListener('input', validateForm)
+        input.addEventListener('blur', validateForm)
+    })
+}

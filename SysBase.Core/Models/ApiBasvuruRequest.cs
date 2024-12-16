@@ -10,6 +10,7 @@ namespace SysBase.Core.Models
     public class ApiBasvuruRequest
     {
         public int Id { get; set; }
+        public string Uid { get; set; }
         public string Kanal { get; set; }
         public int? Durum { get; set; }
         public string KayitID { get; set; }
@@ -78,6 +79,9 @@ namespace SysBase.Core.Models
         public string EmuhurVergiNo { get; set; }
         public string IkinciKisiTC { get; set; }
         public string KepAdres { get; set; }
+        public string Dosya { get; set; }
+        public int ProjectProductId { get; set; }
+        public ProjectProduct ProjectProduct { get; set; }
         public string IkinciKisiAdSoyad { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//sadece insert ederken çalış
         public DateTime CreatedDate { get; set; } = DateTime.Now;//otomatik olarak tarih atar
