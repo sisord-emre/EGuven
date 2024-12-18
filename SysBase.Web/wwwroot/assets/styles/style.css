@@ -3257,9 +3257,9 @@ select{
   outline-offset:2px
 }
 
-.btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.5
+.btn:disabled{
+  cursor:not-allowed;
+  opacity:0.5
 }
 
 .btn-common{
@@ -4531,8 +4531,8 @@ select{
   min-height:11rem
 }
 
-.min-h-\[116px\] {
-  min-height: 116px
+.min-h-\[116px\]{
+  min-height:116px
 }
 
 .min-h-full{
@@ -5032,9 +5032,9 @@ select{
   border-color:rgb(232 44 42 / var(--tw-border-opacity, 1)) !important
 }
 
-.\!border-red-500 {
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(240 82 82 / var(--tw-border-opacity, 1)) !important
+.\!border-red-500{
+  --tw-border-opacity:1 !important;
+  border-color:rgb(240 82 82 / var(--tw-border-opacity, 1)) !important
 }
 
 .border-aside-section{
@@ -5404,8 +5404,8 @@ select{
   padding-left:1.5rem
 }
 
-.pr-4 {
-  padding-right: 1rem
+.pr-4{
+  padding-right:1rem
 }
 
 .pt-12{
@@ -6129,14 +6129,6 @@ select{
 
 .focus\:ring-transparent:focus{
   --tw-ring-color:transparent
-}
-
-.disabled\:cursor-not-allowed:disabled{
-  cursor:not-allowed
-}
-
-.disabled\:opacity-50:disabled{
-  opacity:0.5
 }
 
 .group:hover .group-hover\:h-full{

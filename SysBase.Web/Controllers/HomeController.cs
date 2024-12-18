@@ -85,10 +85,10 @@ namespace SysBase.Web.Controllers
                     .OrderBy(x => x.Announcement.Sequence)
                     .ToList(),
                 Brands = _brandService.Where(x => x.Status).OrderBy(x => x.Sequence).Take(12).ToList(),
-                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Blog.HomeVisibility).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).ToListAsync(),
-                HelperVideoLanguageInfos = _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.HomeVisibility).Include(x => x.HelperVideo).ToList(),
-                HelperVideoLanguageInfo = await _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.MasterVideo).Include(x => x.HelperVideo).FirstOrDefaultAsync(),
-                HomeProductLanguageInfos = await _homeProductLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.HomeProduct).ToListAsync(),
+                BlogLanguageInfos = await _blogLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Blog.HomeVisibility && x.Status && x.Blog.Status).Include(x => x.Blog).OrderByDescending(x => x.Blog.Id).ToListAsync(),
+                HelperVideoLanguageInfos = _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.HomeVisibility && x.Status).Include(x => x.HelperVideo).ToList(),
+                HelperVideoLanguageInfo = await _helperVideoLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.HelperVideo.MasterVideo && x.Status).Include(x => x.HelperVideo).FirstOrDefaultAsync(),
+                HomeProductLanguageInfos = await _homeProductLanguageInfoService.Where(x => x.Language.Code == langCode.ToString() && x.Status).Include(x => x.HomeProduct).ToListAsync(),
                 HomeTabPostLanguageInfos = await _homeTabPostLanguageInfoService
                     .Where(x => x.Language.Code == langCode.ToString() && x.Status && x.HomeTabPost.Status)
                     .Include(x => x.HomeTabPost)

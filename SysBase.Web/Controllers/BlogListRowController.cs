@@ -54,16 +54,16 @@ namespace SysBase.Web.Controllers
 
             // Sayfalama için toplam blog dil bilgilerini say
             var blogTypes = await _blogTypeService
-               .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+               .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status)
                .ToListAsync();
 
             var totalBlogLanguageInfos = await _blogLanguageInfoService
-                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status)
                 .CountAsync();
 
             // Sayfalama ile BlogLanguageInfos'u al
             var blogLanguageInfos = await _blogLanguageInfoService
-                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status)
                 .Include(x => x.Blog)
                 .OrderBy(x => x.Blog.Sequence)
                 .Skip((page - 1) * pageSize)
@@ -72,7 +72,7 @@ namespace SysBase.Web.Controllers
 
             // Son blog yazılarını al
             var lastPosts = await _blogLanguageInfoService
-                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status)
                 .Include(x => x.Blog)
                 .OrderByDescending(x => x.Blog.Id)
                 .Take(3)

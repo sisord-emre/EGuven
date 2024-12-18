@@ -4,6 +4,7 @@
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentUICulture;
     List<Language> languages = model.Languages.Where(x => x.Status).ToList();
     string assetsVersiyon = "1.1";
+    string controller = ViewContext.RouteData.Values["controller"].ToString();
 }
 <!DOCTYPE html>
 <html lang="@cultureInfo.Name">
@@ -17,7 +18,7 @@
     <link rel="stylesheet" href="/assets/icons/style.css?v=@assetsVersiyon" />
     <link rel="icon" type="image/png" href="/assets/icons/favicon.png" />
 </head>
-<body class="overflow-x-hidden overflow-y-auto">
+<body class="@(controller == "Form" ? "" : "overflow-x-hidden overflow-y-auto")">
     <!-- top-bar -->
     <div class="bg-white dark:bg-primary-dark py-3 z-40 relative"
          id="top-bar">
@@ -128,20 +129,18 @@
         </div>
     </div>
     <!-- Header -->
-    <section class="header sticky w-full z-20 transition duration-300 ease-in-out top-0"
+    <section class="header sticky w-full z-20 transition duration-300 ease-in-out top-0 @(controller == "Form" ? "detail-header bg-white shadow-md" : "")"
              id="header">
         <div class="w-full">
             <!-- main nav -->
             <!-- main nav top  -->
-            <div class="py-6 border-b border-white">
+            <div class="py-6 border-b @(controller == "Form" ? "border-slate-300" : "border-white")">
                 <div class="container">
                     <div class="flex flex-col items-start md:items-center md:flex-row justify-between gap-4">
                         <div class="flex items-center gap-6 w-full sm:w-max justify-between sm:justify-normal">
                             <div class="h-10">
                                 <a href="/">
-                                    <img src="~/assets/images/logo@2x.png"
-                                         alt="E-Güven"
-                                         class="w-full h-full" />
+                                    <img src="~/assets/images/@(controller == "Form" ? "logo-red@2x.png" : "logo@2x.png")" alt="E-Güven" class="w-full h-full @(controller == "Form" ? "detail-header-logo" : "")" />
                                 </a>
                             </div>
                             <div class="relative block xl:hidden">
@@ -151,17 +150,17 @@
                                 </butotn>
                             </div>
 
-                            <div class="text-white text-3xl relative mr-3 sm:hidden block">
+                            <div class="@(controller == "Form" ? "text-primary-red" : "text-white") text-3xl relative mr-3 sm:hidden block">
                                 <span class="icon-shopping-cart"></span>
-                                <div class="text-xs font-bold text-primary-red rounded-full bg-white flex items-center justify-center w-5 h-5 absolute -right-2 -top-1.5">
+                                <div class="text-xs font-bold @(controller == "Form" ? "text-white bg-primary-red" : "text-primary-red bg-white") rounded-full flex items-center justify-center w-5 h-5 absolute -right-2 -top-1.5">
                                     2
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 w-full sm:w-max sm:justify-start justify-between">
-                            <div class="text-white text-3xl relative mr-3 sm:block hidden" style="display:none">
+                            <div class="@(controller == "Form" ? "text-primary-red text-3xl relative mr-3 basketIcon sm:block hidden" : "text-white text-3xl relative mr-3 sm:block hidden")" style="display:none">
                                 <span class="icon-shopping-cart"></span>
-                                <div class="text-xs font-bold text-primary-red rounded-full bg-white flex items-center justify-center w-5 h-5 absolute -right-2 -top-1.5">
+                                <div class="text-xs font-bold @(controller == "Form" ? "text-white bg-primary-red" : "text-primary-red bg-white") rounded-full flex items-center justify-center w-5 h-5 absolute -right-2 -top-1.5">
                                     2
                                 </div>
                             </div>

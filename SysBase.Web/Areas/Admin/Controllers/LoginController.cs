@@ -1,12 +1,16 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
 using SysBase.Service.Functions;
+using SysBase.Web.Resources;
+using System.Diagnostics;
 
 namespace SysBase.Web.Areas.Admin.Controllers
 {
@@ -17,19 +21,32 @@ namespace SysBase.Web.Areas.Admin.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         protected readonly ILogger<LoginController> _logger;
+        protected readonly IHtmlLocalizer<SharedResource> _localizer;
         protected Functions functions = new Functions();
 
-        public LoginController(IService<Config> service, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<LoginController> logger)
+        public LoginController(IService<Config> service, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<LoginController> logger, IHtmlLocalizer<SharedResource> localizer)
         {
             _service = service;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _service.GetByIdAsync(1));
+            Config config = await _service.GetByIdAsync(1);
+            if (config.IpControl && config.AllowedIPList != "" && config.AllowedIPList != null)
+            {
+                string[] ipList = config.AllowedIPList.Split(';');
+                string ipAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+                if (!ipList.Contains(ipAddress))
+                {
+                    return Content(_localizer["admin.IP Adresinizi İzinli Listede Bulunamadı."].Value);
+                }
+            }
+
+            return View(config);
         }
         [HttpPost]
         public async Task<IActionResult> Index(AppUser model, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
@@ -45,8 +62,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
             var hasUser = await _userManager.FindByEmailAsync(model.Email);
             if (hasUser == null)
             {
-                ModelState.AddModelError(string.Empty, "Email Veya Şifre Yanlış");
-                TempData["message"] = "Email Veya Şifre Yanlış";
+                ModelState.AddModelError(string.Empty, _localizer["admin.Email Veya Şifre Yanlış"].Value);
+                TempData["message"] = _localizer["admin.Email Veya Şifre Yanlış"].Value;
                 return View(model);
             }
             var result = await _signInManager.PasswordSignInAsync(hasUser, model.PasswordHash, false, false);
@@ -55,8 +72,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Redirect("~/Admin");
             }
 
-            TempData["message"] = "Email Veya Şifre Yanlış";
-            ModelState.AddModelError(string.Empty, "Email Veya Şifre Yanlış");
+            TempData["message"] = _localizer["admin.Email Veya Şifre Yanlış"].Value;
+            ModelState.AddModelError(string.Empty, _localizer["admin.Email Veya Şifre Yanlış"].Value);
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "Sign in");

@@ -285,7 +285,7 @@
                                 </div>
                                 <div class="mt-7">
                                     <input type="checkbox" class="mr-2" name="Izin" id="aydinlatma-metni-kabul" value="True" required data-input-tab="musteri-bilgileri" />
-                                    <label for="aydinlatma-metni-kabul">Okudum, kabul ediyorum.</label>
+                                    <label for="aydinlatma-metni-kabul">Okudum, kabul ediyorum. <sup>*</sup></label>
                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                         Zorunlu alan lütfen boş bırakmayınız.
                                     </div>
@@ -492,7 +492,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="bireysel-tab-input" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
@@ -515,7 +515,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="bireysel-tab-input" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -534,7 +534,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="odeme-bilgileri" @required></textarea>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 bireysel-tab-input" data-input-tab="odeme-bilgileri" @required></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -551,7 +551,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -567,7 +567,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="odeme-bilgileri" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input" data-input-tab="odeme-bilgileri" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -605,7 +605,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="kurumsal-tab-input" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
@@ -628,7 +628,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="kurumsal-tab-input" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -647,7 +647,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="odeme-bilgileri" @required></textarea>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 kurumsal-tab-input" data-input-tab="odeme-bilgileri" @required></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -664,7 +664,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="kurumsal-tab-input" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -680,7 +680,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="odeme-bilgileri" class="" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="odeme-bilgileri" class="kurumsal-tab-input" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>

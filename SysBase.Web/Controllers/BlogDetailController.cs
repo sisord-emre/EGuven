@@ -52,11 +52,11 @@ namespace SysBase.Web.Controllers
 
             // BlogLanguageInfo öğesini önce bir değişkene atayın
             var blogLanguageInfo = await _blogLanguageInfoService
-                .Where(x => x.Status && x.Slug == Slug && x.Language.Code == CultureInfo.CurrentCulture.Name)
+                .Where(x => x.Status && x.Slug == Slug && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status)
                 .FirstOrDefaultAsync();
 
             var lastPosts = await _blogLanguageInfoService.
-                    Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).
+                    Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status).
                     Include(x => x.Blog).
                     OrderByDescending(x => x.Blog.Id).
                     Take(3).
@@ -64,14 +64,14 @@ namespace SysBase.Web.Controllers
 
             var beforeBlog = blogLanguageInfo != null
                     ? await _blogLanguageInfoService
-                        .Where(x => x.Id < blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name)
+                        .Where(x => x.Id < blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status)
                         .OrderByDescending(x => x.Id)
                         .FirstOrDefaultAsync()
                     : null;
 
             var lastBlog = blogLanguageInfo != null
                     ? await _blogLanguageInfoService
-                        .Where(x => x.Id > blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name)
+                        .Where(x => x.Id > blogLanguageInfo.Id && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Blog.Status)
                         .OrderBy(x => x.Id)
                         .FirstOrDefaultAsync()
                     : null;

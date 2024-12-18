@@ -61,7 +61,7 @@ namespace SysBase.Web.Controllers
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 SectoralReferences = await _sectoralReferenceService.Where(x => x.Status).Include(sr => sr.SectoralReferenceSectors).ThenInclude(srs => srs.Sector).ToListAsync(),
-                SectorLanguageInfos = await _sectorLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Sector).OrderBy(x => x.Sector.Sequence).ToListAsync()
+                SectorLanguageInfos = await _sectorLanguageInfoService.Where(x => x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Sector.Status).Include(x => x.Sector).OrderBy(x => x.Sector.Sequence).ToListAsync()
             };
 
             return View(model);

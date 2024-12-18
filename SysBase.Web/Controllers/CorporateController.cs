@@ -50,7 +50,7 @@ namespace SysBase.Web.Controllers
 
             // Corporate ve ilişkili CorporateLanguageInfo verilerini getiriyoruz
             var corporate = await _corporateService
-                .Where(x => x.CorporateLanguageInfos.Any(cl => cl.Language.Code == CultureInfo.CurrentCulture.Name))
+                .Where(x => x.CorporateLanguageInfos.Any(cl => cl.Language.Code == CultureInfo.CurrentCulture.Name && x.Status))
                 .Include(x => x.CorporateLanguageInfos.Where(cl => cl.Language.Code == CultureInfo.CurrentCulture.Name))
                 .OrderByDescending(x => x.Id)
                 .FirstOrDefaultAsync();
@@ -64,7 +64,7 @@ namespace SysBase.Web.Controllers
                 Languages = uiLayoutViewModel.Languages,
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 Corporate = await _corporateService
-                    .Where(x => x.CorporateLanguageInfos.Any(cl => cl.Language.Code == CultureInfo.CurrentCulture.Name))
+                    .Where(x => x.CorporateLanguageInfos.Any(cl => cl.Language.Code == CultureInfo.CurrentCulture.Name && x.Status))
                     .Include(x => x.CorporateLanguageInfos.Where(cl => cl.Language.Code == CultureInfo.CurrentCulture.Name))
                     .OrderByDescending(x => x.Id)
                     .FirstOrDefaultAsync()
