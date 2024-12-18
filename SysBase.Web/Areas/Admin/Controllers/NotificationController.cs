@@ -301,6 +301,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                         {
                             result++;
                         }
+
+                        //log işleme alanı
+                        LogContext.PushProperty("TypeName", "Update");
+                        _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, currentUser.Id.ToString(), JsonConvert.SerializeObject(notificationUser)));
                     }
                 }
 
@@ -350,6 +354,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                         {
                             result++;
                         }
+
+                        //log işleme alanı
+                        LogContext.PushProperty("TypeName", "Update");
+                        _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, currentUser.Id.ToString(), JsonConvert.SerializeObject(notificationUser)));
                     }
                 }
 

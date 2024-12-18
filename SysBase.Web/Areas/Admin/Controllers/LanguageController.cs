@@ -172,12 +172,20 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     // Yeni modeli ekle
                     await _languageValueService.AddAsync(model);
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+                    _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, model.Id.ToString(), JsonConvert.SerializeObject(model)));
                 }
                 else
                 {
                     // Yeni modeli ekle
                     model.Id = languageValueId[sayac];
                     await _languageValueService.UpdateAsync(model);
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", "Update");
+                    _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, model.Id.ToString(), JsonConvert.SerializeObject(model)));
                 }
                 sayac++;
             }

@@ -181,6 +181,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 QuickMenu item = await _service.GetByIdAsync(Convert.ToInt32(menu["id"]));
                 item.Sequence = sayac1;
                 await _service.UpdateAsync(item);
+
+                //log işleme alanı
+                LogContext.PushProperty("TypeName", "Update");
+                _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, item.Id.ToString(), JsonConvert.SerializeObject(item)));
             }
             return "1";
         }

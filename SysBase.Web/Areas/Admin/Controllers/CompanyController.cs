@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -188,10 +189,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     // Güncelleme işlemi
                     isControl = await _companyInvoiceService.UpdateAsync(model);
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", "Update");
+                    _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
                 }
                 else
                 {
                     isControl = await _companyInvoiceService.AddAsync(model);
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+                    _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
                 }
                 // Veritabanı değişikliklerini kaydetme
                 if (isControl.Id != 0)
@@ -200,7 +209,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    resultJson.message = "Bir hata oluştu.";
+                    resultJson.message = _localizer["admin.Bir hata oluştu."].Value;
                 }
             }
             catch (Exception ex)
@@ -213,6 +222,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> SubUnitList(int id)
         {
+            //log işleme alanı
+            LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+            _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
+
             return View(await _companyInvoiceService.Where(x => x.CompanyId == id).ToListAsync());
         }
 
@@ -227,10 +240,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     await _companyInvoiceService.RemoveAsync(item);
                     resultJson.status = "success";
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+                    _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, JsonConvert.SerializeObject(item)));
                 }
                 else
                 {
-                    resultJson.message = "Silinecek kayıt bulunamadı.";
+                    resultJson.message = _localizer["admin.Silinecek kayıt bulunamadı."].Value;
                 }
             }
             catch (Exception ex)

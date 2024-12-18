@@ -223,9 +223,9 @@
         });
     }
 
-    function SubUnitUpdate(Id, Title, Status, FullAddress) {
+    function SubUnitUpdate(Id, Name, Status, FullAddress) {
         $('#subUnitPost').find('#Id').val(Id)
-        $('#subUnitPost').find('#Title').val(Title)
+        $('#subUnitPost').find('#Name').val(Name)
         if (Status === true || Status === "True") {
             $('#subUnitPost').find('#CompanyInvoiceStatus').prop('checked', true)
         } else {

@@ -221,11 +221,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     // Güncelleme işlemi
                     isControl = await _softwareCategoryLanguageInfoContentService.UpdateAsync(model);
-                  
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", "Update");
+                    _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
                 }
                 else
                 {
                     isControl = await _softwareCategoryLanguageInfoContentService.AddAsync(model);
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+                    _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
                 }
 
                 // Veritabanı değişikliklerini kaydetme
@@ -235,7 +242,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    resultJson.message = "Bir hata oluştu.";
+                    resultJson.message = _localizer["admin.Bir hata oluştu."].Value;
                 }
             }
             catch (Exception ex)
@@ -248,6 +255,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> SubUnitList(int id)
         {
+            //log işleme alanı
+            LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+            _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
+
             var subUnits = await _softwareCategoryLanguageInfoContentService
                 .Where(x => x.Sequence > 0)
                 .Include(x => x.SoftwareCategoryLanguageInfo.SoftwareCategory)
@@ -274,11 +285,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     await _softwareCategoryLanguageInfoContentService.RemoveAsync(item);
                     resultJson.status = "success";
-                  
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+                    _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, JsonConvert.SerializeObject(item)));
                 }
                 else
                 {
-                    resultJson.message = "Silinecek kayıt bulunamadı.";
+                    resultJson.message = _localizer["admin.Silinecek kayıt bulunamadı."].Value;
                 }
             }
             catch (Exception ex)

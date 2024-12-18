@@ -169,6 +169,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> MenuLayout(int siteMenuLanguageId)
         {
+            //log işleme alanı
+            LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
+            _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
+
             var siteMenus = await _service
                  .Where(x => x.LanguageId == siteMenuLanguageId)
                  .Include(x => x.Language) // Language varlığını sorguya dahil ediyoruz
@@ -189,6 +193,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 item.ParentId = 0;
                 item.Sequence = sayac1;
                 await _service.UpdateAsync(item);
+
+                //log işleme alanı
+                LogContext.PushProperty("TypeName", "Update");
+                _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, item.Id.ToString(), JsonConvert.SerializeObject(item)));
                 try
                 {
                     if (menu["children"] != null)
@@ -201,6 +209,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                             altItem.ParentId = item.Id;
                             altItem.Sequence = sayac2;
                             await _service.UpdateAsync(altItem);
+
+                            //log işleme alanı
+                            LogContext.PushProperty("TypeName", "Update");
+                            _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, altItem.Id.ToString(), JsonConvert.SerializeObject(altItem)));
                             try
                             {
                                 if (altMenu["children"] != null)
@@ -213,6 +225,10 @@ namespace SysBase.Web.Areas.Admin.Controllers
                                         altAltItem.ParentId = altItem.Id;
                                         altAltItem.Sequence = sayac3;
                                         await _service.UpdateAsync(altAltItem);
+
+                                        //log işleme alanı
+                                        LogContext.PushProperty("TypeName", "Update");
+                                        _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, altAltItem.Id.ToString(), JsonConvert.SerializeObject(altAltItem)));
                                     }
                                 }
                             }

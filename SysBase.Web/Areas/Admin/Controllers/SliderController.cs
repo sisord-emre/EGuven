@@ -195,10 +195,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     Slider item = await _service.GetByIdAsync(sliderId);
                     item.Sequence = sayac1;
                     await _service.UpdateAsync(item);
+
+                    //log işleme alanı
+                    LogContext.PushProperty("TypeName", "Update");
+                    _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, item.Id.ToString(), JsonConvert.SerializeObject(item)));
                 }
 
                 // Başarılı bir işlem olduğunda
-                return Json(new { success = true, message = "Güncelleme Sağlandı." });
+                return Json(new { success = true, message = _localizer["admin.Güncelleme Sağlandı."].Value });
             }
             catch (Exception ex)
             {

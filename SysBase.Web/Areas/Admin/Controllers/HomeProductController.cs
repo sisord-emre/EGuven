@@ -206,22 +206,26 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
                             // Değişiklikleri kaydet
                             isControl = await _configService.UpdateAsync(existingConfig);
+
+                            //log işleme alanı
+                            LogContext.PushProperty("TypeName", "Update");
+                            _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(existingConfig)));
                         }
                         else
                         {
-                            resultJson.message = "Kayıt bulunamadı.";
+                            resultJson.message = _localizer["admin.Kayıt bulunamadı."].Value;
                             return resultJson;
                         }
                     }
                     else
                     {
-                        resultJson.message = "Geçersiz Id formatı.";
+                        resultJson.message = _localizer["admin.Geçersiz Id formatı."].Value;
                         return resultJson;
                     }
                 }
                 else
                 {
-                    resultJson.message = "Geçersiz Id.";
+                    resultJson.message = _localizer["admin.Geçersiz Id."].Value;
                     return resultJson;
                 }
 
@@ -232,7 +236,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    resultJson.message = "Bir hata oluştu.";
+                    resultJson.message = _localizer["admin.Bir hata oluştu."].Value;
                 }
             }
             catch (Exception ex)
