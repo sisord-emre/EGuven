@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Email" class="form-label">@Localizer["admin.Email"]</label>
-                                    <input class="form-control" type="email" name="Email" id="Email" value="@Model.AppUser?.Email" autocomplete="off" required />
+                                    <input class="form-control" type="email" name="Email" id="Email" value="@Model.AppUser?.Email" onkeyup="this.value = this.value.toLowerCase();" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="PasswordHash" class="form-label">@Localizer["admin.Şifre"]</label>
@@ -78,14 +78,7 @@
                                                 @foreach (var query in Model.AppRoles)
                                                 {
                                                     var isSelected = Model.SelectedAppRoleIds.Contains(query.Name);
-                                                    if (isSelected)
-                                                    {
-                                                        <option value="@query.Id" selected>@query.Name</option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option value="@query.Id">@query.Name</option>
-                                                    }
+                                                    <option value="@query.Id" selected="@(isSelected ? "selected" : null)">@query.Name</option>
                                                 }
                                             </select>
                                         </div>

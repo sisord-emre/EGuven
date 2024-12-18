@@ -41,8 +41,8 @@
             </div>
 
             <!-- Tab Content -->
-            <form id="KayitForm" class="base-form">
-                <div class="tab-content mt-12">
+            <div class="tab-content mt-12">
+                <form id="kayitForm" class="base-form">
                     <div id="urun-secimi" class="tab-pane active">
                         <div>
                             <div class="text-primary-dark text-sm">
@@ -142,7 +142,7 @@
                                                             <sup>*</sup>
                                                         }
                                                     </label>
-                                                    <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                    <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="musteri-bilgileri" @required>
                                                         <option value="">Seçiniz</option>
                                                         @foreach (City city in Model.Cities.OrderBy(x => x.Name))
                                                         {
@@ -165,7 +165,7 @@
                                                             <sup>*</sup>
                                                         }
                                                     </label>
-                                                    <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                    <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="musteri-bilgileri" @required>
                                                         <option value="">Seçiniz</option>
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -184,7 +184,7 @@
                                                         <sup>*</sup>
                                                     }
                                                 </label>
-                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="musteri-bilgileri" @required></textarea>
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     Zorunlu alan lütfen boş bırakmayınız.
                                                 </div>
@@ -201,7 +201,7 @@
                                                         <sup>*</sup>
                                                     }
                                                 </label>
-                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="musteri-bilgileri" accept="image/png, image/jpeg" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     Zorunlu alan lütfen boş bırakmayınız.
                                                 </div>
@@ -217,7 +217,7 @@
                                                         <sup>*</sup>
                                                     }
                                                 </label>
-                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" class="" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     Zorunlu alan lütfen boş bırakmayınız.
                                                 </div>
@@ -284,7 +284,7 @@
                                     </p>
                                 </div>
                                 <div class="mt-7">
-                                    <input type="checkbox" class="mr-2" name="Izin" id="aydinlatma-metni-kabul" value="True" required />
+                                    <input type="checkbox" class="mr-2" name="Izin" id="aydinlatma-metni-kabul" value="True" required data-input-tab="musteri-bilgileri" />
                                     <label for="aydinlatma-metni-kabul">Okudum, kabul ediyorum.</label>
                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                         Zorunlu alan lütfen boş bırakmayınız.
@@ -492,7 +492,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                                <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
@@ -515,7 +515,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -534,7 +534,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="odeme-bilgileri" @required></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -551,7 +551,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -567,7 +567,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="odeme-bilgileri" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -576,8 +576,7 @@
                                                 }
                                             </div>
                                         </div>
-                                        <div id="kurumsal-tab-content"
-                                             class="hidden pt-7">
+                                        <div id="kurumsal-tab-content" class="hidden pt-7">
                                             <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
                                                 <input type="radio"
                                                        name="fatura-adresi-ortak"
@@ -606,7 +605,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                                <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
@@ -629,7 +628,7 @@
                                                                         <sup>*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                                <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
                                                                     <option value="">Seçiniz</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -648,7 +647,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="odeme-bilgileri" @required></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -665,7 +664,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -681,7 +680,7 @@
                                                                     <sup>*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="odeme-bilgileri" class="" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 Zorunlu alan lütfen boş bırakmayınız.
                                                             </div>
@@ -697,18 +696,18 @@
                                             <!-- Kredi Kartı/Havale Buttons -->
                                             <div class="fatura-tab">
                                                 <button id="kredi-kart-btn"
-                                                    class="active"
-                                                    type="button">
+                                                        class="active"
+                                                        type="button">
                                                     KREDİ KARTI
                                                 </button>
                                                 <button id="havale-btn"
-                                                    type="button">
+                                                        type="button">
                                                     HAVALE
                                                 </button>
                                             </div>
                                             <!-- Tab Content -->
                                             <div id="kredi-kart-tab-content"
-                                             class="pt-7">
+                                                 class="pt-7">
                                                 <div class="text-primary-dark text-lg font-semibold mb-6">
                                                     Kredi kartı detayları
                                                 </div>
@@ -719,19 +718,19 @@
                                                     <div class="flex items-center gap-2">
                                                         <figure>
                                                             <img src="assets/images/mastercard.png"
-                                                             alt="master card logo" />
+                                                                 alt="master card logo" />
                                                         </figure>
                                                         <figure>
                                                             <img src="assets/images/visa.png"
-                                                             alt="visa logo" />
+                                                                 alt="visa logo" />
                                                         </figure>
                                                         <figure>
                                                             <img src="assets/images/american-express.png"
-                                                             alt="american express logo" />
+                                                                 alt="american express logo" />
                                                         </figure>
                                                         <figure>
                                                             <img src="assets/images/discover.png"
-                                                             alt="discover logo" />
+                                                                 alt="discover logo" />
                                                         </figure>
                                                     </div>
                                                 </div>
@@ -742,8 +741,8 @@
                                                             ad
                                                         </label>
                                                         <input type="text"
-                                                           placeholder="Lorem ipsum"
-                                                           id="card-ad-soyad" />
+                                                               placeholder="Lorem ipsum"
+                                                               id="card-ad-soyad" />
                                                     </div>
                                                     <div class="base-form-group">
                                                         <label for="card-no">
@@ -751,8 +750,8 @@
                                                             Numarası
                                                         </label>
                                                         <input type="text"
-                                                           placeholder="0000 0000 0000 0000"
-                                                           id="card-no" />
+                                                               placeholder="0000 0000 0000 0000"
+                                                               id="card-no" />
                                                     </div>
                                                 </div>
                                                 <div class="flex flex-col gap-3 mt-3">
@@ -763,10 +762,10 @@
                                                     <div class="grid grid-cols-2 gap-3">
                                                         <div class="base-form-group">
                                                             <select name="exp-date-month"
-                                                                id="exp-date-month">
+                                                                    id="exp-date-month">
                                                                 <option value=""
-                                                                    disabled
-                                                                    selected>
+                                                                        disabled
+                                                                        selected>
                                                                     Ay
                                                                 </option>
                                                                 <option value="01">
@@ -809,10 +808,10 @@
                                                         </div>
                                                         <div class="base-form-group">
                                                             <select name="exp-date-year"
-                                                                id="exp-date-year">
+                                                                    id="exp-date-year">
                                                                 <option value=""
-                                                                    disabled
-                                                                    selected>
+                                                                        disabled
+                                                                        selected>
                                                                     Yıl
                                                                 </option>
                                                                 <option value="2025">
@@ -844,18 +843,18 @@
                                                     </label>
                                                     <div class="base-form-group">
                                                         <input type="text"
-                                                           name="code"
-                                                           id="code"
-                                                           class="max-w-44"
-                                                           placeholder="Kod" />
+                                                               name="code"
+                                                               id="code"
+                                                               class="max-w-44"
+                                                               placeholder="Kod" />
                                                         <button type="button"
-                                                            popovertarget="code-popover"
-                                                            class="absolute top-[18px] right-3 text-gray-400">
+                                                                popovertarget="code-popover"
+                                                                class="absolute top-[18px] right-3 text-gray-400">
                                                             <span class="icon-help-circle"></span>
                                                         </button>
                                                         <div popover
-                                                         id="code-popover"
-                                                         class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">
+                                                             id="code-popover"
+                                                             class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">
                                                             Lorem ipsum dolor
                                                             sit amet consectetur
                                                             adipisicing elit.
@@ -866,7 +865,7 @@
                                                 </div>
                                             </div>
                                             <div id="havale-tab-content"
-                                             class="hidden pt-7">
+                                                 class="hidden pt-7">
                                                 <div class="text-primary-dark text-sm">
                                                     <p class="py-4">
                                                         Lorem ipsum dolor sit
@@ -900,8 +899,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </section>
@@ -914,7 +913,7 @@
         drawerControl,
         productItemSelect,
         formTabControl,
-        musteriBilgileriFormValidation,
+        formValidation,
     } from '/assets/js/main.js'
     document.addEventListener('DOMContentLoaded', function () {
         stickyHeader()
@@ -924,7 +923,7 @@
         drawerControl()
         productItemSelect()
         formTabControl()
-        musteriBilgileriFormValidation()
+        formValidation()
         AOS.init({
             duration: 800,
         })

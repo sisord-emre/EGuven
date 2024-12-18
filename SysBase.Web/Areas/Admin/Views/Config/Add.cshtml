@@ -119,14 +119,7 @@
                                     <select class="select2 form-control block" name="DefaultLanguageId" id="DefaultLanguageId" required>
                                         @foreach (Language item in Model.Languages)
                                         {
-                                            if (item.Id == Model.Config?.DefaultLanguageId)
-                                            {
-                                                <option value="@item.Id" selected>@item.Name</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.Id">@item.Name</option>
-                                            }
+                                            <option value="@item.Id" selected="@(item.Id == Model.Config?.DefaultLanguageId ? "selected" : null)">@item.Name</option>
                                         }
                                     </select>
                                 </div>
@@ -135,14 +128,7 @@
                                     <select class="select2 form-control block" name="AdminLanguageId" id="AdminLanguageId" required>
                                         @foreach (Language item in Model.Languages)
                                         {
-                                            if (item.Id == Model.Config?.AdminLanguageId)
-                                            {
-                                                <option value="@item.Id" selected>@item.Name</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.Id">@item.Name</option>
-                                            }
+                                            <option value="@item.Id" selected="@(item.Id == Model.Config?.AdminLanguageId ? "selected" : null)">@item.Name</option>
                                         }
                                     </select>
                                 </div>

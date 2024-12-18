@@ -231,8 +231,7 @@
     @RenderBody()
 
     <!-- Footer -->
-    <footer class="bg-primary-dark mt-10 py-12 footer relative h-auto"
-            data-aos="fade-up">
+    <footer class="bg-primary-dark mt-10 py-12 footer relative h-auto">
         <div class="border-b border-primary-gray">
             <div class="container">
                 <div class="flex flex-col md:flex-row xl:gap-20 gap-4 pb-12">
@@ -592,9 +591,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
-        $('#KayitForm').submit(function (e) {
-            console.log("sdas");
+        $('#kayitForm').submit(function (e) {
             e.preventDefault(); //submit postu kesyoruz
+            console.log("sdas");
             document.getElementById("submitButton").disabled = true;
             var data = new FormData(this);
             $.ajax({
@@ -622,7 +621,7 @@
                             confirmButtonText: "Tamam"
                         });
                     }
-                    document.getElementById("KayitForm").reset();
+                    document.getElementById("kayitForm").reset();
                     document.getElementById("submitButton").disabled = false;
                 },
                 error: function (jqXHR, status, errorThrown) {

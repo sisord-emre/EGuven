@@ -130,6 +130,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 user.NotificationStatus = model.NotificationStatus;
                 user.Status = model.Status;
                 user.MenuPermissions = menuPermissionsJSON;
+                user.UserName = model.UserName;
+                user.NormalizedUserName = _userManager.NormalizeName(model.UserName);
                 IdentityResult isControl = await _userManager.UpdateAsync(user);
                 if (isControl.Succeeded)
                 {
