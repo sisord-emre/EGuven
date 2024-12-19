@@ -34,6 +34,7 @@ namespace SysBase.Web.Areas.Admin.ViewComponents
              */
 
             // Şu anki kullanıcıyı al
+            
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
             var userRole = await _appUserRoleService
@@ -44,16 +45,30 @@ namespace SysBase.Web.Areas.Admin.ViewComponents
                 .Where(x => x.Id == userRole.RoleId)
                 .FirstOrDefaultAsync();
 
+            // Kullanıcının MenuPermissions JSON listesi
+            var currentUserMenuPermissions = JsonConvert.DeserializeObject<List<MenuPermission>>(currentUser.MenuPermissions);
+
+            // Rolün MenuPermissions JSON listesi
+            var roleMenuPermissions = JsonConvert.DeserializeObject<List<MenuPermission>>(rolePermission.MenuPermissions);
+
+            // Ortak birleştirme işlemi
+            var mergedMenuPermissions = currentUserMenuPermissions
+                .UnionBy(roleMenuPermissions, x => x.MenuId) // MenuId'ye göre benzersiz birleştirme
+                .ToList();
+
             // Eğer bir kullanıcı rolü varsa, AppRole bilgisine eriş
-            List<Menu> list = _context.Menus.Where(x => x.SpecialVisibility == true && x.Visibility == true).OrderBy(X => X.Sequence).ToList();
+            List<Menu> list = _context.Menus.Where(x => x.SpecialVisibility == true && x.Visibility == true)
+                .OrderBy(X => X.Sequence)
+                .ToList();
+
             if (rolePermission != null)
             {
-                ViewData["MenuPermission"] = JsonConvert.DeserializeObject<List<MenuPermission>>(rolePermission.MenuPermissions);
+                ViewData["MenuPermission"] = mergedMenuPermissions; // Artık JSON dönüşümüne gerek yok
             }
             else
             {
                 // Kullanıcının rolü yoksa bir işlem yapabilirsiniz
-                ViewData["MenuPermission"] = JsonConvert.DeserializeObject<List<MenuPermission>>(currentUser.MenuPermissions);
+                ViewData["MenuPermission"] = mergedMenuPermissions; // Artık JSON dönüşümüne gerek yok
             }
 
             return View(list);

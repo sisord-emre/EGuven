@@ -1,4 +1,5 @@
-﻿using ICSharpCode.Decompiler.Util;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using ICSharpCode.Decompiler.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,6 @@ using Serilog.Context;
 using SysBase.Core.DTOs;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
-using SysBase.Service.Functions;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
 
@@ -25,18 +25,20 @@ namespace SysBase.Web.Areas.Admin.Controllers
         protected readonly IService<Language> _languageService;
         protected readonly IService<LanguageKey> _languageKeyService;
         protected readonly IService<LanguageValue> _languageValueService;
+        protected readonly IService<Config> _configService;
         protected readonly ILogger<PanelLanguageController> _logger;
 
         public PanelLanguageController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
                                   ILanguageValueService service, IService<Language> languageService,
-                                  IService<LanguageKey> languageKeyService, IService<LanguageValue> languageValueService, 
-                                  ILogger<PanelLanguageController> logger)
+                                  IService<LanguageKey> languageKeyService, IService<LanguageValue> languageValueService,
+                                  IService<Config> configService, ILogger<PanelLanguageController> logger)
             : base(localizer, userManager)
         {
             _service = service;
             _languageService = languageService;
             _languageKeyService = languageKeyService;
             _languageValueService = languageValueService;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -276,6 +278,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
+            var existingConfig = await _configService.GetByIdAsync(1);
+
             model.Type = 2;
             LanguageKey isControl;
             if (ModelState.IsValid)
@@ -296,6 +300,12 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
             if (isControl.Id != 0)
             {
+                LanguageValue languageValue = new LanguageValue();
+                languageValue.LanguageId = existingConfig.AdminLanguageId;
+                languageValue.LanguageKeyId = isControl.Id;
+                languageValue.Text = model.Code.StartsWith("admin.") ? model.Code.Substring(6) : model.Code;
+                await _languageValueService.AddAsync(languageValue);
+             
                 TempData["SuccessMessage"] = _localizer["admin.Kayıt İşlemi Başarıyle Gerçekleşmiştir."].Value;
             }
             else
