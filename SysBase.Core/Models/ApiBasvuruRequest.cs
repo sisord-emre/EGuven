@@ -81,6 +81,8 @@ namespace SysBase.Core.Models
         public string KepAdres { get; set; }
         public string Dosya { get; set; }
         public int ProjectProductId { get; set; }
+        public int OdemeTipi { get; set; }//1:kredikartı,2havale
+        public string OdemeCevap { get; set; }
         public ProjectProduct ProjectProduct { get; set; }
         public string IkinciKisiAdSoyad { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//sadece insert ederken çalış
