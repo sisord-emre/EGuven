@@ -590,6 +590,57 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
+        function GarantiModal() {
+            var e = document.getElementById("exp-date-month");
+            var dateMonth = e.value;
+            var e = document.getElementById("exp-date-year");
+            var dateYear = e.value;
+            var data = new FormData();
+            data.append("uid", document.getElementById("uid").value);
+            data.append("dateMonth", dateMonth);
+            data.append("dateYear", dateYear);
+            data.append("cardAdSoyad", document.getElementById("card-ad-soyad").value);
+            data.append("cardNo", document.getElementById("card-no").value);
+            data.append("code", document.getElementById("code").value);
+            $.ajax({
+                type: "POST",
+                url: "/Form/s/GarantiModal",
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    $('#modalDiv').html(res);
+                    document.getElementById("GarantiModalButton").click();
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    alert("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        }
+
+        function OdemeTipSec(tip) {
+            if (tip == 1) {
+                document.getElementById("kredikart").checked = true;
+                document.getElementById("havale").checked = false;
+
+                document.getElementById("card-ad-soyad").required = true;
+                document.getElementById("card-no").required = true;
+                document.getElementById("exp-date-month").required = true;
+                document.getElementById("exp-date-year").required = true;
+                document.getElementById("code").required = true;
+            }
+            else if (tip == 2) {
+                document.getElementById("kredikart").checked = false;
+                document.getElementById("havale").checked = true;
+
+                document.getElementById("card-ad-soyad").required = false;
+                document.getElementById("card-no").required = false;
+                document.getElementById("exp-date-month").required = false;
+                document.getElementById("exp-date-year").required = false;
+                document.getElementById("code").required = false;
+            }
+        }
+
         $('#kayitForm').submit(function (e) {
             e.preventDefault(); //submit postu kesyoruz
             console.log("sdas");
@@ -611,6 +662,7 @@
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Tamam"
                         });
+                        document.getElementById("uid").value = res.data;
                     } else {
                         Swal.fire({
                             text: res.message,
