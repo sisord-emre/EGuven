@@ -246,24 +246,24 @@ function YeniEkle(yeniEkleMenuId, yeniEkleSayfa) {
     GetPage(yeniEkleMenuId, yeniEkleSayfa, "");
 }
 
-function KullaniciTabloKayit(menuId, data) {
+function UserTableAdd(menuId, data) {
     $.ajax({
         type: "POST",
-        url: 'Scripts/kullaniciTabloKayit.php',
+        url: "/Admin/UserTable/UserTableAdd",
         async: true, // NO LONGER ALLOWED TO BE FALSE BY BROWSER
         cache: false,
-        data: { 'menuId': menuId, 'data': data }
+        data: { menuId, data },
     });
 }
 
-function KullaniciTabloYukle(menuId, callback) {
-    var kapaliSutun = 0;
+function UserTableList(menuId, callback) {
+    var closeSutun = 0;
     $.ajax({
         type: "POST",
-        url: 'Scripts/kullaniciTabloYukle.php',
+        url: '/Admin/UserTable/UserTableList',
         async: true, // NO LONGER ALLOWED TO BE FALSE BY BROWSER
         cache: false,
-        data: { 'menuId': menuId },
+        data: { menuId: menuId },
         success: function (res) {
             var Data
             if (res != null && res != "") {
@@ -276,7 +276,7 @@ function KullaniciTabloYukle(menuId, callback) {
                         Data.columns[column].visible = true;
                     } else {
                         Data.columns[column].visible = false;
-                        kapaliSutun++;
+                        closeSutun++;
                     }
                     delete Data.columns[column].search;
                 }
@@ -284,9 +284,12 @@ function KullaniciTabloYukle(menuId, callback) {
             } else {
                 callback(Data);
             }
+        },
+        error: function (error) {
+            console.error("UserTableList başarısız:", error);
         }
     });
-    return kapaliSutun;
+    return closeSutun;
 }
 
 function DataTableSet(url) {
@@ -322,71 +325,6 @@ function DataTableSet(url) {
     }, 500);
 }
 
-//phpword fonksiyonu
-function FormGetir(bilgiId, formId, dosyaAdi) {
-    document.getElementById('formButton-' + bilgiId).disabled = true;
-    var data = new FormData();
-    data.append("bilgiId", bilgiId);
-    data.append("formId", formId);
-    $.ajax({
-        type: "POST",
-        url: "../Formlar/" + dosyaAdi + ".php",
-        data: data,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            document.getElementById('formButton-' + bilgiId).disabled = false;
-            window.open("../" + res, "_blank");
-        }
-    });
-}
-
-//bildirim fonksiyonu
-function Bildirimler() {
-    $.ajax({
-        type: "POST",
-        url: "Scripts/bildirimler.php",
-        contentType: false,
-        processData: false,
-        async: true,
-        success: function (res) {
-            $('#bildirimler').html(res);
-            setTimeout(function () { Bildirimler(); }, 10000);
-        },
-        error: function (jqXHR, status, errorThrown) {
-            //alert("Result: "+status+" Status: "+jqXHR.status);
-        }
-    });
-}
-
-function BildirimOkundu(bildirimKullaniciId) {
-    var bildirimAdet = document.getElementById("bildirimAdet").innerHTML;
-    var data = new FormData();
-    data.append("bildirimKullaniciId", bildirimKullaniciId);
-    $.ajax({
-        type: "POST",
-        url: "Scripts/bildirimOkundu.php",
-        data: data,
-        async: true,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            if (bildirimKullaniciId == 0) {
-                document.getElementById("bildirimAdet").innerHTML = 0;
-                var items = document.getElementsByClassName("media");
-                for (i = 0; i < items.length; i++) {
-                    items[i].style.backgroundColor = "white";
-                }
-            } else {
-                document.getElementById("bildirim_" + bildirimKullaniciId).style.backgroundColor = "white";
-                document.getElementById("bildirimAdet").innerHTML = parseInt(bildirimAdet) - 1;
-            }
-        },
-        error: function (jqXHR, status, errorThrown) {
-            alert("Result: " + status + " Status: " + jqXHR.status);
-        }
-    });
-}
 
 function MenuVideoButtonDurum() {
     if (document.getElementById("menuVideoButton") != null) {
@@ -400,23 +338,6 @@ function MenuVideoButtonDurum() {
     }
 }
 
-function MenuVideo() {
-    if (document.getElementById("menuVideoButton") !== null) {
-        var menuVideoId = document.getElementById("menuVideoButton").getAttribute("menuVideoId");
-        $.ajax({
-            type: "POST",
-            url: "Pages/menuVideo.php",
-            data: { 'menuVideoId': menuVideoId },
-            success: function (res) {
-                $('#menuVideoDiv').html(res);
-                $("#menuVideo").modal("show");
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("Result: " + status + " Status: " + jqXHR.status);
-            }
-        });
-    }
-}
 
 function NotifacitionList() {
     $.ajax({

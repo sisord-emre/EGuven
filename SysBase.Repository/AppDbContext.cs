@@ -69,6 +69,7 @@ namespace SysBase.Repository
         public DbSet<BlogType> BlogTypes { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductLanguageInfo> ProductLanguageInfos { get; set; }
+        public DbSet<UserTable> UserTables { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

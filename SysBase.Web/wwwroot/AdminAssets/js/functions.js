@@ -48,87 +48,6 @@ function TirnakSil(e) {
     e.value = e.value.replaceAll('\"', '\'');
 }
 
-////ulke İl fonksiyonu
-function ulkeIl(ulke, il) {
-    var ulke = $('#' + ulke).val();
-    if (ulke == "") {
-        return false;
-    }
-    $.ajax({
-        type: "POST",
-        url: "Scripts/ulkeil.php",
-        data: {
-            'ulke': ulke
-        },
-        success: function (data) {
-            $('#' + il).empty();
-            $('#' + il).append(data);
-        }
-    });
-}
-////!ulke İl fonksiyonu
-
-////il illçe fonksiyonu
-function ilIlce(il, ilce) {
-    var il = $('#' + il).val();
-    if (il == "") {
-        return false;
-    }
-    $.ajax({
-        type: "POST",
-        url: "Scripts/ililce.php",
-        data: {
-            'il': il
-        },
-        success: function (data) {
-            $('#' + ilce).empty();
-            $('#' + ilce).append(data);
-        }
-    });
-}
-////!il illçe fonksiyonu
-
-
-////ülke il fonksiyonu standart olan
-$('#ulke').change(function () {
-    var ulke = $('#ulke').val();
-    if (ulke == "") {
-        return false;
-    }
-    $('#il').empty();
-    $.ajax({
-        type: "POST",
-        url: "Scripts/ulkeil.php",
-        data: {
-            'ulke': ulke
-        },
-        success: function (data) {
-            $('#il').append(data);
-        }
-    });
-});
-////ülke il fonksiyonu  standart olan
-
-////il illçe fonksiyonu standart olan
-$('#il').change(function () {
-    var il = $('#il').val();
-    if (il == "") {
-        return false;
-    }
-    $('#ilce').empty();
-    $.ajax({
-        type: "POST",
-        url: "Scripts/ililce.php",
-        data: {
-            'il': il
-        },
-        success: function (data) {
-            $('#ilce').append(data);
-        }
-    });
-});
-////il illçe fonksiyonu  standart olan
-
 
 //ilk harfi büyük yapma
 function toCapitalize(Id) {
@@ -324,24 +243,6 @@ $(document).ready(function () {
         dataTableExport("Print");
     });
 });
-function dataTableExport(tipi) {
-    var exportBasliklar = [];
-    var basliklar = document.querySelector("#listTable > thead > tr").cells;
-    for (var i = 0; i < basliklar.length; i++) {
-        exportBasliklar.push(basliklar[i].innerHTML);
-    }
-    $.ajax({
-        type: "POST",
-        url: "Pages/dataTableExport.php",
-        data: { 'tipi': tipi, 'exportBasliklar': exportBasliklar },
-        success: function (res) {
-
-        },
-        error: function (jqXHR, status, errorThrown) {
-            alert("Result: " + status + " Status: " + jqXHR.status);
-        }
-    });
-}
 
 //seçerek excel almak için
 var excelList = [];
@@ -356,24 +257,6 @@ function UpdateExcelList(Id) {
             }
         }
     }
-}
-
-function ExcelCheckExport(tableName, tabloPrimarySutun) {
-    if (excelList.length <= 0) {
-        alert(getDil("Lütfen Seçim Yapınız."));
-        return false;
-    }
-    $.ajax({
-        type: "POST",
-        url: "Pages/" + tableName + "/excelCheckExport.php",
-        data: { 'excelList': excelList, 'tableName': tableName, 'tabloPrimarySutun': tabloPrimarySutun },
-        success: function (res) {
-            window.location.href = "Pages/excel.php";
-        },
-        error: function (jqXHR, status, errorThrown) {
-            alert("Result: " + status + " Status: " + jqXHR.status);
-        }
-    });
 }
 
 //görsel crop işlemleri başlangıç
@@ -562,47 +445,6 @@ function SelectTumu(e) {
     } else {
         $("#" + id + " > option").prop("selected", false);
         $("#" + id + "").trigger("change");
-    }
-}
-
-//mailGonder("1,2","emre1@emre.com,emre2@emre.com");
-var emailArray = [];
-var dataArray = [];
-function mailGonder(datas, emails) {
-    if (emails != "") {
-        emailArray = emails.split(",");
-    }
-    if (datas != "") {
-        dataArray = datas.split(",");
-    }
-    if (emailArray[0] != null && emailArray[0] != "" && typeof emailArray[0] !== 'undefined') {
-        var data = new data();
-        data.append('data', dataArray[0]);
-        data.append('email', emailArray[0]);
-        $.ajax({
-            type: "POST",
-            url: "Scripts/mailGonder.php",
-            data: data,
-            contentType: false,
-            processData: false,
-            success: function (res) {
-                if (res.status == "success") {
-                    console.log(res.data);
-                } else {
-                    console.log(res.message);
-                }
-                emailArray.shift();
-                dataArray.shift();
-                if (emailArray.length > 0) {
-                    mailGonder("", "");
-                } else {
-                    //bitis te yapılacak islem
-                }
-            },
-            error: function (jqXHR, status, errorThrown) {
-                alert("Result: " + status + " Status: " + jqXHR.status);
-            }
-        });
     }
 }
 
