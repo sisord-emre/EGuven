@@ -13,7 +13,7 @@
                 <!-- HTML Input Types -->
                 <div class="card">
                     <div class="card-header custom-page-header">
-                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Listele"]</h5>
+                        <h5>@Localizer["admin." + ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Listele"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
                             @if (Model.MenuPermission?.Add)
                             {
@@ -22,6 +22,9 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        <center id="resetButton" style="display: none">
+                            <button type="button" class="btn btn-warning" onclick="UserTableAdd(@Model.MenuPermission?.MenuId,'');">@Localizer["admin.Reset"]</button>
+                        </center>
                         <div class="dt-responsive table-responsive">
                             <table class="table table-striped table-bordered nowrap" id="listTable">
                                 <thead>
@@ -128,60 +131,93 @@
         }
     }
 
-    var buttonlar = [];
-    if ("@Model.MenuPermission?.Export" == "True") {
-        buttonlar = [
-            {
-                extend: 'pageLength',
-                text: '@Localizer["admin.Satır"]',
-                titleAttr: '@Localizer["admin.Sayfada Gösterilecek Satir Sayısı"]',
-
-            },
-            {
-                extend: 'copyHtml5',
-                text: '@Localizer["admin.Kopyala"]',
-                exportOptions: {
-                    columns: ':visible',
-                    stripHtml: true//html temizler
-                }
-            },
-            {
-                extend: 'excelHtml5',
-                text: '@Localizer["admin.Excel"]',
-                exportOptions: {
-                    columns: ':visible',
-                    stripHtml: true//html temizler
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                text: '@Localizer["admin.Pdf"]',
-                orientation: 'landscape',//yatay içi
-                exportOptions: {
-                    columns: ':visible',
-                    stripHtml: true//html temizler
-                }
-            },
-            {
-                extend: 'print',
-                text: '@Localizer["admin.Yazdır"]',
-                exportOptions: {
-                    columns: ':visible',
-                    stripHtml: true//html temizler
-                }
-            },
-            {
-                extend: 'colvis',
-                text: '@Localizer["admin.Gizle"]'
-            }
-        ];
-    }
     $(document).ready(function () {
-        table = $('#listTable').DataTable({
-            order: [1, 'asc'],
-            dom: 'Bfrtip',
-            pageLength: 25,
+        var buttonlar = [];
+        var menuPermissionExport = "@Model.MenuPermission?.Export";
+        var menuId = '@Model.MenuPermission?.MenuId';
+
+        if (menuPermissionExport === "True") {
+            buttonlar = [
+                {
+                    extend: 'pageLength',
+                    text: '@Localizer["admin.Satır"]',
+                    titleAttr: '@Localizer["admin.Sayfada Gösterilecek Satir Sayısı"]',
+                },
+                {
+                    extend: 'copyHtml5',
+                    text: '@Localizer["admin.Kopyala"]',
+                    exportOptions: {
+                        columns: ':visible',
+                        stripHtml: true // HTML etiketlerini temizler
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: '@Localizer["admin.Excel"]',
+                    exportOptions: {
+                        columns: ':visible',
+                        stripHtml: true // HTML etiketlerini temizler
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '@Localizer["admin.Pdf"]',
+                    orientation: 'landscape', // Yatay görünüm
+                    exportOptions: {
+                        columns: ':visible',
+                        stripHtml: true // HTML etiketlerini temizler
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '@Localizer["admin.Yazdır"]',
+                    exportOptions: {
+                        columns: ':visible',
+                        stripHtml: true // HTML etiketlerini temizler
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    text: '@Localizer["admin.Gizle"]'
+                }
+            ];
+        }
+
+        var table = $('#listTable').DataTable({
+            order: [1, 'asc'], // Varsayılan sıralama
+            dom: 'Bfrtip', // DataTable DOM yapısı
+            pageLength: 25, // Varsayılan sayfa uzunluğu
             buttons: buttonlar,
+            stateSave: true, // Tablo durumu kaydedilsin
+            stateSaveCallback: function (settings, data) {
+                // State kaydetme
+                UserTableAdd(menuId, JSON.stringify(data));
+
+                // Data nesnesini kontrol et
+                if (data && Array.isArray(data.columns)) {
+                    var closeSutun = 0;
+
+                    for (const column of data.columns) {
+                        if (column.visible === false) {
+                            closeSutun++;
+                        }
+                    }
+
+                    // Reset butonunun görünürlüğünü ayarla
+                    document.getElementById("resetButton").style.display = closeSutun > 0 ? "block" : "none";
+                } else {
+                    console.error("Data.columns bulunamadı veya uygun formatta değil:", data);
+                }
+            },
+            stateLoadCallback: function (settings, callback) {
+                closeSutun = UserTableList(menuId, callback);
+                if (closeSutun > 0) {
+                    document.getElementById("resetButton").style.display = "block";
+                } else {
+                    document.getElementById("resetButton").style.display = "none";
+                }
+            },
         });
+        DataTableSet("@listUrl");
     });
 </script>

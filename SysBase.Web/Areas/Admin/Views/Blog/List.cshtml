@@ -13,7 +13,7 @@
                 <!-- HTML Input Types -->
                 <div class="card">
                     <div class="card-header custom-page-header">
-                        <h5>@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Listele"]</h5>
+                        <h5>@Localizer["admin." + ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Listele"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
                             @if (Model.MenuPermission?.Add)
                             {
@@ -182,7 +182,7 @@
         var table = $('#listTable').DataTable({
             order: [1, 'asc'], // Varsayılan sıralama
             dom: 'Bfrtip', // DataTable DOM yapısı
-            pageLength: 50, // Varsayılan sayfa uzunluğu
+            pageLength: 25, // Varsayılan sayfa uzunluğu
             buttons: buttonlar,
             stateSave: true, // Tablo durumu kaydedilsin
             stateSaveCallback: function (settings, data) {

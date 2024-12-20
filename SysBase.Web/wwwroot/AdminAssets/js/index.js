@@ -136,6 +136,7 @@ $(document).ready(function () {
     }
 });
 
+
 $('#menuAra').keyup(function () {
     // Arama terimini büyük harfe çevirin
     var searchText = $(this).val().toLocaleUpperCase('tr-TR');
@@ -265,14 +266,19 @@ function UserTableList(menuId, callback) {
         cache: false,
         data: { menuId: menuId },
         success: function (res) {
+            console.log("ilk gelen res: " + res);
             var Data
             if (res != null && res != "") {
                 Data = JSON.parse(res);
+                console.log("data: ", Data);  // Nesnenin tamamını yazdırır
+
+                // Eğer veriyi JSON formatında görmek istiyorsanız:
+                console.log("JSON formatında data: ", JSON.stringify(Data, null, 2));  // JSON formatında, düzgün görünecek şekilde
                 delete Data["start"];
                 delete Data["length"];
                 Data.time = new Date().getTime();
                 for (const column in Data.columns) {
-                    if (Data.columns[column].visible == "true") {
+                    if (Data.columns[column].visible === true) {
                         Data.columns[column].visible = true;
                     } else {
                         Data.columns[column].visible = false;
@@ -280,6 +286,7 @@ function UserTableList(menuId, callback) {
                     }
                     delete Data.columns[column].search;
                 }
+                console.log("En son JSON formatında data: ", JSON.stringify(Data, null, 2));  // JSON formatında, düzgün görünecek şekilde
                 callback(Data);
             } else {
                 callback(Data);
@@ -292,6 +299,7 @@ function UserTableList(menuId, callback) {
     return closeSutun;
 }
 
+
 function DataTableSet(url) {
     if (url.indexOf(sessionStorage.getItem("dLink"))) {
         setTimeout(function () {
@@ -300,6 +308,7 @@ function DataTableSet(url) {
             }
             if (sessionStorage.getItem("editId") != "" && sessionStorage.getItem("editId") != null) {
                 if ($("#trSatir-" + sessionStorage.getItem("editId")).offset() != null) {
+                    console.log("ok 6");
                     $('html, body').animate({
                         scrollTop: $("#trSatir-" + sessionStorage.getItem("editId")).offset().top - 200
                     }, 300);
@@ -312,9 +321,8 @@ function DataTableSet(url) {
             }, 300);
         }, 300);
     }
-
     setTimeout(function () {
-        $(".dataTables_paginate").click(function () {
+        $(".dt-paging paging_full_numbers").click(function () {
             var pageInfo = table.page.info();
             var dSearch = table.search();
             //console.log(pageInfo["page"]);
@@ -324,7 +332,6 @@ function DataTableSet(url) {
         });
     }, 500);
 }
-
 
 function MenuVideoButtonDurum() {
     if (document.getElementById("menuVideoButton") != null) {

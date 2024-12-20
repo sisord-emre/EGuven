@@ -27,7 +27,7 @@
                 <!-- HTML Input Types -->
                 <div class="card">
                     <div class="card-header custom-page-header">
-                        <h5>@Localizer["admin."+ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <h5>@Localizer["admin." + ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
                             @if (Model.MenuPermission?.Add)
                             {
