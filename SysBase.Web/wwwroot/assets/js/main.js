@@ -377,8 +377,8 @@ export function drawerControl() {
                 }
             })
         },
-        onShow: () => { },
-        onToggle: () => { },
+        onShow: () => {},
+        onToggle: () => {},
     }
 
     const instanceOptions = {
@@ -409,7 +409,6 @@ export function productItemSelect() {
             if (goToMusteriBilgileri) {
                 goToMusteriBilgileri.disabled = false
             }
-
 
             const radioInput = item.querySelector('input[type="radio"]');
             if (radioInput) {
@@ -554,16 +553,6 @@ export function formTabControl() {
         kurumsalTabBtn.classList.remove('active')
         bireyselTabContent.classList.remove('hidden')
         kurumsalTabContent.classList.add('hidden')
-
-        bireyselTabInputs.forEach((input) => {
-            input.setAttribute('required', 'data-input-tab="musteri-bilgileri"')
-        })
-        kurumsalTabInputs.forEach((input) => {
-            input.removeAttribute(
-                'required',
-                'data-input-tab="musteri-bilgileri"'
-            )
-        })
 
         kurumsalTabErrorMsgs.forEach((msg) => {
             msg.classList.add('hidden')
@@ -824,40 +813,83 @@ export const formValidation = () => {
     const bireyselTabInputs = document.querySelectorAll('.bireysel-tab-input')
     const kurumsalTabInputs = document.querySelectorAll('.kurumsal-tab-input')
 
+    // Input'ların başlangıç required durumlarını saklamak için Map'ler
+    const bireyselRequiredInputs = new Map()
+    const kurumsalRequiredInputs = new Map()
+
+    // Başlangıçta required olan input'ları sakla
+    bireyselTabInputs.forEach((input) => {
+        if (input.hasAttribute('required')) {
+            bireyselRequiredInputs.set(input.id || input.name, {
+                id: input.id,
+                name: input.name,
+                'data-input-tab': input.getAttribute('data-input-tab'),
+            })
+        }
+    })
+
+    kurumsalTabInputs.forEach((input) => {
+        if (input.hasAttribute('required')) {
+            kurumsalRequiredInputs.set(input.id || input.name, {
+                id: input.id,
+                name: input.name,
+                'data-input-tab': input.getAttribute('data-input-tab'),
+            })
+        }
+    })
+
     const handleTabChange = (isKurumsal) => {
         // Önce tüm hata mesajlarını ve borderları temizle
         const allInputs = [...bireyselTabInputs, ...kurumsalTabInputs]
         allInputs.forEach((input) => {
             input.value = ''
             input.classList.remove('!border-red-500')
-            // Input'un yanındaki hata mesajını bul
+            input.dataset.touched = 'false'
             const errorMsg = input.nextElementSibling
             if (errorMsg?.classList.contains('error-msg')) {
                 errorMsg.classList.add('hidden')
             }
         })
 
-        // Bireysel tab inputları
-        bireyselTabInputs.forEach((input) => {
-            if (!isKurumsal) {
-                input.setAttribute('required', '')
-                input.setAttribute('data-input-tab', 'odeme-bilgileri')
-            } else {
+        if (isKurumsal) {
+            // Bireysel tab'deki required'ları kaldır
+            bireyselTabInputs.forEach((input) => {
                 input.removeAttribute('required')
                 input.removeAttribute('data-input-tab')
-            }
-        })
+            })
 
-        // Kurumsal tab inputları
-        kurumsalTabInputs.forEach((input) => {
-            if (isKurumsal) {
-                input.setAttribute('required', '')
-                input.setAttribute('data-input-tab', 'odeme-bilgileri')
-            } else {
+            // Kurumsal tab'de saklanmış required'ları geri ekle
+            kurumsalTabInputs.forEach((input) => {
+                const inputKey = input.id || input.name
+                if (kurumsalRequiredInputs.has(inputKey)) {
+                    const originalState = kurumsalRequiredInputs.get(inputKey)
+                    input.setAttribute('required', '')
+                    input.setAttribute(
+                        'data-input-tab',
+                        originalState['data-input-tab']
+                    )
+                }
+            })
+        } else {
+            // Kurumsal tab'deki required'ları kaldır
+            kurumsalTabInputs.forEach((input) => {
                 input.removeAttribute('required')
                 input.removeAttribute('data-input-tab')
-            }
-        })
+            })
+
+            // Bireysel tab'de saklanmış required'ları geri ekle
+            bireyselTabInputs.forEach((input) => {
+                const inputKey = input.id || input.name
+                if (bireyselRequiredInputs.has(inputKey)) {
+                    const originalState = bireyselRequiredInputs.get(inputKey)
+                    input.setAttribute('required', '')
+                    input.setAttribute(
+                        'data-input-tab',
+                        originalState['data-input-tab']
+                    )
+                }
+            })
+        }
 
         // Tab değişiminden sonra validasyonu tekrar çalıştır
         validateTab('odeme-bilgileri', false)
