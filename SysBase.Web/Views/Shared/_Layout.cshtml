@@ -610,7 +610,7 @@
                 processData: false,
                 success: function (res) {
                     $('#modalDiv').html(res);
-                    document.getElementById("GarantiModalButton").click();
+                    document.getElementById("statikModalButton").click();
                 },
                 error: function (jqXHR, status, errorThrown) {
                     alert("Result: " + status + " Status: " + jqXHR.status);
@@ -663,6 +663,7 @@
                             confirmButtonText: "Tamam"
                         });
                         document.getElementById("uid").value = res.data;
+                        GarantiModal();
                     } else {
                         Swal.fire({
                             text: res.message,

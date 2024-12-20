@@ -3,92 +3,64 @@
 @{
     Layout = null;
 }
-<!-- Main modal -->
-<div id="GarantiModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    @Localizer["Ödeme Bilgileri"]
-                </h3>
-                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="GarantiModal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">@Localizer["Kapat"]</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">
-                <form method="post" role="form" action="https://sanalposprovtest.garantibbva.com.tr/servlet/gt3dengine">
-                    <!--Value alanı test ortamı için: TEST üretim ortamı için: PROD olmalıdır.-->
-                    <input type="hidden" name="mode" id="mode" value="TEST" />
-                    <!--API Sürümü-->
-                    <input type="hidden" name="apiversion" id="apiversion" value="512" />
-                    <!--Güvenlik Düzeyi (Value değerleri: "CUSTOM_PAY", "3D_PAY", "3D_FULL", "3D_HALF" seçeneklerinden birisi olmalıdır.)-->
-                    <input type="hidden" name="secure3dsecuritylevel" id="secure3dsecuritylevel" value="3D_PAY"   />
-                    <!--Terminal Provision User ID-->
-                    <input type="hidden" name="terminalprovuserid" id="terminalprovuserid" value="PROVAUT" />
-                    <!--Terminal User ID-->
-                    <input type="hidden" name="terminaluserid" id="terminaluserid" value="GARANTI" />
-                    <!--Terimal Merchant ID-->
-                    <input type="hidden" name="terminalmerchantid" id="terminalmerchantid" value="7000679" />
-                    <!--Terminal ID-->
-                    <input type="hidden" name="terminalid" id="terminalid" value="30691297" />
-                    <!--Sipariş ID (Benzersiz bir işlem numarası olmalıdır.)-->
-                    <input type="hidden" name="orderid" id="orderid" value="@Model.ApiBasvuruRequest.Uid" />
-                    <!--Başarılı İşlem Dönüş Bağlantısı-->
-                    <input type="hidden" name="successurl" id="successurl" value="https://dev1.sisord.net/eguven/thanks" />
-                    <!--Başarısız İşlem Dönüş Bağlantısı-->
-                    <input type="hidden" name="errorurl" id="errorurl" value="https://dev1.sisord.net/eguven/paymenterror" />
-                    <!--Müşteri E-Posta Adresi-->
-                    <input type="hidden" name="customeremailaddress" id="customeremailaddress" value="eticaret@garanti.com.tr" />
-                    <!--Müşteri IP Adresi-->
-                    <input type="hidden" name="customeripaddress" id="customeripaddress" value="@Model." />
-                    <!--Firma Adı-->
-                    <input type="hidden" name="companyname" id="companyname" Value="GARANTI TEST" />
-                    <!--Dil Bilgisi-->
-                    <input type="hidden" name="lang" id="lang" Value="tr" />
-                    <!--İşlem Zamanı (UTC)-->
-                    <input type="hidden" name="txntimestamp" id="txntimestamp" value="@DateTime.UtcNow.ToString("yyy y-MM-ddTHH:mm:ssZ") " />
-                    <!--Yenileme Süresi-->
-                    <input type="hidden" name="refreshtime" id="refreshtime" value="1" />
-                    <!--Güvenli Hash Anahtarı (Bu alana hash algoritasmasından gelen değer girilmelidir.)-->
-                    <input type="hidden" name="secure3dhash" id="secure3dhash" value="@Model.Hash" />
-                    <!--İşlem Yapılan Tutar-->
-                    <input type="hidden" name="txnamount" id="txnamount" value="100" />
+<form method="post" role="form" action="https://sanalposprovtest.garantibbva.com.tr/servlet/gt3dengine">
+    <!--Value alanı test ortamı için: TEST üretim ortamı için: PROD olmalıdır.-->
+    <input type="hidden" name="mode" id="mode" value="TEST" />
+    <!--API Sürümü-->
+    <input type="hidden" name="apiversion" id="apiversion" value="512" />
+    <!--Güvenlik Düzeyi (Value değerleri: "CUSTOM_PAY", "3D_PAY", "3D_FULL", "3D_HALF" seçeneklerinden birisi olmalıdır.)-->
+    <input type="hidden" name="secure3dsecuritylevel" id="secure3dsecuritylevel" value="3D_PAY"   />
+    <!--Terminal Provision User ID-->
+    <input type="hidden" name="terminalprovuserid" id="terminalprovuserid" value="PROVAUT" />
+    <!--Terminal User ID-->
+    <input type="hidden" name="terminaluserid" id="terminaluserid" value="GARANTI" />
+    <!--Terimal Merchant ID-->
+    <input type="hidden" name="terminalmerchantid" id="terminalmerchantid" value="7000679" />
+    <!--Terminal ID-->
+    <input type="hidden" name="terminalid" id="terminalid" value="30691297" />
+    <!--Sipariş ID (Benzersiz bir işlem numarası olmalıdır.)-->
+    <input type="hidden" name="orderid" id="orderid" value="@Model.ApiBasvuruRequest.Uid" />
+    <!--Başarılı İşlem Dönüş Bağlantısı-->
+    <input type="hidden" name="successurl" id="successurl" value="https://dev1.sisord.net/eguven/thanks" />
+    <!--Başarısız İşlem Dönüş Bağlantısı-->
+    <input type="hidden" name="errorurl" id="errorurl" value="https://dev1.sisord.net/eguven/paymenterror" />
+    <!--Müşteri E-Posta Adresi-->
+    <input type="hidden" name="customeremailaddress" id="customeremailaddress" value="eticaret@garanti.com.tr" />
+    <!--Müşteri IP Adresi-->
+    <input type="hidden" name="customeripaddress" id="customeripaddress" value="@Model." />
+    <!--Firma Adı-->
+    <input type="hidden" name="companyname" id="companyname" Value="GARANTI TEST" />
+    <!--Dil Bilgisi-->
+    <input type="hidden" name="lang" id="lang" Value="tr" />
+    <!--İşlem Zamanı (UTC)-->
+    <input type="hidden" name="txntimestamp" id="txntimestamp" value="@DateTime.UtcNow.ToString("yyy y-MM-ddTHH:mm:ssZ") " />
+    <!--Yenileme Süresi-->
+    <input type="hidden" name="refreshtime" id="refreshtime" value="1" />
+    <!--Güvenli Hash Anahtarı (Bu alana hash algoritasmasından gelen değer girilmelidir.)-->
+    <input type="hidden" name="secure3dhash" id="secure3dhash" value="@Model.Hash" />
+    <!--İşlem Yapılan Tutar-->
+    <input type="hidden" name="txnamount" id="txnamount" value="100" />
 
-                    <!--İşlem Tipi-->
-                    <!--Ön otorizasyon işlem tipinde value değeri: "preauth"-->
-                    <!--Bonus kullanımında işlem tipinde value değeri: "preauth"-->
-                    <!--Tekrarlı satış işlem tipinde value değeri: "preauth"-->
-                    <!--DCC işlem tipinde value değeri: "dccinq"-->
-                    <!--Ortak Kart işlem tipinde value değeri: "commercialcard"-->
-                    <!--Futures Sale işlem tipinde value değeri: "extendedcredit"-->
-                    <input type="hidden" name="txntype" id="txntype" value="sales" />
-                    <!--Para Birimi value değerleri: TR: "949" | USD: "840" | EURO: "978" | GBP: "826" | JPY: "392"-->
-                    <input type="hidden" name="txncurrencycode" id="txncurrencycode" value="949" />
-                    <!--Taksit Sayısı (Taksit gerekmeyen işlemlerde: "" girilmelidir.)-->
-                    <input type="hidden" name="txninstallmentcount" id="txninstallmentcount" value="" />
-                    <!--Müşteri Kart Üzerindeki Adı-->
-                    <input name="cardholdername" id="cardholdername" value="@Model.cardAdSoyad" />
-                    <!--Müşteri Kart Numarası-->
-                    <input name="cardnumber" id="cardnumber" value="@Model.cardNo" />
-                    <!--Müşteri Kartı Son Kullanma Ay-->
-                    <input name="cardexpiredatemonth" id="cardexpiredatemonth" value="@Model.dateMonth" />
-                    <!--Müşteri Kartı Son Kullanma Yıl-->
-                    <input name="cardexpiredateyear" id="cardexpiredateyear" value="@Model.dateYear" />
-                    <!--Müşteri Kartı CVC Güvenlik Numarası-->
-                    <input name="cardcvv2" id="cardcvv2" value="@Model.code" />
-                </form>
-            
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button data-modal-hide="GarantiModal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">@Localizer["Kapat"]</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <!--İşlem Tipi-->
+    <!--Ön otorizasyon işlem tipinde value değeri: "preauth"-->
+    <!--Bonus kullanımında işlem tipinde value değeri: "preauth"-->
+    <!--Tekrarlı satış işlem tipinde value değeri: "preauth"-->
+    <!--DCC işlem tipinde value değeri: "dccinq"-->
+    <!--Ortak Kart işlem tipinde value değeri: "commercialcard"-->
+    <!--Futures Sale işlem tipinde value değeri: "extendedcredit"-->
+    <input type="hidden" name="txntype" id="txntype" value="sales" />
+    <!--Para Birimi value değerleri: TR: "949" | USD: "840" | EURO: "978" | GBP: "826" | JPY: "392"-->
+    <input type="hidden" name="txncurrencycode" id="txncurrencycode" value="949" />
+    <!--Taksit Sayısı (Taksit gerekmeyen işlemlerde: "" girilmelidir.)-->
+    <input type="hidden" name="txninstallmentcount" id="txninstallmentcount" value="" />
+    <!--Müşteri Kart Üzerindeki Adı-->
+    <input name="cardholdername" id="cardholdername" value="@Model.cardAdSoyad" />
+    <!--Müşteri Kart Numarası-->
+    <input name="cardnumber" id="cardnumber" value="@Model.cardNo" />
+    <!--Müşteri Kartı Son Kullanma Ay-->
+    <input name="cardexpiredatemonth" id="cardexpiredatemonth" value="@Model.dateMonth" />
+    <!--Müşteri Kartı Son Kullanma Yıl-->
+    <input name="cardexpiredateyear" id="cardexpiredateyear" value="@Model.dateYear" />
+    <!--Müşteri Kartı CVC Güvenlik Numarası-->
+    <input name="cardcvv2" id="cardcvv2" value="@Model.code" />
+</form>

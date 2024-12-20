@@ -288,6 +288,7 @@ namespace SysBase.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> GarantiModal(string uid, string dateMonth, string dateYear, string cardAdSoyad, string cardNo, string code)
         {
+            return View();
             ApiBasvuruRequest apiBasvuruRequest = await _apiBasvuruRequestService.Where(x => x.Uid == uid).FirstOrDefaultAsync();
             List<ProjectProduct> projectProducts = await _projectProductService
               .Where(x => x.Id == apiBasvuruRequest.ProjectProductId && x.Project.Status && x.Product.Status)
