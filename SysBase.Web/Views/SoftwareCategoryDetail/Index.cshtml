@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "E-imza Yazilimlar";
     int index = 0;
-    int sayac = 1;
 }
 
 <div class="swiper hero-slider relative">
@@ -28,6 +27,7 @@
     <div class="container pt-12">
         <div class="tab-container">
             <div class="tab-buttons border-b border-tab-inactive">
+               
                 @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
                 {
                     <button class="tab-button py-4 md:px-20 px-2 md:text-2xl text-sm font-extrabold text-center @(index == 0 ? "active" : "")" data-tab="@item.Slug">
@@ -37,9 +37,13 @@
                 }
             </div>
             <div class="tab-content">
+                @{
+                    int tabSayac = 0; // tabSayac değişkenini tanımla
+                }
                 @foreach (SoftwareCategoryLanguageInfo item in Model.SoftwareCategoryLanguageInfos)
                 {
-                    <div id="@item.Slug" class="tab-pane @(sayac == 1 ? "active" : "")" md:px-10 pt-7 px-4 overflow-hidden">
+                    int sayac = 1; // Sayacı her sekme başında sıfırla
+                    <div id="@item.Slug" class="tab-pane @(tabSayac == 0 ? "active" : "") md:px-10 pt-7 px-4 overflow-hidden">
                         <div>
                             <figure class="float-right ml-12 md:block hidden">
                                 <img src="/Images/SoftwareCategory/@item.SoftwareCategory.ContentImage" alt="@item.Title" />
@@ -47,7 +51,7 @@
                             @foreach (var content in item.SoftwareCategoryLanguageInfoContents.Where(c => c.Status).OrderBy(c => c.Sequence))
                             {
                                 <div class="flex gap-3 mb-10">
-                                    <div class="w-[50px] h-[50px] rounded-full bg-primary-red flex items-cemter justify-center text-white text-3xl font-medium p-2 shrink-0">
+                                    <div class="w-[50px] h-[50px] rounded-full bg-primary-red flex items-center justify-center text-white text-3xl font-medium p-2 shrink-0">
                                         @sayac
                                     </div>
                                     <div class="flex flex-col gap-2">
@@ -73,11 +77,14 @@
                                     allowfullscreen></iframe>
                         </div>
                     </div>
+                    tabSayac++;
                 }
             </div>
         </div>
     </div>
 </section>
+
+
 
 <script type="module">
     import {
