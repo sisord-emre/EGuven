@@ -627,7 +627,6 @@
 
         $('#kayitForm').submit(function (e) {
             e.preventDefault(); //submit postu kesyoruz
-            console.log("sdas");
             document.getElementById("submitButton").disabled = true;
             var data = new FormData(this);
             $.ajax({
@@ -657,7 +656,7 @@
                             confirmButtonText: "Tamam"
                         });
                     }
-                    document.getElementById("kayitForm").reset();
+                    //document.getElementById("kayitForm").reset();
                     document.getElementById("submitButton").disabled = false;
                 },
                 error: function (jqXHR, status, errorThrown) {

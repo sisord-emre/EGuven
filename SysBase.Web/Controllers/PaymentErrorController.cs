@@ -4,6 +4,8 @@ using SysBase.Core.Models;
 using SysBase.Core.Services;
 using SysBase.Service.Functions;
 using SysBase.Web.Resources;
+using System.Diagnostics;
+using System.Linq;
 
 namespace SysBase.Web.Controllers
 {
@@ -40,8 +42,50 @@ namespace SysBase.Web.Controllers
 
         public async Task<IActionResult> Index(string slug)
         {
+            string digestData = string.Empty; // Eksik değişken tanımlandı
+            string strStoreKey = "12345678"; // Store Key'inizi buraya ekleyin
+            bool isValidHash = false; // Hash doğrulama için flag
 
-            return View();
+            Debug.WriteLine(Request.Form.Keys);
+            Debug.WriteLine(Request.Form["procreturncode"]);
+
+            if (Request.Form["procreturncode"]!="00")
+            {
+                return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
+            }
+            string responseHash = Request.Form.ContainsKey("hash") ? Request.Form["hash"] : "";
+            char[] separator = new char[] { ':' };
+            // Ayıraç için kullanılacak hashparams
+            string responseHashparams = Request.Form.ContainsKey("hashparams") ? Request.Form["hashparams"] : "";
+            // Dönen parametrelerin isimlerine göre tek tek değerleri alınır
+            string[] paramList = responseHashparams.Split(separator);
+            foreach (string param in paramList)
+            {
+                if (Request.Form.ContainsKey(param)) // Key'in var olup olmadığını kontrol ediyoruz
+                {
+                    digestData += Request.Form[param]; // Eğer varsa değeri ekliyoruz
+                }
+                else
+                {
+                    digestData += ""; // Yoksa bir şey eklemiyoruz (boş bırakıyoruz)
+                }
+            }
+            // Sonuna store key eklenir
+            digestData += strStoreKey;
+            // Aşağıdaki gibi şifreleme uygulanır
+            using (var sha = new System.Security.Cryptography.SHA512CryptoServiceProvider())
+            {
+                byte[] hashbytes = System.Text.Encoding.GetEncoding("ISO-8859-9").GetBytes(digestData);
+                byte[] inputbytes = sha.ComputeHash(hashbytes);
+                string hashCalculated = Convert.ToBase64String(inputbytes);
+                if (responseHash.Equals(hashCalculated))
+                {
+                    // MESAJ BANKADAN GELİYOR
+                    isValidHash = true;
+                    return View();
+                }
+            }
+            return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
         }
     }
 }

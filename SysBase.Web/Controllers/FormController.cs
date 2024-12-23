@@ -130,11 +130,7 @@ namespace SysBase.Web.Controllers
                     model.Dosya = await functions.FileUpload(Dosya, "Images/Basvuru", Guid.NewGuid().ToString("N"), allowedExtensions);
                 }
 
-                List<int> urunArray = new List<int>();
-                foreach (string item in UrunList)
-                {
-                    urunArray.Append(Convert.ToInt32(item));
-                }
+                List<int> urunArray = UrunList.Select(item => Convert.ToInt32(item)).ToList();
 
                 List<ProjectProduct> projectProducts = await _projectProductService
                 .Where(x => urunArray.Contains(x.Id) && x.Project.Status && x.Product.Status)
@@ -158,6 +154,7 @@ namespace SysBase.Web.Controllers
 
                 model.ProjectProductId = urunArray[0];
                 model.Uid = Guid.NewGuid().ToString("N");
+                model.OdemeTutar = (toplamFiyat + toplamKdv);
                 isControl = await _apiBasvuruRequestService.AddAsync(model);
                 if (isControl.Id != 0)
                 {
@@ -171,7 +168,7 @@ namespace SysBase.Web.Controllers
 
                     if (!projectProduct.Project.PaymetForm || model.OdemeTipi == 2)
                     {
-                        CrmSend(model, crmUrunler);
+                        //CrmSend(model, crmUrunler);
                     }
 
                     resultJson.status = "success";
@@ -311,7 +308,7 @@ namespace SysBase.Web.Controllers
                 cardNo = cardNo,
                 code = code,
                 //GetHashData(string provisionPassword, string terminalId, string orderId, int installmentCount, string storeKey, ulong amount, int currencyCode, string successUrl, string type, string errorUrl)
-                Hash = GetHashData("123qweASD/", "30691297", apiBasvuruRequest.Uid, 0, "12345678", (ulong)(toplamFiyat + toplamKdv), 949, "https://dev1.sisord.net/eguven/thanks", "sales", "https://dev1.sisord.net/eguven/paymenterror"),
+                Hash = GetHashData("123qweASD/", "30691297", apiBasvuruRequest.Uid, 0, "12345678", (ulong)(toplamFiyat + toplamKdv), 949, "https://localhost:7138/thanks", "sales", "https://localhost:7138/paymenterror"),
                 IpAdresi = HttpContext.Connection.RemoteIpAddress?.ToString(),
             });
         }

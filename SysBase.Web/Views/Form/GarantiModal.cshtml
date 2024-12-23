@@ -3,7 +3,7 @@
 @{
     Layout = null;
 }
-<form method="post" role="form" action="https://sanalposprovtest.garantibbva.com.tr/servlet/gt3dengine">
+<form method="post" role="form" action="https://sanalposprovtest.garantibbva.com.tr/servlet/gt3dengine" id="garantiForm">
     <!--Value alanı test ortamı için: TEST üretim ortamı için: PROD olmalıdır.-->
     <input type="hidden" name="mode" id="mode" value="TEST" />
     <!--API Sürümü-->
@@ -21,9 +21,9 @@
     <!--Sipariş ID (Benzersiz bir işlem numarası olmalıdır.)-->
     <input type="hidden" name="orderid" id="orderid" value="@Model.ApiBasvuruRequest.Uid" />
     <!--Başarılı İşlem Dönüş Bağlantısı-->
-    <input type="hidden" name="successurl" id="successurl" value="https://dev1.sisord.net/eguven/thanks" />
+    <input type="hidden" name="successurl" id="successurl" value="https://localhost:7138/thanks" />
     <!--Başarısız İşlem Dönüş Bağlantısı-->
-    <input type="hidden" name="errorurl" id="errorurl" value="https://dev1.sisord.net/eguven/paymenterror" />
+    <input type="hidden" name="errorurl" id="errorurl" value="https://localhost:7138/paymenterror" />
     <!--Müşteri E-Posta Adresi-->
     <input type="hidden" name="customeremailaddress" id="customeremailaddress" value="eticaret@garanti.com.tr" />
     <!--Müşteri IP Adresi-->
@@ -39,7 +39,7 @@
     <!--Güvenli Hash Anahtarı (Bu alana hash algoritasmasından gelen değer girilmelidir.)-->
     <input type="hidden" name="secure3dhash" id="secure3dhash" value="@Model.Hash" />
     <!--İşlem Yapılan Tutar-->
-    <input type="hidden" name="txnamount" id="txnamount" value="100" />
+    <input type="hidden" name="txnamount" id="txnamount" value="@Model.ApiBasvuruRequest.OdemeTutar" />
 
     <!--İşlem Tipi-->
     <!--Ön otorizasyon işlem tipinde value değeri: "preauth"-->
@@ -63,4 +63,8 @@
     <input name="cardexpiredateyear" id="cardexpiredateyear" value="@Model.dateYear" />
     <!--Müşteri Kartı CVC Güvenlik Numarası-->
     <input name="cardcvv2" id="cardcvv2" value="@Model.code" />
+    <button type="submit">Gönder</button>
 </form>
+<script>
+    //document.getElementById('garantiForm').submit();
+</script>
