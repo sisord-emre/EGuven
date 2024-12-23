@@ -259,9 +259,9 @@
                     </div>
                     <div class="lg:w-3/4 md:2/3 w-full">
                         <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 mb-7 gap-y-4">
-                            <a href="javascript:;"
+                            <a href="javascript:;" style="display:none;"
                                class="btn btn-common xl:w-44">Online İşlemler</a>
-                            <a href="javascript:;"
+                            <a href="javascript:;" style="display:none;"
                                class="btn btn-common xl:w-44 text-primary-red">Bayi Girişi</a>
                             <div class="flex items-center col-span-2 flex-1">
                                 <input id="member_email"
@@ -449,57 +449,39 @@
 
         <nav>
             <ul class="mobile-menu">
-                <li class="menu-item mobile-dropdown">
-                    <a href="javascript:;" class="sub-menu-button">
-                        <span class="icon-codesandbox"></span>
-                        Kurumsal
-                        <span class="icon-chevron-down ml-auto"></span>
-                    </a>
+                @foreach (SiteMenu menu in model.SiteMenus)
+                {
+                    if (menu.ParentId == 0)
+                    {
+                        List<SiteMenu> subMenus = model.SiteMenus.Where(x => x.ParentId == menu.Id).ToList();
+                        <li class="menu-item @(subMenus.Any() ? "mobile-dropdown" : "")">
+                            <a href="@menu.Url" class="@(subMenus.Any() ? "sub-menu-button" : "")">
+                                @if (!string.IsNullOrEmpty(menu.Icon))
+                                {
+                                    <span class="@menu.Icon"></span>
+                                }
+                                @menu.Title
+                                @if (subMenus.Any())
+                                {
+                                    <span class="icon-chevron-down ml-auto"></span>
+                                }
+                            </a>
 
-                    <ul class="sub-menu">
-                        <li><a href="kurumsal.html">Hakkımızda</a></li>
-                        <li><a href="kurumsal.html">Misyon Vizyon</a></li>
-                        <li><a href="kurumsal.html">Değerlerimiz</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item mobile-dropdown">
-                    <a href="javascript:;" class="sub-menu-button">
-                        <span class="icon-codesandbox"></span>
-                        Ürünlerimiz
-                        <span class="icon-chevron-down ml-auto"></span>
-                    </a>
-
-                    <ul class="sub-menu">
-                        <li><a href="urun-eimza.html">E-İmza</a></li>
-                        <li><a href="urun-eimza.html">E-Mühür</a></li>
-                        <li><a href="urun-eimza.html">Paperzero</a></li>
-                        <li><a href="urun-eimza.html">Zaman Damgası</a></li>
-                        <li><a href="urun-eimza.html">HSM Çözümleri</a></li>
-                        <li>
-                            <a href="urun-eimza.html">Yazılım Kütüphanesi</a>
+                            @if (subMenus.Any())
+                            {
+                                <ul class="sub-menu">
+                                    @foreach (var subMenu in subMenus)
+                                    {
+                                        <li><a href="@subMenu.Url">@subMenu.Title</a></li>
+                                    }
+                                </ul>
+                            }
                         </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="destek-masasi.html">
-                        <span class="icon-help-circle"></span>
-                        Destek Masası
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="bilgi-merkezi.html">
-                        <span class="icon-info"></span>
-                        Bilgi Merkezi
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="iletisim.html">
-                        <span class="icon-phone-call"></span>
-                        Bize Ulaşın
-                    </a>
-                </li>
+                    }
+                }
             </ul>
         </nav>
+
 
         <div class="flex flex-col gap-4 text-primary-dark">
             <div class="text-sm">

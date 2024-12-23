@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Anasayfa";
     int index = 0;
-    int sayac = 1;
     List<HomeProductLanguageInfo> homeProductLanguageInfos = Model.HomeProductLanguageInfos;
 }
 
@@ -274,8 +273,6 @@
 </section>
 
 
-
-<!-- Nasıl? -->
 <section class="how-to mt-10" data-aos="fade-up">
     <div class="container">
         <div class="tab-container">
@@ -294,8 +291,9 @@
             <div class="tab-content">
                 @foreach (HomeTabPostLanguageInfo item in Model.HomeTabPostLanguageInfos)
                 {
+                    var sayac = 1;
                     <div id="@item.Id"
-                         class="tab-pane @(sayac == 1 ? "active" : "") bg-primary-gray rounded-5 shadow-md md:py-16 md:px-10 py-10 px-4 overflow-hidden">
+                         class="tab-pane @(item.Id == 1 ? "active" : "") bg-primary-gray rounded-5 shadow-md md:py-16 md:px-10 py-10 px-4 overflow-hidden">
                         <div class="grid md:grid-cols-2 md:grid-rows-2 grid-cols-1 md:gap-7 gap-4 xl:px-20 px-0">
                             @foreach (var content in item.HomeTabPostLanguageInfoContents.Where(c => c.Status).OrderBy(c => c.Sequence))
                             {
@@ -316,11 +314,14 @@
                             }
                         </div>
                     </div>
+                    index++;
+                    <!-- Tab Content için index'i artırıyoruz -->
                 }
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Yardımcı Videolar -->
 <section class="helper-videos mt-20">
@@ -460,7 +461,7 @@
         <div class="flex flex-col gap-6">
             <div class="text-primary-dark dark:text-white md:mb-10 mb-4 text-center"
                  data-aos="fade-up">
-                <div class="text-3xl font-bold">Blog</div>
+                <div class="text-3xl font-bold">Bilgi Merkezi</div>
                 <div class="text-sm">
                     Türkiye'nin e-imza blogu E-Güven’den sektörden ve
                     bizden haberler
