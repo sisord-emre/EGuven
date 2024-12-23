@@ -70,6 +70,7 @@ namespace SysBase.Repository
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductLanguageInfo> ProductLanguageInfos { get; set; }
         public DbSet<UserTable> UserTables { get; set; }
+        public DbSet<ConfigLanguageInfo> ConfigLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için

@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog.Context;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
-using SysBase.Service.Functions;
 using SysBase.Web.Areas.Admin.Models;
 using SysBase.Web.Resources;
 
@@ -19,14 +19,17 @@ namespace SysBase.Web.Areas.Admin.Controllers
     {
         // ConfigController specific dependencies
         protected readonly IService<Config> _service;
+        protected readonly IService<ConfigLanguageInfo> _configLanguageInfoService;
         protected readonly IService<Language> _languageService;
         protected readonly ILogger<ConfigController> _logger;
 
         public ConfigController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                                IService<Config> service, IService<Language> languageService, ILogger<ConfigController> logger)
+                                IService<Config> service, IService<ConfigLanguageInfo> configLanguageInfoService,
+                                IService<Language> languageService, ILogger<ConfigController> logger)
             : base(localizer, userManager)
         {
             _service = service;
+            _configLanguageInfoService = configLanguageInfoService;
             _languageService = languageService;
             _logger = logger;
         }
@@ -42,6 +45,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             Config model = null;
             model = await _service.GetByIdAsync(1);
+            model.ConfigLanguageInfos = await _configLanguageInfoService.Where(x => x.ConfigId == model.Id).ToListAsync();
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
@@ -61,7 +65,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
             Config isControl;
-            if (ModelState.IsValid)
+            if (model.Id > 0) // Id kontrolü eklendi
             {
                 isControl = await _service.UpdateAsync(model);
             }
@@ -79,8 +83,12 @@ namespace SysBase.Web.Areas.Admin.Controllers
             }
 
             //log işleme alanı
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
             LogContext.PushProperty("TypeName", "Update");
-            _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
+            _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model, settings)));
 
             return View(new ConfigAddViewModel { MenuPermission = menuPermission, Config = model, Languages = await _languageService.GetAllAsync() });
         }
