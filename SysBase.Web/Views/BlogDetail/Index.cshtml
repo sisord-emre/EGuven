@@ -11,7 +11,7 @@
                 <div class="hero-slider-item-content !bg-transparent">
                     <div class="hero-slider-item-content-box">
                         <div class="hero-slider-item-subtitle">
-                            Türkiyenin e-imza blogu
+                            @Localizer["Türkiyenin e-imza blogu"]
                         </div>
                         <div class="hero-slider-item-title !text-5xl">
                             @Model.BlogLanguageInfo?.Title
@@ -45,14 +45,14 @@
                             {
                                 <a href="/blog-detay/@Model.BeforeBlog.Slug" class="btn btn-common">
                                     <span class="icon-chevron-left"></span>
-                                    Önceki Yazı
+                                    @Localizer["Önceki Yazı"]
                                 </a>
                             }
 
                             @if (Model.LastBlog != null)
                             {
                                 <a href="/blog-detay/@Model.LastBlog.Slug" class="btn btn-common">
-                                    Sonraki Yazı
+                                    @Localizer["Sonraki Yazı"]
                                     <span class="icon-chevron-right"></span>
                                 </a>
                             }
@@ -64,7 +64,7 @@
                         <div class="flex flex-col gap-5">
                             <div class="flex items-center gap-2">
                                 <span class="icon-title-icon text-primary-red text-2xl"></span>
-                                <span class="font-bold text-xl">Arama</span>
+                                <span class="font-bold text-xl">@Localizer["Arama"]</span>
                             </div>
                             <div class="flex items-stretch justify-stretch">
                                 <input id="blogSearch"
@@ -83,7 +83,7 @@
                         <div class="flex flex-col gap-5">
                             <div class="flex items-center gap-2">
                                 <span class="icon-title-icon text-primary-red text-2xl"></span>
-                                <span class="font-bold text-xl">Son Yazılar</span>
+                                <span class="font-bold text-xl">@Localizer["Son Yazılar"]</span>
                             </div>
                             <ul class="flex flex-col gap-6">
                                 @foreach (BlogLanguageInfo item in Model.LastPosts)

@@ -11,10 +11,10 @@
                 <div class="hero-slider-item-content !bg-transparent">
                     <div class="hero-slider-item-content-box">
                         <div class="hero-slider-item-subtitle">
-                            Türkiyenin e-imza blogu
+                            @Localizer["Türkiyenin e-imza blogu"]
                         </div>
                         <div class="hero-slider-item-title !text-5xl">
-                            E-Güven’li Hayat
+                            @Localizer["E-Güven’li Hayat"]
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                                                     <div class="flex items-center gap-1">
                                                         <span class="icon-clock text-primary-red"></span>
                                                         <span class="text-xs text-blog-content font-medium">
-                                                            Tahmini Okuma Süresi: @items.Blog.ReadTime dk
+                                                            @Localizer["Tahmini Okuma Süresi"]: @items.Blog.ReadTime dk
                                                         </span>
                                                     </div>
                                                 </div>
@@ -81,7 +81,7 @@
                                                     @items.Description
                                                 </div>
                                             </a>
-                                            <a href="/blog-detay/@items.Slug" class="btn btn-blog-read-more mt-4">Devamını Oku</a>
+                                            <a href="/blog-detay/@items.Slug" class="btn btn-blog-read-more mt-4">@Localizer["Devamını Oku"]</a>
                                         </div>
                                     }
                                 </div>
@@ -125,14 +125,14 @@
                         <div class="flex flex-col gap-5">
                             <div class="flex items-center gap-2">
                                 <span class="icon-title-icon text-primary-red text-2xl"></span>
-                                <span class="font-bold text-xl">Arama</span>
+                                <span class="font-bold text-xl">@Localizer["Arama"]</span>
                             </div>
                             <div class="flex items-stretch justify-stretch">
                                 <input id="blogSearch"
                                        class="bg-aside-search text-blog-content border-0 text-sm rounded-l-5 block px-4 py-2.5 w-full outline-none focus:outline-none ring-0 focus:ring-transparent focus:bg-aside-search autofill:bg-aside-search"
                                        name="blog_search"
-                                       aria-label="Blog arama"
-                                       placeholder="Blog ara..."
+                                       aria-label="@Localizer["Blog arama"]"
+                                       placeholder="@Localizer["Blog ara"]..."
                                        type="text" />
                                 <button class="btn btn-primary-red rounded-r-5 rounded-l-none shrink-0 h-full text-xl">
                                     <span class="icon-search"></span>
@@ -145,7 +145,7 @@
                         <div class="flex flex-col gap-5">
                             <div class="flex items-center gap-2">
                                 <span class="icon-title-icon text-primary-red text-2xl"></span>
-                                <span class="font-bold text-xl">Son Yazılar</span>
+                                <span class="font-bold text-xl">@Localizer["Son Yazılar"]</span>
                             </div>
                             <ul class="flex flex-col gap-6">
                                 @foreach (BlogLanguageInfo item in Model.LastPosts)

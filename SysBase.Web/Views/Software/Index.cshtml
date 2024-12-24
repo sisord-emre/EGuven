@@ -14,10 +14,10 @@
                 <div class="hero-slider-item-content !bg-transparent">
                     <div class="hero-slider-item-content-box">
                         <div class="hero-slider-item-subtitle">
-                            E-Güven
+                            @Localizer["E-Güven"]
                         </div>
                         <div class="hero-slider-item-title !text-5xl">
-                            E-İmza Yazılımları
+                            @Localizer["E-İmza Yazılımları"]
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
 <section class="e-imza-yazilimlar-os mt-10" data-aos="fade-up">
     <div class="container">
         <div class="text-center text-primary-dark text-3xl font-bold max-w-screen-md mx-auto mt-14">
-            2. Lütfen işletim sisteminize uygun yazılımı yükleyiniz.
+            @Localizer["2. Lütfen işletim sisteminize uygun yazılımı yükleyiniz"].
         </div>
         <div class="grid md:grid-cols-2 grid-cols-1 gap-x-16 mt-10 items-center"
              data-aos="fade-up">
@@ -43,11 +43,11 @@
                         </div>
                         @if (item.Type == 1)
                         {
-                            <a href="@item.FileUrl" class="btn btn-primary-red-outline ml-auto" target="_blank">İndir</a>
+                            <a href="@item.FileUrl" class="btn btn-primary-red-outline ml-auto" target="_blank">@Localizer["İndir"]</a>
                         }
                         else
                         {
-                            <a href="/Images/Software/@item.File" class="btn btn-primary-red-outline ml-auto" target="_blank">İndir</a>
+                            <a href="/Images/Software/@item.File" class="btn btn-primary-red-outline ml-auto" target="_blank">@Localizer["İndir"]</a>
                         }
                     </div>
                 }
@@ -58,7 +58,7 @@
         </div>
         <div class="flex items-center justify-center mt-16"
              data-aos="fade-up">
-            <a href="yardimci-videolar.html" class="btn btn-primary-red">Yardımcı videolar için tıklayınız</a>
+            <a href="HelperVideo" class="btn btn-primary-red">@Localizer["Yardımcı videolar için tıklayınız"]</a>
         </div>
     </div>
 </section>

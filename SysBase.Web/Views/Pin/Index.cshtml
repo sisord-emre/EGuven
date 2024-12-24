@@ -11,16 +11,14 @@
         <!-- Slide1 -->
         <div class="swiper-slide">
             <div class="hero-slider-item"
-                 style="
-                            background-image: url('assets/images/slider/slider-1.png');
-                        ">
+                 style="background-image: url('assets/images/slider/slider-1.png'); ">
                 <div class="hero-slider-item-content">
                     <div class="hero-slider-item-content-box">
                         <div class="hero-slider-item-subtitle">
-                            E-Güven
+                            @Localizer["E-Güven"]
                         </div>
                         <div class="hero-slider-item-title">
-                            PIN Sorgulama
+                            @Localizer["PIN Sorgulama"]
                         </div>
                     </div>
                 </div>
@@ -37,18 +35,18 @@
                  data-aos="fade-up">
                 <div>
                     <div class="text-primary-red font-bold mb-10 text-xl">
-                        PIN Sorgulama
+                        @Localizer["PIN Sorgulama"]
                     </div>
                     <form id="pinPukForm" class="base-form flex flex-col gap-3">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="base-form-group">
                                 <label for="tckn">
-                                    <input type="radio" name="tipi" id="tckn" class="mr-1.5" checked />TC Kimlik Numarası
+                                    <input type="radio" name="tipi" id="tckn" class="mr-1.5" checked />@Localizer["TC Kimlik Numarası"]
                                 </label>
                             </div>
                             <div class="base-form-group">
                                 <label for="passport">
-                                    <input type="radio" name="tipi" id="passport" class="mr-1.5" /> Pasaport Numarası
+                                    <input type="radio" name="tipi" id="passport" class="mr-1.5" /> @Localizer["Pasaport Numarası"]
                                 </label>
                             </div>
                         </div>
@@ -59,7 +57,7 @@
                         </div>
                         <div class="grid grid-cols-1 gap-6">
                             <div class="base-form-group">
-                                <label for="last2Digits"> Telefon Numarası Son İki Hanesi</label>
+                                <label for="last2Digits">@Localizer["Telefon Numarası Son İki Hanesi"]</label>
                                 <input type="text" id="last2Digits" name="tel" onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" maxlength="2" minlength="2" required />
                             </div>
                         </div>
@@ -71,28 +69,14 @@
                             </div>
 
                             <ul class="flex flex-col gap-3 mt-5">
-                                <li>
-                                    * PIN sorgulama yalnızca eToken için
-                                    kullanılabilir.
-                                </li>
-                                <li>
-                                    * Telefonunuza gönderilecek şifre
-                                    E-Güven tarafından size ilk
-                                    bildirilen şifredir.
-                                </li>
-                                <li>
-                                    * Eğer ilk şifrenizi
-                                    değiştirdiyseniz ya da eToken
-                                    dışında bir token kullanıyorsanız
-                                    destek için 0(850) 321 85 55
-                                    numaralı çağrı merkezimize
-                                    ulaşabilirsiniz.
-                                </li>
+                                <li>* @Localizer["PIN sorgulama yalnızca eToken için kullanılabilir"].</li>
+                                <li>* @Localizer["Telefonunuza gönderilecek şifre E-Güven tarafından size ilk bildirilen şifredir"].</li>
+                                <li>* @Localizer["Eğer ilk şifrenizi değiştirdiyseniz ya da eToken dışında bir token kullanıyorsanız destek için 0(850) 321 85 55 numaralı çağrı merkezimize ulaşabilirsiniz"].</li>
                             </ul>
                         </div>
                         <div class="base-form-group mt-8">
                             <input type="hidden" name="type" value="pin" />
-                            <button type="submit" class="btn btn-primary-red w-40" id="submitButton">Sorgula</button>
+                            <button type="submit" class="btn btn-primary-red w-40" id="submitButton">@Localizer["Sorgula"]</button>
                         </div>
                     </form>
                 </div>
@@ -113,10 +97,10 @@
                            class="p-5 text-center block">
                             <div class="inline-flex flex-col gap-1">
                                 <h5 class="tracking-tight text-primary-red text-xs">
-                                    Yardımcı Videolar
+                                    @Localizer["Yardımcı Videolar"]
                                 </h5>
                                 <p class="text-2xl font-bold line-clamp-1 text-primary-dark">
-                                    PIN Kodu Sorgulama
+                                    @Localizer["PIN Kodu Sorgulama"]
                                 </p>
                             </div>
                         </a>

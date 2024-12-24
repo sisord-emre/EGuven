@@ -15,10 +15,10 @@
                 <div class="hero-slider-item-content">
                     <div class="hero-slider-item-content-box">
                         <div class="hero-slider-item-subtitle">
-                            Hakkımızda
+                            @Localizer["Hakkımızda"]
                         </div>
                         <div class="hero-slider-item-title">
-                            Bize Ulaşın
+                            @Localizer["Bize Ulaşın"]
                         </div>
                     </div>
                 </div>
@@ -37,18 +37,10 @@
                     <div class="flex flex-col gap-6">
                         <div>
                             <div class="text-primary-dark text-3xl font-bold">
-                                İletişime Geçin
+                                @Localizer["İletişime Geçin"]
                             </div>
                             <p class="text-primary-dark text-sm max-w-3xl mt-4">
-                                Lorem ipsum dolor sit amet consectetur
-                                adipisicing elit. Unde nostrum quaerat
-                                eaque culpa nesciunt reprehenderit,
-                                sapiente nihil placeat, ipsum accusamus
-                                laborum numquam quod consequatur.
-                                Impedit maiores, illo adipisci provident
-                                dolores eveniet nisi autem magnam
-                                dignissimos recusandae vel expedita
-                                molestias dicta.
+                                @Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nostrum quaerat eaque culpa nesciunt reprehenderit,sapiente nihil placeat, ipsum accusamus laborum numquam quod consequatur. Impedit maiores, illo adipisci provident dolores eveniet nisi autem magnam dignissimos recusandae vel expedita molestias dicta"]
                             </p>
                         </div>
                         <div class="flex items-center gap-2 text-sm">
@@ -65,7 +57,7 @@
                             <div class="flex flex-col gap-5">
                                 <div class="flex flex-col gap-1 text-primary-dark text-sm max-w-xs">
                                     <div class="font-semibold">
-                                        GENEL MÜDÜRLÜK
+                                        @Localizer["GENEL MÜDÜRLÜK"]
                                     </div>
                                     <p>
                                         Değirmen Sokak Nida Kule İş
@@ -75,7 +67,7 @@
                                 </div>
                                 <div class="flex flex-col gap-1 text-primary-dark text-sm max-w-xs">
                                     <div class="font-semibold">
-                                        ANKARA ŞUBESİ
+                                        @Localizer["ANKARA ŞUBESİ"]
                                     </div>
                                     <p>
                                         Ankara Dünya Ticaret Merkezi
@@ -85,70 +77,70 @@
                                 </div>
 
                                 <a href="javascript:;"
-                                   class="btn btn-primary-red">Satış Ofisleri</a>
+                                   class="btn btn-primary-red">@Localizer["Satış Ofisleri"]</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="text-primary-red font-bold mb-5">
-                        Bize Yazın
+                        @Localizer["Bize Yazın"]
                     </div>
                     <form id="contactForm" class="base-form flex flex-col gap-3">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="base-form-group">
-                                <label for="name">Adınız</label>
+                                <label for="name">@Localizer["Adınız"]</label>
                                 <input type="text" name="Name" id="name" class="!border-primary-red" required />
                                 <div class="text-xs text-primary-red italic font-semibold hidden">
-                                    Zorunlu alan lütfen boş bırakmayınız.
+                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                 </div>
                             </div>
                             <div class="base-form-group">
-                                <label for="surname">Soyadınız</label>
+                                <label for="surname">@Localizer["Soyadınız"]</label>
                                 <input type="text" name="soyad" id="surname" required />
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-6">
                             <div class="base-form-group">
-                                <label for="tckn">TCKN</label>
+                                <label for="tckn">@Localizer["TCKN"]</label>
                                 <input type="text" name="Tcno" id="tckn" maxlength="11" minlength="9" required />
                             </div>
                             <div class="base-form-group">
-                                <label for="tel">Telefon Numaranız</label>
+                                <label for="tel">@Localizer["Telefon Numaranız"]</label>
                                 <input type="tel" name="Phone" id="tel" required />
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-6">
                             <div class="base-form-group">
-                                <label for="email">E-Posta</label>
+                                <label for="email">@Localizer["E-Posta"]</label>
                                 <input type="email" name="Email" id="email" required />
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-6">
                             <div class="base-form-group">
-                                <label for="istek">İstek Seçiniz</label>
+                                <label for="istek">@Localizer["İstek Seçiniz"]</label>
                                 <select name="Type" id="istek" required>
-                                    <option value="teklif">Teklif Talebi</option>
-                                    <option value="destek">Destek Talebi</option>
-                                    <option value="bilgi">Bilgi Talebi</option>
-                                    <option value="şikayet">Şikayet</option>
-                                    <option value="öneri">Öneri</option>
+                                    <option value="teklif">@Localizer["Teklif Talebi"]</option>
+                                    <option value="destek">@Localizer["Destek Talebi"]</option>
+                                    <option value="bilgi">@Localizer["Bilgi Talebi"]</option>
+                                    <option value="şikayet">@Localizer["Şikayet"]</option>
+                                    <option value="öneri">@Localizer["Öneri"]</option>
                                 </select>
                             </div>
                             <div class="base-form-group">
-                                <label for="konu">Konu Seçiniz</label>
+                                <label for="konu">@Localizer["Konu Seçiniz"]</label>
                                 <select name="Subject" id="konu" required>
-                                    <option value="urun-bilgisi"> Ürün Bilgisi</option>
-                                    <option value="fiyatlandırma">Fiyatlandırma</option>
-                                    <option value="siparis-durumu">Sipariş Durumu</option>
-                                    <option value="iade-ve-degisim">İade ve Değişim</option>
-                                    <option value="teknik-destek">Teknik Destek</option>
-                                    <option value="genel-sorular">Genel Sorular</option>
+                                    <option value="urun-bilgisi">@Localizer["Ürün Bilgisi"]</option>
+                                    <option value="fiyatlandırma">@Localizer["Fiyatlandırma"]</option>
+                                    <option value="siparis-durumu">@Localizer["Sipariş Durumu"]</option>
+                                    <option value="iade-ve-degisim">@Localizer["İade ve Değişim"]</option>
+                                    <option value="teknik-destek">@Localizer["Teknik Destek"]</option>
+                                    <option value="genel-sorular">@Localizer["Genel Sorular"]</option>
                                 </select>
                             </div>
                         </div>
                         <div class="base-form-group mt-3">
-                            <textarea name="Message" id="mesaj" placeholder="Mesajınız" class="min-h-44" required></textarea>
+                            <textarea name="Message" id="mesaj" placeholder="@Localizer["Mesajınız"]" class="min-h-44" required></textarea>
                         </div>
                         <div class="base-form-group mt-3">
                             <div class="flex items-center justify-between">
@@ -156,7 +148,7 @@
                                 <div class="text-center">
                                     <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" style="transform:scale(0.77);-webkit-transform:scale(0.77);"></div>
                                 </div>
-                                <button type="submit" class="btn btn-primary-red w-40" id="submitButton">Gönder</button>
+                                <button type="submit" class="btn btn-primary-red w-40" id="submitButton">@Localizer["Gönder"]</button>
                             </div>
                         </div>
                     </form>
@@ -167,11 +159,11 @@
                 <div class="tab-buttons border-b border-tab-inactive">
                     <button class="tab-button active py-4 md:px-14 px-2 text-sm font-extrabold text-center"
                             data-tab="sirket-bilgileri">
-                        Şirket Bilgileri
+                        @Localizer["Şirket Bilgileri"]
                     </button>
                     <button class="tab-button py-4 md:px-14 px-2 text-sm font-extrabold text-center"
                             data-tab="hesap-numaralari">
-                        Hesap Numaraları
+                        @Localizer["Hesap Numaraları"]
                     </button>
                 </div>
 
@@ -179,30 +171,17 @@
                     <div id="sirket-bilgileri"
                          class="tab-pane active overflow-hidden">
                         <p>
-                            Elektronik imza alımlarınızı satış
-                            ofislerimizden gerçekleştirebilirsiniz. Size
-                            daha iyi hizmet verebilmek için ofislerimizi
-                            randevu alarak ziyaret etmenizi rica ederiz.
+                            @Localizer["Elektronik imza alımlarınızı satış ofislerimizden gerçekleştirebilirsiniz. Size daha iyi hizmet verebilmek için ofislerimizi randevu alarak ziyaret etmenizi rica ederiz"].
                         </p>
                     </div>
                     <div id="hesap-numaralari"
                          class="tab-pane overflow-hidden">
                         <p>
-                            Lorem ipsum dolor sit amet consectetur
-                            adipisicing elit. Possimus obcaecati ipsam
-                            tempora consequuntur similique labore
-                            officia quaerat nemo provident? Adipisci
-                            voluptatum nam asperiores, laborum
-                            repudiandae at dolor sed. Adipisci
-                            laboriosam nesciunt est cum quod sunt enim
-                            eligendi repudiandae aliquam necessitatibus.
+                            @Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nostrum quaerat eaque culpa nesciunt reprehenderit,sapiente nihil placeat, ipsum accusamus laborum numquam quod consequatur. Impedit maiores, illo adipisci provident dolores eveniet nisi autem magnam dignissimos recusandae vel expedita molestias dicta"]
                         </p>
                         <br />
                         <p>
-                            Lorem ipsum, dolor sit amet consectetur
-                            adipisicing elit. Necessitatibus vitae vero
-                            vel dolore nobis sapiente ex. Non fugiat
-                            aliquid excepturi!
+                            @Localizer["Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus vitae vero vel dolore nobis sapiente ex. Non fugiat aliquid excepturi!"]
                         </p>
                     </div>
                 </div>
