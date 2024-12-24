@@ -30,7 +30,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-youtube"></span>
                             </a>
                         </li>
@@ -39,7 +39,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-linkedin"></span>
                             </a>
                         </li>
@@ -48,7 +48,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-instagram"></span>
                             </a>
                         </li>
@@ -57,7 +57,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-facebook"></span>
                             </a>
                         </li>
@@ -66,7 +66,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-x"></span>
                             </a>
                         </li>
@@ -85,9 +85,9 @@
                     {
                         <!-- cmp-language -->
                         <button id="languageSelectHeader"
-                            data-dropdown-toggle="dropdownLanguageHeaderMenu"
-                            class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
-                            type="button">
+                                data-dropdown-toggle="dropdownLanguageHeaderMenu"
+                                class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
+                                type="button">
                             <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                             <span class="icon-chevron-down"></span>
                         </button>
@@ -168,17 +168,17 @@
                             {
                                 <div class="quick sm:ml-auto ml-0">
                                     <button type="button"
-                                        class="btn btn-common"
-                                        id="dropdownQuickActions"
-                                        data-dropdown-toggle="dropdownQuickActionsMenu">
+                                            class="btn btn-common"
+                                            id="dropdownQuickActions"
+                                            data-dropdown-toggle="dropdownQuickActionsMenu">
                                         <span class="icon-menu text-lg"></span>
                                         <span>@Localizer["Hemen Satın Al"]</span>
                                     </button>
                                     <!-- Dropdown menu -->
                                     <div id="dropdownQuickActionsMenu"
-                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                        aria-labelledby="dropdownDefaultButton">
+                                            aria-labelledby="dropdownDefaultButton">
                                             @foreach (QuickMenu item in model.QuickMenus)
                                             {
                                                 <li>
@@ -320,7 +320,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-youtube"></span>
                                     </a>
                                 </li>
@@ -329,7 +329,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-linkedin"></span>
                                     </a>
                                 </li>
@@ -338,7 +338,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-instagram"></span>
                                     </a>
                                 </li>
@@ -347,7 +347,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-facebook"></span>
                                     </a>
                                 </li>
@@ -356,7 +356,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-x"></span>
                                     </a>
                                 </li>
@@ -389,9 +389,9 @@
                         {
                             <!-- cmp-language -->
                             <button id="dropdownLanguageFooter"
-                                data-dropdown-toggle="dropdownLanguageFooterMenu"
-                                class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
-                                type="button">
+                                    data-dropdown-toggle="dropdownLanguageFooterMenu"
+                                    class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
+                                    type="button">
                                 <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                                 <span class="icon-chevron-down"></span>
                             </button>
@@ -646,7 +646,13 @@
                             confirmButtonText: "Tamam"
                         });
                         document.getElementById("uid").value = res.data;
-                        GarantiModal();
+                        const selectedValue = document.querySelector('input[name="OdemeTipi"]:checked').value;
+                        console.log(selectedValue); // Örneğin: 1 veya 2
+                        if (selectedValue == 1) {
+                            GarantiModal();
+                        } else if (selectedValue == 2) {
+                            window.location.href = "thanks?slug=" + res.data;
+                        }
                     } else {
                         Swal.fire({
                             text: res.message,
@@ -656,7 +662,7 @@
                             confirmButtonText: "Tamam"
                         });
                     }
-                    //document.getElementById("kayitForm").reset();
+                    document.getElementById("kayitForm").reset();
                     document.getElementById("submitButton").disabled = false;
                 },
                 error: function (jqXHR, status, errorThrown) {

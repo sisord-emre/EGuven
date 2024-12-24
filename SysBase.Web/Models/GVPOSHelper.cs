@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SysBase.Web.Models
@@ -41,6 +42,7 @@ namespace SysBase.Web.Models
 
         public static string ThreeDHashData(string terminalID, string orderID, string amount, int currencyCode, string successUrl, string errorUrl, string type, string installmentCount, string storeKey, string hashedPassword)
         {
+            Debug.WriteLine(terminalID + orderID + amount + (int)currencyCode + successUrl + errorUrl + type + installmentCount + storeKey + hashedPassword);
             return GVPOSHelper.Sha512(terminalID + orderID + amount + (int)currencyCode + successUrl + errorUrl + type + installmentCount + storeKey + hashedPassword).ToUpper();
         }
 

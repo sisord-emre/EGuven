@@ -3,7 +3,7 @@
 @{
     Layout = null;
 }
-<form method="post" role="form" action="https://sanalposprovtest.garanti.com.tr/servlet/gt3dengine" id="garantiForm">
+<form method="post" role="form" action="https://sanalposprovtest.garantibbva.com.tr/servlet/gt3dengine" id="garantiForm">
     <!--Value alanı test ortamı için: TEST üretim ortamı için: PROD olmalıdır.-->
     <input type="hidden" name="mode" id="mode" value="TEST" />
     <!--API Sürümü-->
@@ -27,7 +27,7 @@
     <!--Müşteri E-Posta Adresi-->
     <input type="hidden" name="customeremailaddress" id="customeremailaddress" value="@GVPOSConfigurations.Customer_Email" />
     <!--Müşteri IP Adresi-->
-    <input type="hidden" name="customeripaddress" id="customeripaddress" value="@GVPOSConfigurations.Customer_IPAddress" />
+    <input type="hidden" name="customeripaddress" id="customeripaddress" value="66.249.66.166" />
     <!--Firma Adı-->
     <input type="hidden" name="companyname" id="companyname" Value="GARANTI TEST" />
     <!--Dil Bilgisi-->
@@ -39,7 +39,7 @@
     <!--Güvenli Hash Anahtarı (Bu alana hash algoritasmasından gelen değer girilmelidir.)-->
     <input type="hidden" name="secure3dhash" id="secure3dhash" value="@Model.Hash" />
     <!--İşlem Yapılan Tutar-->
-    <input type="hidden" name="txnamount" id="txnamount" value="@Model.ApiBasvuruRequest.OdemeTutar.ToString().Replace(',','.')" />
+    <input type="hidden" name="txnamount" id="txnamount" value="@Convert.ToInt32(Model.ApiBasvuruRequest.OdemeTutar*100)" />
 
     <input type="hidden" name="txntype" id="txntype" value="sales" />
     <!--Para Birimi value değerleri: TR: "949" | USD: "840" | EURO: "978" | GBP: "826" | JPY: "392"-->
@@ -59,5 +59,5 @@
     <button type="submit">Gönder</button>
 </form>
 <script>
-    //document.getElementById('garantiForm').submit();
+    document.getElementById('garantiForm').submit();
 </script>

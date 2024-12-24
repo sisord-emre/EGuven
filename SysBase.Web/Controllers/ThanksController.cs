@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
 using SysBase.Service.Functions;
 using SysBase.Web.Resources;
+using SysBase.Web.ViewModels;
 using System.Diagnostics;
+using System.Globalization;
+using System.Web.Helpers;
 
 namespace SysBase.Web.Controllers
 {
@@ -41,51 +48,47 @@ namespace SysBase.Web.Controllers
 
         public async Task<IActionResult> Index(string slug)
         {
-            string digestData = string.Empty; // Eksik değişken tanımlandı
-            string strStoreKey = "12345678"; // Store Key'inizi buraya ekleyin
-            bool isValidHash = false; // Hash doğrulama için flag
+            UiLayoutViewModel uiLayoutViewModel = new UiLayoutViewModel();
+            uiLayoutViewModel.Config = _service.Where(x => x.Id == 1).FirstOrDefault();
+            uiLayoutViewModel.SiteMenus = _siteMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            uiLayoutViewModel.FooterMenus = _footerMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            uiLayoutViewModel.Languages = _languageService.Where(x => x.Status).ToList();
+            uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
+            ApiBasvuruRequest apiBasvuruRequest = new ApiBasvuruRequest();
 
-            Debug.WriteLine(Request.Form.Keys);
-            Debug.WriteLine(Request.Form["procreturncode"]);
+            if (slug == "" || slug == null)
+            {
+                Debug.WriteLine(Request.Form.Keys);
+                Debug.WriteLine(Request.Form["procreturncode"]);
+                if (Request.Form["procreturncode"] != "00")
+                {
+                    return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
+                }
 
-            if (Request.Form["procreturncode"] != "00")
-            {
-                return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
+                var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+                var langCode = rqf.RequestCulture.Culture;
+                Debug.WriteLine(langCode);
+
+                string Uid = Request.Form["orderid"];
+                apiBasvuruRequest = await _apiBasvuruRequestService.Where(x => x.Uid == Uid).FirstOrDefaultAsync();
+                apiBasvuruRequest.OdemeCevap = JsonConvert.SerializeObject(Request.Form);
+                await _apiBasvuruRequestService.UpdateAsync(apiBasvuruRequest);
             }
-            string responseHash = Request.Form.ContainsKey("hash") ? Request.Form["hash"] : "";
-            char[] separator = new char[] { ':' };
-            // Ayıraç için kullanılacak hashparams
-            string responseHashparams = Request.Form.ContainsKey("hashparams") ? Request.Form["hashparams"] : "";
-            // Dönen parametrelerin isimlerine göre tek tek değerleri alınır
-            string[] paramList = responseHashparams.Split(separator);
-            foreach (string param in paramList)
+            else
             {
-                if (Request.Form.ContainsKey(param)) // Key'in var olup olmadığını kontrol ediyoruz
-                {
-                    digestData += Request.Form[param]; // Eğer varsa değeri ekliyoruz
-                }
-                else
-                {
-                    digestData += ""; // Yoksa bir şey eklemiyoruz (boş bırakıyoruz)
-                }
+                apiBasvuruRequest = await _apiBasvuruRequestService.Where(x => x.Uid == slug).FirstOrDefaultAsync();
             }
-            // Sonuna store key eklenir
-            digestData += strStoreKey;
-            // Aşağıdaki gibi şifreleme uygulanır
-            using (var sha = new System.Security.Cryptography.SHA512CryptoServiceProvider())
+
+            ThanksViewModel thanksViewModel = new ThanksViewModel
             {
-                byte[] hashbytes = System.Text.Encoding.GetEncoding("ISO-8859-9").GetBytes(digestData);
-                byte[] inputbytes = sha.ComputeHash(hashbytes);
-                string hashCalculated = Convert.ToBase64String(inputbytes);
-                if (responseHash.Equals(hashCalculated))
-                {
-                    // MESAJ BANKADAN GELİYOR
-                    isValidHash = true;
-                    return View();
-                }
-            }
-            return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
+                Config = uiLayoutViewModel.Config,
+                SiteMenus = uiLayoutViewModel.SiteMenus,
+                FooterMenus = uiLayoutViewModel.FooterMenus,
+                Languages = uiLayoutViewModel.Languages,
+                QuickMenus = uiLayoutViewModel.QuickMenus,
+                ApiBasvuruRequest = apiBasvuruRequest,
+            };
+            return View(thanksViewModel);
         }
-
     }
 }
