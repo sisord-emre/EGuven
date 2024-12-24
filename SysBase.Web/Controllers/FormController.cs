@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
 using SysBase.Core.Models;
 using SysBase.Core.Services;
 using SysBase.Service.Functions;
+using SysBase.Web.Models;
 using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
 using System.Diagnostics;
@@ -299,6 +301,8 @@ namespace SysBase.Web.Controllers
                 toplamKdv += item.Amount / 100 * item.Product.Tax;
             }
 
+
+            var hashedPassword = GVPOSHelper.Sha1(GVPOSConfigurations.ProvUserPassword + GVPOSHelper.IsRequireZero(GVPOSConfigurations.TerminalID_For_3D_PAY, 9)).ToUpper();
             return View(new GarantiModalViewModel
             {
                 ApiBasvuruRequest = apiBasvuruRequest,
@@ -307,9 +311,8 @@ namespace SysBase.Web.Controllers
                 cardAdSoyad = cardAdSoyad,
                 cardNo = cardNo,
                 code = code,
-                //GetHashData(string provisionPassword, string terminalId, string orderId, int installmentCount, string storeKey, ulong amount, int currencyCode, string successUrl, string type, string errorUrl)
-                Hash = GetHashData("123qweASD/", "30691297", apiBasvuruRequest.Uid, 0, "12345678", (ulong)(toplamFiyat + toplamKdv), 949, "https://localhost:7138/thanks", "sales", "https://localhost:7138/paymenterror"),
-                IpAdresi = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                //ThreeDHashData(string terminalID, string orderID, string amount, int currencyCode, string successUrl, string errorUrl, string type, string installmentCount, string storeKey, string hashedPassword)
+                Hash = GVPOSHelper.ThreeDHashData(GVPOSConfigurations.TerminalID_For_3D_PAY, apiBasvuruRequest.Uid, (toplamFiyat + toplamKdv).ToString().Replace(',','.'), 949, "https://localhost:7138/thanks", "https://localhost:7138/paymenterror", "sales", "0", "12345678", hashedPassword)
             });
         }
 
@@ -340,6 +343,7 @@ namespace SysBase.Web.Controllers
             }
             return builder.ToString().ToUpper();
         }
+
 
         public static string GetHashData(string provisionPassword, string terminalId, string orderId, int installmentCount, string storeKey, ulong amount, int currencyCode, string successUrl, string type, string errorUrl)
         {
