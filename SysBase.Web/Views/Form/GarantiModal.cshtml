@@ -56,7 +56,7 @@
     <input name="cardexpiredateyear" id="cardexpiredateyear" value="@Model.dateYear" />
     <!--Müşteri Kartı CVC Güvenlik Numarası-->
     <input name="cardcvv2" id="cardcvv2" value="@Model.code" />
-    <button type="submit">Gönder</button>
+    <button type="submit">@Localizer["Gönder"]</button>
 </form>
 <script>
     document.getElementById('garantiForm').submit();

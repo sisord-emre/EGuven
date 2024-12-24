@@ -31,16 +31,16 @@
 <!-- sepet toplami -->
 <div class="flex flex-col gap-3 mt-8">
     <div class="flex items-center justify-between text-primary-dark text-sm">
-        <div>Ürün Fiyatı</div>
+        <div>@Localizer["Ürün Fiyatı"]</div>
         <div>@toplamFiyat.ToString("N2") TL</div>
     </div>
     <div class="flex items-center justify-between text-primary-dark text-sm">
-        <div>KDV</div>
+        <div>@Localizer["KDV"]</div>
         <div>@toplamKdv.ToString("N2") TL</div>
     </div>
     <hr class="border-primary-dark" />
     <div class="flex items-center justify-between text-primary-red text-sm font-bold">
-        <div>Toplam Fiyat</div>
+        <div>@Localizer["Toplam Fiyat"]</div>
         <div>@((toplamFiyat + toplamKdv).ToString("N2")) TL</div>
     </div>
 </div>

@@ -21,22 +21,22 @@
                 <button class="tab-button active xl:px-20 px-4 py-2 font-extrabold text-center"
                         data-tab="urun-secimi"
                         id="urun-secimi-tab">
-                    Ürün Seçimi
+                    @Localizer["Ürün Seçimi"]
                 </button>
                 <button class="tab-button xl:px-20 px-4 py-2 font-extrabold text-center cursor-not-allowed pointer-events-none"
                         data-tab="musteri-bilgileri"
                         id="musteri-bilgileri-tab">
-                    Müşteri Bilgileri
+                    @Localizer["Müşteri Bilgileri"]
                 </button>
                 <button class="tab-button xl:px-20 px-4 py-2 font-extrabold text-center cursor-not-allowed pointer-events-none"
                         data-tab="dogrulama-ekrani"
                         id="dogrulama-ekrani-tab">
-                    Doğrulama Ekranı
+                    @Localizer["Doğrulama Ekranı"]
                 </button>
                 <button class="tab-button xl:px-20 px-4 py-2 font-extrabold text-center cursor-not-allowed pointer-events-none"
                         data-tab="odeme-bilgileri"
                         id="odeme-bilgileri-tab">
-                    Ödeme Bilgileri
+                    @Localizer["Ödeme Bilgileri"]
                 </button>
             </div>
 
@@ -47,31 +47,23 @@
                         <div>
                             <div class="text-primary-dark text-sm">
                                 <p>
-                                    * E-imzanızın kullanım süresi bittikten
-                                    sonra yenileme yapmak isterseniz,
-                                    yeniden kimlik doğrulama yaptırmanız ve
-                                    evrak beyan etmeniz gerekmektedir.
+                                    * @Localizer["E-imzanızın kullanım süresi bittikten sonra yenileme yapmak isterseniz,yeniden kimlik doğrulama yaptırmanız ve evrak beyan etmeniz gerekmektedir"].
+                                     
                                 </p>
                                 <p>
-                                    ** Yenileme başvurunuzu
-                                    gerçekleştirdikten sonraki 24 saat
-                                    içerisinde tarafınıza onay
-                                    maili ulaşacaktır. Süreniz bitmeden onay
-                                    mailinde belirtilen adımları takip
-                                    ederek yenileme sürecinizi tamamlamanız
-                                    gerekmektedir.
+                                    ** @Localizer["Yenileme başvurunuzu gerçekleştirdikten sonraki 24 saat içerisinde tarafınıza onay maili ulaşacaktır. Süreniz bitmeden onay mailinde belirtilen adımları takip ederek yenileme sürecinizi tamamlamanız gerekmektedir"].
                                 </p>
                             </div>
 
                             <div class="mt-5">
                                 <div class="text-primary-dark font-bold text-xl mb-5">
-                                    Kupon / Referans kodu ekle
+                                    @Localizer["Kupon / Referans kodu ekle"]
                                 </div>
                                 <div class="flex items-stretch gap-3">
                                     <div class="base-form-group">
                                         <input type="text" name="slug" id="slug" placeholder="Kodunuzu girin" value="@slug" />
                                     </div>
-                                    <button type="button" class="btn btn-common h-auto px-8" onclick="KodSecim()">Uygula</button>
+                                    <button type="button" class="btn btn-common h-auto px-8" onclick="KodSecim()">@Localizer["Uygula"]</button>
                                 </div>
 
                                 <div class="grid xl:grid-cols-3 grid-cols-1 xl:gap-14 gap-6 mt-10">
@@ -91,7 +83,7 @@
                                                         @item.Product.ProductLanguageInfos[0].Description
                                                     </div>
                                                     <div class="text-xs text-primary-red">
-                                                        Otomatik Yenileme
+                                                        @Localizer["Otomatik Yenileme"]
                                                     </div>
                                                 </div>
                                                 <div class="bg-form-product-price h-full rounded-b-5 py-4 text-center text-primary-red w-full transition-colors duration-150 ease-in product-item-price flex flex-col items-center justify-center">
@@ -99,7 +91,7 @@
                                                         @item.Amount TL
                                                     </div>
                                                     <div class="text-xs">
-                                                        KDV Hariç
+                                                        @Localizer["KDV Hariç"]
                                                     </div>
                                                 </div>
                                                 <input class="hidden" type="radio" name="ProjectProductId" id="urun-@item.Id" value="@item.Id" />
@@ -109,7 +101,7 @@
                                 </div>
                                 <div class="flex items-center justify-center mt-12">
                                     <button type="button" disabled class="btn btn-primary-red px-10 disabled:cursor-not-allowed disabled:opacity-50" id="goToMusteriBilgileri">
-                                        Devam et
+                                        @Localizer["Devam et"]
                                     </button>
                                 </div>
                             </div>
@@ -120,7 +112,7 @@
                         <div class="base-form" id="musteri-bilgileri-form">
                             <fieldset class="mt-10">
                                 <div class="text-primary-red font-bold text-xl mb-5">
-                                    Kişisel Bilgiler
+                                    @Localizer["Kişisel Bilgiler"]
                                 </div>
                                 <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
                                     @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 6))//Kişisel Bilgiler
@@ -143,14 +135,14 @@
                                                         }
                                                     </label>
                                                     <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="musteri-bilgileri" @required>
-                                                        <option value="">Seçiniz</option>
+                                                        <option value="">@Localizer["Seçiniz"]</option>
                                                         @foreach (City city in Model.Cities.OrderBy(x => x.Name))
                                                         {
                                                             <option value="@city.Name">@city.Name</option>
                                                         }
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                        @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                     </div>
                                                 </div>
 
@@ -166,10 +158,10 @@
                                                         }
                                                     </label>
                                                     <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="musteri-bilgileri" @required>
-                                                        <option value="">Seçiniz</option>
+                                                        <option value="">@Localizer["Seçiniz"]</option>
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                        @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                     </div>
                                                 </div>
                                             }
@@ -186,7 +178,7 @@
                                                 </label>
                                                 <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="musteri-bilgileri" @required></textarea>
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
 
@@ -203,7 +195,7 @@
                                                 </label>
                                                 <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="musteri-bilgileri" accept="image/png, image/jpeg" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
                                         }
@@ -219,7 +211,7 @@
                                                 </label>
                                                 <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" class="" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
                                         }
@@ -228,74 +220,37 @@
                                 <div class="flex items-center justify-end text-xs mt-4">
                                     <div>
                                         <label for="e-posta-gorulme">
-                                            E-posta adresimin sertifika içerisinde görülmesini istiyorum.
+                                            @Localizer["E-posta adresimin sertifika içerisinde görülmesini istiyorum"].
                                         </label>
                                         <input type="checkbox" class="ml-2" />
                                     </div>
                                 </div>
                                 <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4">
                                     <div class="font-bold mb-4">
-                                        ELEKTRONİK BİLGİ GÜVENLİĞİ A.Ş.
-                                        KİŞİSEL VERİLERİN İŞLENMESİNE
-                                        İLİŞKİN AYDINLATMA METNİ
+                                        @Localizer["ELEKTRONİK BİLGİ GÜVENLİĞİ A.Ş. KİŞİSEL VERİLERİN İŞLENMESİNE İLİŞKİN AYDINLATMA METNİ"]
                                     </div>
                                     <p class="text-sm mb-4">
-                                        Aydınlatma Metni, Elektronik Bilgi
-                                        Güvenliği Anonim Şirketi ("Şirket”)
-                                        tarafından Şirket’in müşterilerinin
-                                        6698 sayılı Kişisel Verilerin
-                                        Korunması Kanunu (“Kanun”)
-                                        kapsamında kişisel verilerinin
-                                        Şirket tarafından işlenmesine
-                                        ilişkin olarak aydınlatılması
-                                        amacıyla hazırlanmıştır.
+                                        @Localizer["Aydınlatma Metni, Elektronik Bilgi Güvenliği Anonim Şirketi (“Şirket”) tarafından Şirket’in müşterilerinin 6698 sayılı Kişisel Verilerin Korunması Kanunu (“Kanun”) kapsamında kişisel verilerinin Şirket tarafından işlenmesine ilişkin olarak aydınlatılması amacıyla hazırlanmıştır"].
                                     </p>
                                     <p class="text-sm mb-4">
-                                        Lorem ipsum dolor sit amet
-                                        consectetur adipisicing elit. Sit,
-                                        dolores iure earum dolor fugiat eius
-                                        voluptatibus perspiciatis dicta a
-                                        itaque.
+                                        @Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, dolores iure earum dolor fugiat eius voluptatibus perspiciatis dicta a itaque"]
                                     </p>
                                     <p class="text-sm mb-4">
-                                        Lorem, ipsum dolor sit amet
-                                        consectetur adipisicing elit. Modi
-                                        cumque quam, soluta, sed perferendis
-                                        explicabo neque hic exercitationem
-                                        culpa vitae, rem dolorum inventore
-                                        eveniet minima ipsa. Quod qui ea
-                                        mollitia esse, minima autem
-                                        architecto, debitis facilis eligendi
-                                        cupiditate ipsam delectus nostrum
-                                        eveniet possimus doloribus alias
-                                        dolorum ducimus ratione eius
-                                        voluptates velit excepturi
-                                        exercitationem? Atque iure, quasi
-                                        repellendus doloremque omnis sed
-                                        accusamus ea, soluta praesentium
-                                        recusandae tenetur sit, beatae ipsam
-                                        odit nam cupiditate dolorem facere
-                                        dolor iste commodi officiis ratione.
-                                        Natus, dolore quod eveniet esse
-                                        culpa odio non doloremque porro
-                                        vitae, debitis fuga voluptate et
-                                        illum nemo illo rem consectetur
-                                        possimus!
+                                        @Localizer["Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi cumque quam, soluta, sed perferendis explicabo neque hic exercitationem culpa vitae, rem dolorum inventore eveniet minima ipsa. Quod qui ea mollitia esse, minima autem architecto, debitis facilis eligendi cupiditate ipsam delectus nostrum eveniet possimus doloribus alias dolorum ducimus ratione eius voluptates velit excepturi exercitationem? Atque iure, quasi repellendus doloremque omnis sed accusamus ea, soluta praesentium recusandae tenetur sit, beatae ipsam odit nam cupiditate dolorem facere dolor iste commodi officiis ratione. Natus, dolore quod eveniet esse culpa odio non doloremque porro vitae, debitis fuga voluptate et illum nemo illo rem consectetur possimus!"]
                                     </p>
                                 </div>
                                 <div class="mt-7">
                                     <input type="checkbox" class="mr-2" name="Izin" id="aydinlatma-metni-kabul" value="True" required data-input-tab="musteri-bilgileri" />
-                                    <label for="aydinlatma-metni-kabul">Okudum, kabul ediyorum. <sup>*</sup></label>
+                                    <label for="aydinlatma-metni-kabul">@Localizer["Okudum, kabul ediyorum"]. <sup>*</sup></label>
                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                        Zorunlu alan lütfen boş bırakmayınız.
+                                        @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                     </div>
                                 </div>
                             </fieldset>
 
                             <fieldset class="mt-10">
                                 <div class="text-primary-red font-bold text-xl mb-5">
-                                    İletişim, Teslimat & Kurulum Adres
-                                    Bilgileri
+                                    @Localizer["İletişim, Teslimat & Kurulum Adres Bilgileri"]
                                 </div>
                                 <div class="grid xl:grid-cols-3 grid-cols-1 gap-5">
                                     @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 7))//İletişim, Teslimat, Kurulum Adres Bilgileri
@@ -318,14 +273,14 @@
                                                         }
                                                     </label>
                                                     <select class="" name="@item.Field.ApiColumn" id="il" @required>
-                                                        <option value="">Seçiniz</option>
+                                                        <option value="">@Localizer["Seçiniz"]</option>
                                                         @foreach (City city in Model.Cities)
                                                         {
                                                             <option value="@city.Name">@city.Name</option>
                                                         }
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                        @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                     </div>
                                                 </div>
 
@@ -341,10 +296,10 @@
                                                         }
                                                     </label>
                                                     <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
-                                                        <option value="">Seçiniz</option>
+                                                        <option value="">@Localizer["Seçiniz"]</option>
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                        Zorunlu alan lütfen boş bırakmayınız.
+                                                        @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                     </div>
                                                 </div>
                                             }
@@ -361,7 +316,7 @@
                                                 </label>
                                                 <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
 
@@ -378,7 +333,7 @@
                                                 </label>
                                                 <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
                                         }
@@ -394,7 +349,7 @@
                                                 </label>
                                                 <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
                                         }
@@ -404,7 +359,7 @@
 
                             <div class="mt-11 flex items-center justify-end">
                                 <button type="button" class="btn btn-primary-red px-8" id="goToDogrulamaEkrani" disabled>
-                                    Devam Et
+                                    @Localizer["Devam Et"]
                                 </button>
                             </div>
                         </div>
@@ -412,8 +367,8 @@
 
                     <div id="dogrulama-ekrani" class="tab-pane">
                         <div class="text-center text-xl text-primary-dark font-bold">
-                            E-imza için kimlik doğrulama gerekmektedir.
-                            Lütfen kimlik doğrulamanızı seçiniz.
+                            @Localizer["E-imza için kimlik doğrulama gerekmektedir"].
+                            @Localizer["Lütfen kimlik doğrulamanızı Seçiniz"].
                         </div>
 
                         <div class="base-form">
@@ -427,17 +382,17 @@
                                                      alt="E-Devlet Logo" />
                                             </figure>
                                             <div class="text-primary-dark text-xl font-black">
-                                                E-DEVLET
+                                                @Localizer["E-DEVLET"]
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <input type="radio" name="edevlet" id="edevlet" value="1" checked />
-                                            <label for="edevlet" class="text-xl font-bold">Ücretsiz</label>
+                                            <label for="edevlet" class="text-xl font-bold">@Localizer["Ücretsiz"]</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex items-stretch justify-center gap-5 mt-10">
-                                    <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri">Ödemeye devam et</button>
+                                    <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri">@Localizer["Ödemeye devam et"]</button>
                                 </div>
                             </div>
                         </div>
@@ -445,7 +400,7 @@
 
                     <div id="odeme-bilgileri" class="tab-pane">
                         <div class="my-10 text-xl font-bold text-primary-dark">
-                            Sipariş Özeti
+                            @Localizer["Sipariş Özeti"]
                         </div>
                         <div class="base-form">
                             <div class="grid xl:grid-cols-3 grid-cols-1 gap-16">
@@ -457,10 +412,10 @@
                                         <!-- Bireysel/Kurumsal Buttons -->
                                         <div class="fatura-tab">
                                             <button id="bireysel-btn" class="active" type="button">
-                                                BİREYSEL
+                                                @Localizer["BİREYSEL"]
                                             </button>
                                             <button id="kurumsal-btn" type="button">
-                                                KURUMSAL
+                                                @Localizer["KURUMSAL"]
                                             </button>
                                         </div>
                                         <!-- Tab Content -->
@@ -469,7 +424,7 @@
                                             <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
                                                 <input type="radio" name="fatura-adresi-ortak" id="fatura-adresi-ortak" />
                                                 <label for="fatura-adresi-ortak">
-                                                    Fatura adresim teslimat adresim ile aynı
+                                                    @Localizer["Fatura adresim teslimat adresim ile aynı"]
                                                 </label>
                                             </div>
                                             <div class="grid grid-cols-1 gap-3">
@@ -493,14 +448,14 @@
                                                                     }
                                                                 </label>
                                                                 <select class="bireysel-tab-input" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
-                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="">@Localizer["Seçiniz"]</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
                                                                         <option value="@city.Name">@city.Name</option>
                                                                     }
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                                 </div>
                                                             </div>
 
@@ -516,10 +471,10 @@
                                                                     }
                                                                 </label>
                                                                 <select class="bireysel-tab-input" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
-                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="">@Localizer["Seçiniz"]</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                                 </div>
                                                             </div>
                                                         }
@@ -536,7 +491,7 @@
                                                             </label>
                                                             <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 bireysel-tab-input" data-input-tab="odeme-bilgileri" @required></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
                                                         </div>
 
@@ -553,7 +508,7 @@
                                                             </label>
                                                             <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
                                                         </div>
                                                     }
@@ -569,7 +524,7 @@
                                                             </label>
                                                             <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input" data-input-tab="odeme-bilgileri" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
                                                         </div>
                                                     }
@@ -582,7 +537,7 @@
                                                        name="fatura-adresi-ortak"
                                                        id="fatura-adresi-ortak" />
                                                 <label for="fatura-adresi-ortak">
-                                                    Fatura adresim teslimat adresim ile aynı
+                                                    @Localizer["Fatura adresim teslimat adresim ile aynı"]
                                                 </label>
                                             </div>
                                             <div class="grid grid-cols-1 gap-3">
@@ -606,14 +561,14 @@
                                                                     }
                                                                 </label>
                                                                 <select class="kurumsal-tab-input" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
-                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="">@Localizer["Seçiniz"]</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
                                                                         <option value="@city.Name">@city.Name</option>
                                                                     }
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                                 </div>
                                                             </div>
 
@@ -629,10 +584,10 @@
                                                                     }
                                                                 </label>
                                                                 <select class="kurumsal-tab-input" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
-                                                                    <option value="">Seçiniz</option>
+                                                                    <option value="">@Localizer["Seçiniz"]</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                    Zorunlu alan lütfen boş bırakmayınız.
+                                                                    @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                                 </div>
                                                             </div>
                                                         }
@@ -649,7 +604,7 @@
                                                             </label>
                                                             <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 kurumsal-tab-input" data-input-tab="odeme-bilgileri" @required></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
                                                         </div>
 
@@ -666,7 +621,7 @@
                                                             </label>
                                                             <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="kurumsal-tab-input" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
                                                         </div>
                                                     }
@@ -682,7 +637,7 @@
                                                             </label>
                                                             <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="odeme-bilgileri" class="kurumsal-tab-input" @required />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
-                                                                Zorunlu alan lütfen boş bırakmayınız.
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
                                                         </div>
                                                     }
@@ -697,13 +652,13 @@
                                         <div class="mt-16">
                                             <!-- Kredi Kartı/Havale Buttons -->
                                             <div class="fatura-tab">
-                                                <button id="kredi-kart-btn" class="active" type="button" onclick="OdemeTipSec(1)">KREDİ KARTI</button>
-                                                <button id="havale-btn" type="button" onclick="OdemeTipSec(2)">HAVALE</button>
+                                                <button id="kredi-kart-btn" class="active" type="button" onclick="OdemeTipSec(1)">@Localizer["KREDİ KARTI"]</button>
+                                                <button id="havale-btn" type="button" onclick="OdemeTipSec(2)">@Localizer["HAVALE"]</button>
                                             </div><!-- Tab Content -->
                                             <div id="kredi-kart-tab-content" class="pt-7">
-                                                <div class="text-primary-dark text-lg font-semibold mb-6">Kredi kartı detayları</div>
+                                                <div class="text-primary-dark text-lg font-semibold mb-6">@Localizer["Kredi kartı detayları"]</div>
                                                 <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
-                                                    <div class="text-primary-dark text-sm font-medium max-w-20">Ödeme Yöntemi</div>
+                                                    <div class="text-primary-dark text-sm font-medium max-w-20">@Localizer["Ödeme Yöntemi"]</div>
                                                     <div class="flex items-center gap-2">
                                                         <figure><img src="assets/images/mastercard.png" alt="master card logo" /></figure>
                                                         <figure><img src="assets/images/visa.png" alt="visa logo" /></figure>
@@ -712,15 +667,15 @@
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-1 gap-3">
-                                                    <div class="base-form-group"><label for="card-ad-soyad">Kartın üzerindeki ad</label><input type="text" placeholder="" id="card-ad-soyad" value="" required /></div>
-                                                    <div class="base-form-group"><label for="card-no">Kart Numarası</label><input type="text" placeholder="0000 0000 0000 0000" id="card-no" value="" required /></div>
+                                                    <div class="base-form-group"><label for="card-ad-soyad">@Localizer["Kartın üzerindeki ad"]</label><input type="text" placeholder="" id="card-ad-soyad" value="" required /></div>
+                                                    <div class="base-form-group"><label for="card-no">@Localizer["Kart Numarası"]</label><input type="text" placeholder="0000 0000 0000 0000" id="card-no" value="" required /></div>
                                                 </div>
                                                 <div class="flex flex-col gap-3 mt-3">
-                                                    <label for="exp-date-month">Son Kullanma Tarihi</label>
+                                                    <label for="exp-date-month">@Localizer["Son Kullanma Tarihi"]</label>
                                                     <div class="grid grid-cols-2 gap-3">
                                                         <div class="base-form-group">
                                                             <select name="exp-date-month" id="exp-date-month" required>
-                                                                <option value="" disabled selected>Ay</option>
+                                                                <option value="" disabled selected>@Localizer["Ay"]</option>
                                                                 <option value="01">01</option>
                                                                 <option value="02">02</option>
                                                                 <option value="03">03</option>
@@ -737,7 +692,7 @@
                                                         </div>
                                                         <div class="base-form-group">
                                                             <select name="exp-date-year" id="exp-date-year" required>
-                                                                <option value="" disabled selected>Yıl</option>
+                                                                <option value="" disabled selected>@Localizer["Yıl"]</option>
                                                                 @for (int i = DateTime.Now.Year; i < DateTime.Now.Year + 8; i++)
                                                                 {
                                                                     <option value="@i.ToString().Substring(i.ToString().Length - 2)">@i.ToString().Substring(i.ToString().Length - 2)</option>
@@ -747,7 +702,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex flex-col gap-3 mt-3 w-max">
-                                                    <label for="exp-date-month">Kodu</label>
+                                                    <label for="exp-date-month">@Localizer["Kodu"]</label>
                                                     <div class="base-form-group">
                                                         <input type="text" name="code" id="code" class="max-w-44" placeholder="Kod" required value="" /><button type="button" popovertarget="code-popover" class="absolute top-[18px] right-3 text-gray-400"><span class="icon-help-circle"></span></button>
                                                         <div popover id="code-popover" class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, exercitationem.</div>
@@ -756,14 +711,14 @@
                                             </div>
                                             <div id="havale-tab-content" class="hidden pt-7">
                                                 <div class="text-primary-dark text-sm">
-                                                    <p class="py-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, exercitationem.</p>
-                                                    <p class="py-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum dolore repellat sunt assumenda eligendi, quia unde explicabo exercitationem illum mollitia quasi sapiente iusto cupiditate ab, quibusdam deleniti. Deserunt ullam nobis sed, molestiae cum corporis exercitationem maxime. Necessitatibus, cum natus. Sint!</p>
+                                                    <p class="py-4">@Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, exercitationem"].</p>
+                                                    <p class="py-4">@Localizer["Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum dolore repellat sunt assumenda eligendi, quia unde explicabo exercitationem illum mollitia quasi sapiente iusto cupiditate ab, quibusdam deleniti. Deserunt ullam nobis sed, molestiae cum corporis exercitationem maxime. Necessitatibus, cum natus. Sint!"]</p>
                                                 </div>
                                             </div>
                                         </div>
                                     }
                                     <input type="hidden" name="uid" id="uid" />
-                                    <button type="submit" class="btn btn-primary-red px-8 mt-10" id="submitButton">SİPARİŞİ TAMAMLA</button>
+                                    <button type="submit" class="btn btn-primary-red px-8 mt-10" id="submitButton">@Localizer["SİPARİŞİ TAMAMLA"]</button>
                                 </div>
                             </div>
                         </div>
