@@ -17,6 +17,7 @@ using System.Reflection;
 using Serilog.Core;
 using SysBase.Web.Configurations;
 using Serilog.Context;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -108,6 +109,13 @@ Logger log = new LoggerConfiguration()
     .MinimumLevel.Fatal()
     .CreateLogger();
 builder.Host.UseSerilog(log);
+
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    //language key için
+    options.ValueCountLimit = 8192; // Limit deðeri artýrýldý
+});
 
 var app = builder.Build();
 

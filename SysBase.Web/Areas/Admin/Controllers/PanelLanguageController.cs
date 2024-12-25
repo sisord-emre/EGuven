@@ -152,6 +152,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
         public async Task<ResultJson> LanguageValueUpdate(int[] languageKeyId, int[] languageValueId, string[] Text, int languageId, string languageCode)
         {
+
+            if (!ModelState.IsValid)
+            {
+                // Hataları loglayın
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    _logger.LogError(error.ErrorMessage);
+                }
+                return new ResultJson { status = "error", message = "Invalid model state." };
+            }
+
             ResultJson resultJson = new ResultJson
             {
                 status = "success",

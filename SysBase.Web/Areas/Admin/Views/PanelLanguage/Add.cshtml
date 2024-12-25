@@ -150,22 +150,11 @@
 </section>
 <partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
 <script type="text/javascript">
-    $(".editorCk").each(function () {
-        let editorId = $(this).attr('id');
-        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
-            height: '350px',
-            extraPlugins: 'forms',
-            uiColor: '#CCEAEE'
-        });
-    });
-
+    
     $('#formPost').submit(function (e) {
         e.preventDefault(); //submit postu kesyoruz
         var data = new FormData(this);
-        $(".editorCk").each(function () {
-            let editorId = $(this).attr('id');
-            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
-        });
+       
         $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
         $.ajax({
             type: "POST",
@@ -185,10 +174,7 @@
     $('#formLanguageValuePost').submit(function (e) {
         e.preventDefault(); //submit postu kesyoruz
         var data = new FormData(this);
-        $(".editorCk").each(function () {
-            let editorId = $(this).attr('id');
-            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
-        });
+
         document.getElementById("languageValueButton").disabled = true;
         $.ajax({
             type: "POST",
