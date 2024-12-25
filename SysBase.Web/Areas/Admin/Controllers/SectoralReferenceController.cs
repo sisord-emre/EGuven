@@ -62,6 +62,13 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     .ToListAsync();
             }
 
+            // SectoralReferences ve max Sequence bulma
+            var sectoralReferences = await _service.ToListAsync();
+
+            var maxSequence = sectoralReferences
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
@@ -73,7 +80,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     MenuPermission = menuPermission,
                     SectoralReference = model,
                     AppSectors = (List<Sector>)appSectors,
-                    SelectedSectorIds = selectedSectorIds ?? new List<int>()
+                    SelectedSectorIds = selectedSectorIds ?? new List<int>(),
+                    MaxSequence = maxSequence
                 }
             );
         }
@@ -146,6 +154,13 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     .Select(bk => bk.SectorId)
                     .ToListAsync();
 
+            // SectoralReferences ve max Sequence bulma
+            var sectoralReferences = await _service.ToListAsync();
+
+            var maxSequence = sectoralReferences
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
             return View
             (
                 new SectoralReferenceAddViewModel
@@ -153,7 +168,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
                     MenuPermission = menuPermission,
                     SectoralReference = model,
                     AppSectors = (List<Sector>)appSectors,
-                    SelectedSectorIds = selectedSectorIds ?? new List<int>()
+                    SelectedSectorIds = selectedSectorIds ?? new List<int>(),
+                    MaxSequence = maxSequence
                 }
             );
         }

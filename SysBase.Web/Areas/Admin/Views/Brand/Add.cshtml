@@ -51,7 +51,7 @@
                                     <input class="form-control close-capitalized" type="text" name="Link" id="Link" value="@Model.Brand?.Link" autocomplete="off" />
                                 </div>
                                 <div class="mb-3 col-md-3 col-sm-10">
-                                    <label for="Image" class="form-label">@Localizer["admin.Marka Görseli"] 200x50px</label>
+                                    <label for="Image" class="form-label">@Localizer["admin.Marka Görseli"] 208x116px</label>
                                     <input class="form-control" type="file" name="Image" id="Image" />
                                 </div>
                                 <div class="mb-3 col-md-1 col-sm-2">
@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
-                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Brand?.Sequence" autocomplete="off" />
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@(Model.Brand?.Sequence ?? (Model.MaxSequence + 10))" autocomplete="off" />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>

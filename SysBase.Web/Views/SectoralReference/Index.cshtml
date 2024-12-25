@@ -49,7 +49,7 @@
                             <div class="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-3">
                                 @foreach (var sectorReference in Model.SectoralReferences.Where(sr => sr.SectoralReferenceSectors.Any(srs => srs.SectorId == item.SectorId)))
                                 {
-                                    <div class="bg-white rounded-5 h-24 flex items-center justify-center px-2 py-4 sr-item-shadow">
+                                    <div class="bg-white rounded-5 h-28 flex items-center justify-center px-2 py-4 sr-item-shadow">
                                         <img src="/Images/SectoralReference/@sectorReference.Media" alt="@sectorReference.SectoralReferenceSectors.FirstOrDefault()?.Sector.SectorLanguageInfos.FirstOrDefault().Title" />
                                     </div>
                                 }

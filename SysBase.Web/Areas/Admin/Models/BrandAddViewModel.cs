@@ -6,5 +6,6 @@ namespace SysBase.Web.Areas.Admin.Models
     {
         public MenuPermission MenuPermission { get; set; }
         public Brand Brand { get; set; }
+        public int MaxSequence { get; set; }
     }
 }

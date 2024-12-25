@@ -46,11 +46,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 brand = await _service.GetByIdAsync(Int32.Parse(Id));
             }
 
+            // brands ve max Sequence bulma
+            var brands = await _service.ToListAsync();
+
+            var maxSequence = brands
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new BrandAddViewModel { MenuPermission = menuPermission, Brand = brand });
+            return View(new BrandAddViewModel { MenuPermission = menuPermission, Brand = brand, MaxSequence = maxSequence });
         }
 
         [HttpPost]
@@ -99,7 +106,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 TempData["ErrorMessage"] = _localizer["admin.Bilgileri Kontrol Ediniz"].Value;
             }
 
-            return View(new BrandAddViewModel { MenuPermission = menuPermission, Brand = isControl });
+            // brands ve max Sequence bulma
+            var brands = await _service.ToListAsync();
+
+            var maxSequence = brands
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
+            return View(new BrandAddViewModel { MenuPermission = menuPermission, Brand = isControl, MaxSequence = maxSequence });
         }
 
         public async Task<IActionResult> List()

@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="mb-3 col-md-3 col-sm-12">
                                     <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
-                                    <input class="form-control" type="text" name="Sequence" id="Sequence" value="@Model.SectoralReference?.Sequence" autocomplete="off" />
+                                    <input class="form-control" type="text" name="Sequence" id="Sequence" value="@(Model.SectoralReference?.Sequence ?? (Model.MaxSequence + 10))" autocomplete="off" />
                                 </div>
                                 <div class="mb-3 col-md-3 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durumu"]</label>
