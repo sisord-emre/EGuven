@@ -337,7 +337,7 @@ namespace SysBase.Web.Controllers
 
 
             var hashedPassword = GVPOSHelper.Sha1(GVPOSConfigurations.ProvUserPassword + GVPOSHelper.IsRequireZero(GVPOSConfigurations.TerminalID_For_3D_PAY, 9)).ToUpper();
-            var hash = GVPOSHelper.ThreeDHashData(GVPOSConfigurations.TerminalID_For_3D_PAY, apiBasvuruRequest.Uid, Convert.ToInt32((toplamFiyat + toplamKdv) * 100).ToString(), 949, "https://localhost:7138/thanks", "https://localhost:7138/paymenterror", "sales", "", "12345678", hashedPassword);
+            var hash = GVPOSHelper.ThreeDHashData(GVPOSConfigurations.TerminalID_For_3D_PAY, apiBasvuruRequest.Uid, Convert.ToInt32((toplamFiyat + toplamKdv) * 100).ToString(), 949, "https://eguven.sisord.net/thanks", "https://eguven.sisord.net/paymenterror", "sales", "", "12345678", hashedPassword);
             return View(new GarantiModalViewModel
             {
                 ApiBasvuruRequest = apiBasvuruRequest,
