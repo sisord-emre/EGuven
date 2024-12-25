@@ -29,10 +29,11 @@ namespace SysBase.Web.Controllers
         protected readonly IService<City> _cityService;
         protected readonly IService<County> _countyService;
         protected readonly IService<ApiBasvuruRequest> _apiBasvuruRequestService;
+        protected readonly IService<ConfigLanguageInfo> _configLanguageInfoService;
 
         public FormController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
            ILogger<FormController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService, IService<ApiBasvuruRequest> apiBasvuruRequestService)
+           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService, IService<ApiBasvuruRequest> apiBasvuruRequestService, IService<ConfigLanguageInfo> configLanguageInfoService)
           : base(localizer, service)
         {
             _logger = logger;
@@ -45,6 +46,7 @@ namespace SysBase.Web.Controllers
             _cityService = cityService;
             _countyService = countyService;
             _apiBasvuruRequestService = apiBasvuruRequestService;
+            _configLanguageInfoService = configLanguageInfoService;
         }
 
         public async Task<IActionResult> Index(string slug)
@@ -109,7 +111,8 @@ namespace SysBase.Web.Controllers
                 QuickMenus = uiLayoutViewModel.QuickMenus,
                 ProjectProducts = projectProducts,
                 ProjectFields = projectFields,
-                Cities = await _cityService.Where(x => x.CountryId == 2).OrderBy(x => x.Name).ToListAsync()
+                Cities = await _cityService.Where(x => x.CountryId == 2).OrderBy(x => x.Name).ToListAsync(),
+                ConfigLanguageInfo = await _configLanguageInfoService.Where(c => c.Language.Code == CultureInfo.CurrentCulture.Name && c.Status).FirstOrDefaultAsync()
             };
 
             return View(model);
@@ -190,6 +193,22 @@ namespace SysBase.Web.Controllers
             return resultJson;
         }
 
+        public async Task<IActionResult> CrmGonderim(string slug)
+        {
+            if (slug != "ZknF8ee2rpTAdJpcjJJAj6")
+            {
+                return Content("Token Hatalı.");
+            }
+            int sayac = 0;
+            foreach (ApiBasvuruRequest item in await _apiBasvuruRequestService.ToListAsync())
+            {
+                CrmSend(item, "");
+                sayac++;
+            }
+
+            return Content(sayac + " İşlem Tamamlandı");
+        }
+
         protected async void CrmSend(ApiBasvuruRequest model, string crmUrunler)
         {
             string DogumTarihi = "";
@@ -205,6 +224,16 @@ namespace SysBase.Web.Controllers
                 .Include(x => x.Product)
                 .ThenInclude(x => x.ProductLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                 .FirstOrDefaultAsync();
+
+            if (crmUrunler == "")
+            {
+                crmUrunler += "<urun> " +
+                    "            <urunad>" + projectProduct.Product.ProductLanguageInfos[0].Title + "</urunad><!--excel 'de var--> " +
+                    "            <urunkod>" + projectProduct.Product.Id + "</urunkod> <!--excel 'de var--> " +
+                    "            <adet>1</adet> <!--adet--> " +
+                    "            <fiyat>" + (projectProduct.Amount + (projectProduct.Amount / 100 * projectProduct.Product.Tax)) + "</fiyat> <!--fiyat double--> " +
+                    "          </urun>";
+            }
 
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "http://192.168.127.25:5558/Web2.svc");
@@ -282,6 +311,11 @@ namespace SysBase.Web.Controllers
             response.EnsureSuccessStatusCode();
             string result = await response.Content.ReadAsStringAsync();
             Console.WriteLine(result);
+
+            if (false)
+            {
+                await _apiBasvuruRequestService.RemoveAsync(model);
+            }
         }
 
         [HttpPost]
@@ -303,7 +337,7 @@ namespace SysBase.Web.Controllers
 
 
             var hashedPassword = GVPOSHelper.Sha1(GVPOSConfigurations.ProvUserPassword + GVPOSHelper.IsRequireZero(GVPOSConfigurations.TerminalID_For_3D_PAY, 9)).ToUpper();
-            var hash = GVPOSHelper.ThreeDHashData(GVPOSConfigurations.TerminalID_For_3D_PAY, apiBasvuruRequest.Uid, Convert.ToInt32((toplamFiyat + toplamKdv)*100).ToString(), 949, "https://localhost:7138/thanks", "https://localhost:7138/paymenterror", "sales", "", "12345678", hashedPassword);
+            var hash = GVPOSHelper.ThreeDHashData(GVPOSConfigurations.TerminalID_For_3D_PAY, apiBasvuruRequest.Uid, Convert.ToInt32((toplamFiyat + toplamKdv) * 100).ToString(), 949, "https://localhost:7138/thanks", "https://localhost:7138/paymenterror", "sales", "", "12345678", hashedPassword);
             return View(new GarantiModalViewModel
             {
                 ApiBasvuruRequest = apiBasvuruRequest,

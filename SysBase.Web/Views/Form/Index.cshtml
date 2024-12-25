@@ -48,7 +48,7 @@
                             <div class="text-primary-dark text-sm">
                                 <p>
                                     * @Localizer["E-imzanızın kullanım süresi bittikten sonra yenileme yapmak isterseniz,yeniden kimlik doğrulama yaptırmanız ve evrak beyan etmeniz gerekmektedir"].
-                                     
+
                                 </p>
                                 <p>
                                     ** @Localizer["Yenileme başvurunuzu gerçekleştirdikten sonraki 24 saat içerisinde tarafınıza onay maili ulaşacaktır. Süreniz bitmeden onay mailinde belirtilen adımları takip ederek yenileme sürecinizi tamamlamanız gerekmektedir"].
@@ -705,14 +705,12 @@
                                                     <label for="exp-date-month">@Localizer["Kodu"]</label>
                                                     <div class="base-form-group">
                                                         <input type="text" name="code" id="code" class="max-w-44" placeholder="Kod" required value="" /><button type="button" popovertarget="code-popover" class="absolute top-[18px] right-3 text-gray-400"><span class="icon-help-circle"></span></button>
-                                                        <div popover id="code-popover" class="p-3 text-sm text-primary-dark rounded-5 shadow-sr-item bg-white border border-tab-inactive left-1/2 -translate-x-1/2 top-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, exercitationem.</div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div id="havale-tab-content" class="hidden pt-7">
                                                 <div class="text-primary-dark text-sm">
-                                                    <p class="py-4">@Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, exercitationem"].</p>
-                                                    <p class="py-4">@Localizer["Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsum dolore repellat sunt assumenda eligendi, quia unde explicabo exercitationem illum mollitia quasi sapiente iusto cupiditate ab, quibusdam deleniti. Deserunt ullam nobis sed, molestiae cum corporis exercitationem maxime. Necessitatibus, cum natus. Sint!"]</p>
+                                                    <p class="py-4">@Model.ConfigLanguageInfo?.RemittanceEftInformation.</p>
                                                 </div>
                                             </div>
                                         </div>
