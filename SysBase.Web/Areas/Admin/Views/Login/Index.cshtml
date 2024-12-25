@@ -88,8 +88,8 @@
         layout_rtl_change('false');
         preset_change('preset-1');
         main_layout_change('vertical');
-        $(document).ready(function () {
-            sessionStorage.setItem("menuId", "");
+        window.onload = function (e) {
+             sessionStorage.setItem("menuId", "");
             sessionStorage.setItem("sayfa", "");
             sessionStorage.setItem("duzenleId", "");
             sessionStorage.setItem("dPage", "");
@@ -98,7 +98,7 @@
             sessionStorage.setItem("editId", "");
             sessionStorage.setItem("orderDt", "");
             sessionStorage.setItem("Id", "");
-        });
+        };
     </script>
 </body>
 <!-- [Body] end -->
