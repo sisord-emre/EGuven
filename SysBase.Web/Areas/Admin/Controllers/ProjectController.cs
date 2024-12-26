@@ -21,6 +21,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
     {
         // PageController specific dependencies
         protected readonly IService<Project> _service;
+        protected readonly IService<Language> _languageService;
+        protected readonly IService<ProjectLanguageInfo> _pageLanguageInfoService;
         protected readonly IService<Company> _companyService;
         protected readonly IService<CompanyInvoice> _companyInvoiceService;
         protected readonly IService<ProductLanguageInfo> _productLanguageInfosService;
@@ -30,7 +32,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
         protected readonly ILogger<ProjectController> _logger;
 
         public ProjectController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Project> service, IService<Company> companyService, ILogger<ProjectController> logger, IService<CompanyInvoice> companyInvoiceService, IService<ProductLanguageInfo> productLanguageInfosService, IService<ProjectProduct> projectProductService, IService<FieldGroup> fieldGroupService, IService<ProjectField> projectFieldService)
+                              IService<Project> service, IService<Company> companyService, ILogger<ProjectController> logger, IService<CompanyInvoice> companyInvoiceService, IService<ProductLanguageInfo> productLanguageInfosService, IService<ProjectProduct> projectProductService, IService<FieldGroup> fieldGroupService, IService<ProjectField> projectFieldService, IService<ProjectLanguageInfo> pageLanguageInfoService, IService<Language> languageService)
             : base(localizer, userManager)
         {
             _service = service;
@@ -41,6 +43,8 @@ namespace SysBase.Web.Areas.Admin.Controllers
             _projectProductService = projectProductService;
             _fieldGroupService = fieldGroupService;
             _projectFieldService = projectFieldService;
+            _pageLanguageInfoService = pageLanguageInfoService;
+            _languageService = languageService;
         }
 
         public async Task<IActionResult> Add(string Id = null)
@@ -57,6 +61,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
+                model.ProjectLanguageInfos = await _pageLanguageInfoService.Where(x => x.ProjectId == model.Id).ToListAsync();
             }
 
             //log işleme alanı     
@@ -88,6 +93,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     MenuPermission = menuPermission,
                     Project = model,
+                    Languages = await _languageService.GetAllAsync(),
                     Companys = await _companyService.Where(x => x.Status).ToListAsync(),
                     CompanyInvoices = await _companyInvoiceService.Where(x => x.Status).ToListAsync(),
                     ProductLanguageInfos = await _productLanguageInfosService.Where(x => x.Status && x.Product.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Product).OrderBy(x => x.Product.Sequence).ToListAsync(),
@@ -125,16 +131,24 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 isControl = await _service.UpdateAsync(model);
 
                 //log işleme alanı
+                var settings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
                 LogContext.PushProperty("TypeName", "Update");
-                _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
+                _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model, settings)));
             }
             else
             {
                 isControl = await _service.AddAsync(model);
 
                 //log işleme alanı
+                var settings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
                 LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
-                _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
+                _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model, settings)));
             }
             if (isControl.Id != 0)
             {
@@ -208,6 +222,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 {
                     MenuPermission = menuPermission,
                     Project = model,
+                    Languages = await _languageService.GetAllAsync(),
                     Companys = await _companyService.Where(x => x.Status).ToListAsync(),
                     CompanyInvoices = await _companyInvoiceService.Where(x => x.Status).ToListAsync(),
                     ProductLanguageInfos = await _productLanguageInfosService.Where(x => x.Status && x.Product.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).Include(x => x.Product).OrderBy(x => x.Product.Sequence).ToListAsync(),

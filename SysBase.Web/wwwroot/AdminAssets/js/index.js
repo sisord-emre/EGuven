@@ -266,14 +266,14 @@ function UserTableList(menuId, callback) {
         cache: false,
         data: { menuId: menuId },
         success: function (res) {
-            console.log("ilk gelen res: " + res);
+            //console.log("ilk gelen res: " + res);
             var Data
             if (res != null && res != "") {
                 Data = JSON.parse(res);
-                console.log("data: ", Data);  // Nesnenin tamamını yazdırır
+                //console.log("data: ", Data);  // Nesnenin tamamını yazdırır
 
                 // Eğer veriyi JSON formatında görmek istiyorsanız:
-                console.log("JSON formatında data: ", JSON.stringify(Data, null, 2));  // JSON formatında, düzgün görünecek şekilde
+                //console.log("JSON formatında data: ", JSON.stringify(Data, null, 2));  // JSON formatında, düzgün görünecek şekilde
                 delete Data["start"];
                 delete Data["length"];
                 Data.time = new Date().getTime();
@@ -286,7 +286,7 @@ function UserTableList(menuId, callback) {
                     }
                     delete Data.columns[column].search;
                 }
-                console.log("En son JSON formatında data: ", JSON.stringify(Data, null, 2));  // JSON formatında, düzgün görünecek şekilde
+                //console.log("En son JSON formatında data: ", JSON.stringify(Data, null, 2));  // JSON formatında, düzgün görünecek şekilde
                 callback(Data);
             } else {
                 callback(Data);

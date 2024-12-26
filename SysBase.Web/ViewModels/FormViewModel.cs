@@ -8,5 +8,7 @@ namespace SysBase.Web.ViewModels
         public List<ProjectField> ProjectFields { get; set; }
         public List<City> Cities { get; set; }
         public ConfigLanguageInfo ConfigLanguageInfo { get; set; }
+        public Company Company{ get; set; }
+        public CompanyInvoice CompanyInvoice { get; set; }
     }
 }

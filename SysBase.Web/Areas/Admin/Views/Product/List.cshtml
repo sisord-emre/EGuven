@@ -30,6 +30,7 @@
                                 <thead>
                                     <tr>
                                         <th>@Localizer["admin.ID"]</th>
+                                        <th>@Localizer["admin.Api Kod"]</th>
                                         <th>@Localizer["admin.Tipi"]</th>
                                         <th>@Localizer["admin.Başlık"]</th>
                                         <th>@Localizer["admin.Sırası"]</th>
@@ -45,6 +46,7 @@
                                     {
                                         <tr id="trSatir-@item.Product.Id">
                                             <td>@item.Product.Id</td>
+                                            <td>@item.Product.ApiCode</td>
                                             <td>
                                                 @if (item.Product.Type == 1)
                                                 {

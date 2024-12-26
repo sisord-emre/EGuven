@@ -47,7 +47,10 @@
                                     <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
                                     <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Product?.Sequence" autocomplete="off" required />
                                 </div>
-
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="ApiCode" class="form-label">@Localizer["admin.Api Kod"]</label>
+                                    <input class="form-control close-capitalized" type="text" name="ApiCode" id="ApiCode" value="@Model.Product?.ApiCode" autocomplete="off" />
+                                </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Sequence" class="form-label">@Localizer["admin.Tipi"]</label>
                                     <div class="form-group">

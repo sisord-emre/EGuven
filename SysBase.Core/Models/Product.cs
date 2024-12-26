@@ -7,6 +7,7 @@ namespace SysBase.Core.Models
         [Comment("1:Satın Alma,2:Yenileme")]
         public int Type { get; set; }
         public int Sequence { get; set; }
+        public string ApiCode { get; set; }
         public string Image { get; set; }
         public decimal Amount { get; set; }
         public decimal Tax { get; set; }

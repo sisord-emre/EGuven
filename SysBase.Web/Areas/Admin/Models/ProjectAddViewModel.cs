@@ -6,6 +6,7 @@ namespace SysBase.Web.Areas.Admin.Models
     {
         public MenuPermission MenuPermission { get; set; }
         public Project Project { get; set; }
+        public IEnumerable<Language> Languages { get; set; }
         public List<Company> Companys { get; set; }
         public List<CompanyInvoice> CompanyInvoices { get; set; }
         public List<ProductLanguageInfo> ProductLanguageInfos { get; set; }

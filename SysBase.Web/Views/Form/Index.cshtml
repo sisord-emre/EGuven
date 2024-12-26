@@ -5,8 +5,8 @@
 @if (Model.ProjectProducts[0].Project.Image != null && Model.ProjectProducts[0].Project.Image != "")
 {
     <div class="container mt-5">
-        <figure class="h-96">
-            <img src="/Images/Project/@Model.ProjectProducts[0].Project.Image" alt="@Model.ProjectProducts[0].Project.Company.Name" class="w-full h-full object-cover rounded-5" />
+        <figure>
+            <img src="/Images/Project/@Model.ProjectProducts[0].Project.Image" alt="@Model.Company.Name" class="w-full h-full object-cover rounded-5" />
         </figure>
     </div>
 
@@ -46,24 +46,30 @@
                         <div>
                             <div class="text-primary-dark text-sm">
                                 <p>
-                                    * @Localizer["E-imzanızın kullanım süresi bittikten sonra yenileme yapmak isterseniz,yeniden kimlik doğrulama yaptırmanız ve evrak beyan etmeniz gerekmektedir"].
-
+                                    @Html.Raw(Model.ProjectProducts[0].Project.ProjectLanguageInfos[0].Description)
                                 </p>
-                                <p>
-                                    ** @Localizer["Yenileme başvurunuzu gerçekleştirdikten sonraki 24 saat içerisinde tarafınıza onay maili ulaşacaktır. Süreniz bitmeden onay mailinde belirtilen adımları takip ederek yenileme sürecinizi tamamlamanız gerekmektedir"].
-                                </p>
+                                @if (Model.ProjectProducts[0].Project.InvoiceInfoIsVisible && Model.CompanyInvoice != null)
+                                {
+                                    <p>@Localizer["Firma Fatura Bilgileri"]</p>
+                                    <p>@Model.CompanyInvoice.Name</p>
+                                    <p>@Model.CompanyInvoice.FullAddress</p>
+                                }
                             </div>
 
                             <div class="mt-5">
-                                <div class="text-primary-dark font-bold text-xl mb-5">
-                                    @Localizer["Kupon / Referans kodu ekle"]
-                                </div>
-                                <div class="flex items-stretch gap-3">
-                                    <div class="base-form-group">
-                                        <input type="text" name="slug" id="slug" placeholder="Kodunuzu girin" value="@ViewData["slug"]" />
+                                @if (ViewData["slug"] == "" || ViewData["slug"] == null)
+                                {
+                                    <div class="text-primary-dark font-bold text-xl mb-5">
+                                        @Localizer["Kupon / Referans kodu ekle"]
                                     </div>
-                                    <button type="button" class="btn btn-common h-auto px-8" onclick="KodSecim()">@Localizer["Uygula"]</button>
-                                </div>
+                                    <div class="flex items-stretch gap-3">
+                                        <div class="base-form-group">
+                                            <input type="text" name="slug" id="slug" placeholder="Kodunuzu girin" value="@ViewData["slug"]" />
+                                        </div>
+                                        <button type="button" class="btn btn-common h-auto px-8" onclick="KodSecim()">@Localizer["Uygula"]</button>
+                                    </div>
+                                }
+
 
                                 <div class="grid xl:grid-cols-3 grid-cols-1 xl:gap-14 gap-6 mt-10">
                                     <!-- Urunler -->
@@ -86,9 +92,12 @@
                                                     <div class="text-xl font-bold">
                                                         @item.Amount TL
                                                     </div>
-                                                    <div class="text-xs">
-                                                        @Localizer["KDV Hariç"]
-                                                    </div>
+                                                    @if (item.Product.Tax!=0)
+                                                    {
+                                                        <div class="text-xs">
+                                                            @Localizer["KDV Hariç"]
+                                                        </div>
+                                                    }
                                                 </div>
                                                 <input class="hidden" type="radio" name="ProjectProductId" id="urun-@item.Id" value="@item.Id" />
                                             </div>
@@ -163,6 +172,25 @@
                                                     </div>
                                                 </div>
                                             }
+                                            if (item.Field.ApiColumn == "Uyruk")
+                                            {
+                                                <div class="base-form-group">
+                                                    <label for="@item.Field.ApiColumn">
+                                                        @Localizer[item.Field.Name]
+                                                        @if (item.Required)
+                                                        {
+                                                            <sup class="custem-req-sup">*</sup>
+                                                        }
+                                                    </label>
+                                                    <select class="@requiredRenk" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
+                                                        <option value="TC">@Localizer["Türkiye Cumhuriyeti"]</option>
+                                                        <option value="DİĞER">@Localizer["Diğer"]</option>
+                                                    </select>
+                                                    <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                        @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                                    </div>
+                                                </div>
+                                            }
                                         }
                                         else if (item.Field.Type == "textarea")
                                         {
@@ -208,20 +236,23 @@
                                                     }
                                                 </label>
                                                 <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" class="@requiredRenk" @required @Html.Raw(item.Field.OtherParams) />
+                                                @if (item.Field.ApiColumn == "Eposta")
+                                                {
+                                                    <div class="flex items-center justify-end text-xs mt-4">
+                                                        <div>
+                                                            <label for="e-posta-gorulme">
+                                                                @Localizer["E-posta adresimin sertifika içerisinde görülmesini istiyorum"].
+                                                            </label>
+                                                            <input type="checkbox" class="ml-2" />
+                                                        </div>
+                                                    </div>
+                                                }
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
                                             </div>
                                         }
                                     }
-                                </div>
-                                <div class="flex items-center justify-end text-xs mt-4">
-                                    <div>
-                                        <label for="e-posta-gorulme">
-                                            @Localizer["E-posta adresimin sertifika içerisinde görülmesini istiyorum"].
-                                        </label>
-                                        <input type="checkbox" class="ml-2" />
-                                    </div>
                                 </div>
                                 <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4">
                                     <div class="font-bold mb-4">
@@ -237,7 +268,7 @@
                                         @Localizer["Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi cumque quam, soluta, sed perferendis explicabo neque hic exercitationem culpa vitae, rem dolorum inventore eveniet minima ipsa. Quod qui ea mollitia esse, minima autem architecto, debitis facilis eligendi cupiditate ipsam delectus nostrum eveniet possimus doloribus alias dolorum ducimus ratione eius voluptates velit excepturi exercitationem? Atque iure, quasi repellendus doloremque omnis sed accusamus ea, soluta praesentium recusandae tenetur sit, beatae ipsam odit nam cupiditate dolorem facere dolor iste commodi officiis ratione. Natus, dolore quod eveniet esse culpa odio non doloremque porro vitae, debitis fuga voluptate et illum nemo illo rem consectetur possimus!"]
                                     </p>
                                 </div>
-                                <div class="mt-7">
+                                <div class="mt-7" style="text-align: right;">
                                     <input type="checkbox" class="mr-2 custem-req" name="Izin" id="aydinlatma-metni-kabul" value="True" required data-input-tab="musteri-bilgileri" />
                                     <label for="aydinlatma-metni-kabul">@Localizer["Okudum, kabul ediyorum"]. <sup class="custem-req-sup">*</sup></label>
                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -643,24 +674,14 @@
                                                 <button id="kredi-kart-btn" class="active" type="button" onclick="OdemeTipSec(1)">@Localizer["KREDİ KARTI"]</button>
                                                 <button id="havale-btn" type="button" onclick="OdemeTipSec(2)">@Localizer["HAVALE"]</button>
                                             </div><!-- Tab Content -->
-                                            <div id="kredi-kart-tab-content" class="pt-7">
-                                                <div class="text-primary-dark text-lg font-semibold mb-6">@Localizer["Kredi kartı detayları"]</div>
-                                                <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
-                                                    <div class="text-primary-dark text-sm font-medium max-w-20">@Localizer["Ödeme Yöntemi"]</div>
-                                                    <div class="flex items-center gap-2">
-                                                        <figure><img src="/assets/images/mastercard.png" alt="master card logo" /></figure>
-                                                        <figure><img src="/assets/images/visa.png" alt="visa logo" /></figure>
-                                                        <figure><img src="/assets/images/american-express.png" alt="american express logo" /></figure>
-                                                        <figure><img src="/assets/images/discover.png" alt="discover logo" /></figure>
-                                                    </div>
-                                                </div>
+                                            <div id="kredi-kart-tab-content" class="pt-7">   
                                                 <div class="grid grid-cols-1 gap-3">
                                                     <div class="base-form-group"><label for="card-ad-soyad">@Localizer["Kartın üzerindeki ad"]</label><input type="text" placeholder="" id="card-ad-soyad" value="" required /></div>
                                                     <div class="base-form-group"><label for="card-no">@Localizer["Kart Numarası"]</label><input type="text" placeholder="0000 0000 0000 0000" id="card-no" value="" required /></div>
                                                 </div>
                                                 <div class="flex flex-col gap-3 mt-3">
                                                     <label for="exp-date-month">@Localizer["Son Kullanma Tarihi"]</label>
-                                                    <div class="grid grid-cols-2 gap-3">
+                                                    <div class="grid grid-cols-3 gap-3">
                                                         <div class="base-form-group">
                                                             <select name="exp-date-month" id="exp-date-month" required>
                                                                 <option value="" disabled selected>@Localizer["Ay"]</option>
@@ -687,12 +708,9 @@
                                                                 }
                                                             </select>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="flex flex-col gap-3 mt-3 w-max">
-                                                    <label for="exp-date-month">@Localizer["Kodu"]</label>
-                                                    <div class="base-form-group">
-                                                        <input type="text" name="code" id="code" class="max-w-44" placeholder="Kod" required value="" /><button type="button" popovertarget="code-popover" class="absolute top-[18px] right-3 text-gray-400"><span class="icon-help-circle"></span></button>
+                                                        <div class="base-form-group">
+                                                            <input type="text" name="code" id="code" class="" placeholder="@Localizer["CVV"]" required value="" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

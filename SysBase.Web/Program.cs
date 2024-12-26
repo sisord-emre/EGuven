@@ -183,6 +183,10 @@ app.MapControllerRoute(
     pattern: "blog-detay/{slug}/{controller=BlogDetail}/{action=Index}");
 
 app.MapControllerRoute(
+    name: "Sayfa",
+    pattern: "sayfa/{slug}/{controller=PageDetail}/{action=Index}");
+
+app.MapControllerRoute(
     name: "SoftwareCategory",
     pattern: "e-imza-yazilimlar/{controller=SoftwareCategory}/{action=Index}");
 

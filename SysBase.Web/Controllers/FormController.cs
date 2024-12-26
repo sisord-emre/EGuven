@@ -32,10 +32,12 @@ namespace SysBase.Web.Controllers
         protected readonly IService<County> _countyService;
         protected readonly IService<ApiBasvuruRequest> _apiBasvuruRequestService;
         protected readonly IService<ConfigLanguageInfo> _configLanguageInfoService;
+        protected readonly IService<Company> _companyService;
+        protected readonly IService<CompanyInvoice> _companyInvoiceService;
 
         public FormController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
            ILogger<FormController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService, IService<ApiBasvuruRequest> apiBasvuruRequestService, IService<ConfigLanguageInfo> configLanguageInfoService)
+           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService, IService<ApiBasvuruRequest> apiBasvuruRequestService, IService<ConfigLanguageInfo> configLanguageInfoService, IService<CompanyInvoice> companyInvoiceService, IService<Company> companyService)
           : base(localizer, service)
         {
             _logger = logger;
@@ -49,6 +51,8 @@ namespace SysBase.Web.Controllers
             _countyService = countyService;
             _apiBasvuruRequestService = apiBasvuruRequestService;
             _configLanguageInfoService = configLanguageInfoService;
+            _companyInvoiceService = companyInvoiceService;
+            _companyService = companyService;
         }
 
         public async Task<IActionResult> Index(string slug)
@@ -73,7 +77,7 @@ namespace SysBase.Web.Controllers
                     projectProducts = await _projectProductService
                         .Where(x => x.Project.Code == slug && x.Project.Status && x.Product.Status && x.Product.Type == 2 && x.Project.StartDate < DateTime.Now && x.Project.EndDate > DateTime.Now)
                         .Include(x => x.Project)
-                        .ThenInclude(x => x.Company)
+                        .ThenInclude(x => x.ProjectLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                         .Include(x => x.Product)
                         .ThenInclude(x => x.ProductLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                         .ToListAsync();
@@ -84,7 +88,7 @@ namespace SysBase.Web.Controllers
                     projectProducts = await _projectProductService
                         .Where(x => x.Project.Code == slug && x.Project.Status && x.Product.Status && x.Product.Type == 1 && x.Project.StartDate < DateTime.Now && x.Project.EndDate > DateTime.Now)
                         .Include(x => x.Project)
-                        .ThenInclude(x => x.Company)
+                        .ThenInclude(x => x.ProjectLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                         .Include(x => x.Product)
                         .ThenInclude(x => x.ProductLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                         .ToListAsync();
@@ -95,7 +99,7 @@ namespace SysBase.Web.Controllers
                 projectProducts = await _projectProductService
                     .Where(x => x.Project.Id == 1 && x.Project.Status && x.Product.Status)
                     .Include(x => x.Project)
-                    .ThenInclude(x => x.Company)
+                    .ThenInclude(x => x.ProjectLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                     .Include(x => x.Product)
                     .ThenInclude(x => x.ProductLanguageInfos.Where(lng => lng.Language.Code == CultureInfo.CurrentCulture.Name))
                     .ToListAsync();
@@ -103,6 +107,12 @@ namespace SysBase.Web.Controllers
 
             List<ProjectField> projectFields = new List<ProjectField>();
             projectFields = await _projectFieldService.Where(x => x.ProjectId == projectProducts[0].ProjectId && x.Visible && x.Field.Status).Include(x => x.Field).OrderBy(x => x.Field.Sequence).ToListAsync();
+
+            CompanyInvoice companyInvoice = new CompanyInvoice();
+            if (projectProducts[0] != null && projectProducts[0].Project.CompanyId != null)
+            {
+                companyInvoice = await _companyInvoiceService.Where(x => x.CompanyId == projectProducts[0].Project.CompanyId).FirstOrDefaultAsync();
+            }
 
             FormViewModel model = new FormViewModel
             {
@@ -114,7 +124,9 @@ namespace SysBase.Web.Controllers
                 ProjectProducts = projectProducts,
                 ProjectFields = projectFields,
                 Cities = await _cityService.Where(x => x.CountryId == 2).OrderBy(x => x.Name).ToListAsync(),
-                ConfigLanguageInfo = await _configLanguageInfoService.Where(c => c.Language.Code == CultureInfo.CurrentCulture.Name && c.Status).FirstOrDefaultAsync()
+                ConfigLanguageInfo = await _configLanguageInfoService.Where(c => c.Language.Code == CultureInfo.CurrentCulture.Name && c.Status).FirstOrDefaultAsync(),
+                Company = await _companyService.Where(c => c.Id == projectProducts[0].Project.CompanyId && c.Status).FirstOrDefaultAsync(),
+                CompanyInvoice = companyInvoice,
             };
             ViewData["slug"] = slug;
             return View(model);

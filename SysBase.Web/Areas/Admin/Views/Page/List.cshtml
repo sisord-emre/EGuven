@@ -33,6 +33,7 @@
                                         <th>@Localizer["admin.Kodu"]</th>
                                         <th>@Localizer["admin.Başlık"]</th>
                                         <th>@Localizer["admin.Sırası"]</th>
+                                        <th>@Localizer["admin.Url"]</th>
                                         <th>@Localizer["admin.Durum"]</th>
                                         <th>@Localizer["admin.Kayit Tarihi"]</th>
                                         <th style="width:220px;text-align:center">@Localizer["admin.İşlemler"]</th>
@@ -46,6 +47,7 @@
                                             <td>@item.Page.Code</td>
                                             <td>@item.Title</td>
                                             <td>@item.Page.Sequence</td>
+                                            <td><a href="/sayfa/@item.Slug" target="_blank">/sayfa/@item.Slug</a></td>
                                             <td class="text-center">
                                                 @if (item.Page.Status)
                                                 {

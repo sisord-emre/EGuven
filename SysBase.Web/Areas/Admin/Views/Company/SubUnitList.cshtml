@@ -16,7 +16,6 @@
                 <tr id="lineSubUnit_@item.Id">
                     <td>@item.Id</td>
                     <td>@item.Name</td>
-                    <td>@item.FullAddress</td>
                     <td>
                         @if (item.Status)
                         {
@@ -27,6 +26,7 @@
                             <div class="badge rounded-pill text-bg-danger">@Localizer["admin.Pasif"]</div>
                         }
                     </td>
+                    <td>@item.FullAddress</td>
                     <td data-sort="@item.CreatedDate.ToString("yyyyMMddHHmmssfff")">@item.CreatedDate</td>
                     <td style="text-align:center">
                         <div class="btn-group btn-group-sm" role="group">

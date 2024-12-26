@@ -76,8 +76,12 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 isControl = await _service.UpdateAsync(model);
 
                 //log işleme alanı
+                var settings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
                 LogContext.PushProperty("TypeName", "Update");
-                _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
+                _logger.LogCritical(functions.LogCriticalMessage("Update", ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model, settings)));
             }
             else
             {
@@ -85,8 +89,12 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 isControl = await _service.AddAsync(model);
 
                 //log işleme alanı
+                var settings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                };
                 LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
-                _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model)));
+                _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName, isControl.Id.ToString(), JsonConvert.SerializeObject(model, settings)));
             }
             if (isControl.Id != 0)
             {
