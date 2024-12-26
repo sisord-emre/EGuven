@@ -1,0 +1,55 @@
+﻿@model ThanksViewModel
+
+@{
+    ViewData["Title"] = "Ödeme Hatası";
+}
+
+<div class="swiper hero-slider relative">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <div class="hero-slider-item"
+                 style="background-image: url('assets/images/slider/slider-2.png');">
+                <div class="hero-slider-item-content">
+                    <div class="hero-slider-item-content-box">
+                        <div class="hero-slider-item-subtitle">
+                            Form
+                        </div>
+                        <div class="hero-slider-item-title">
+                            Ödeme Hatası
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sektörel Referanslarımız -->
+<section class="mt-10 is-ortaklarimiz">
+    <div class="container">
+        <div class="grid gap-3 py-14 md:px-32 px-10" style="text-align:center;font-size: 30px;">
+            <p>@ViewData["HataMesaji"]</p>
+        </div>
+    </div>
+</section>
+
+
+<script type="module">
+    import {
+        stickyHeader,
+        checkTheme,
+        customTab,
+        mobileSubMenu,
+        drawerControl,
+    } from '/assets/js/main.js'
+    document.addEventListener('DOMContentLoaded', function () {
+        stickyHeader()
+        checkTheme()
+        customTab()
+        mobileSubMenu()
+        drawerControl()
+        AOS.init({
+            duration: 800,
+        })
+    })
+</script>

@@ -77,7 +77,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             if (Id != null)
             {
                 projectFields = await _projectFieldService
-                 .Where(x => x.ProjectId == Convert.ToInt32(Id))
+                 .Where(x => x.ProjectId == Convert.ToInt32(Id) && x.Field.Status)
                  .Include(x => x.Field)
                  .ToListAsync();
             }
@@ -197,7 +197,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             if (isControl.Id != 0)
             {
                 projectFields = await _projectFieldService
-                 .Where(x => x.ProjectId == Convert.ToInt32(isControl.Id))
+                 .Where(x => x.ProjectId == Convert.ToInt32(isControl.Id) && x.Field.Status)
                  .Include(x => x.Field)
                  .ToListAsync();
             }

@@ -200,7 +200,7 @@ export function stickyHeader() {
                 )
             }
             if (detailHeaderLogo) {
-                detailHeaderLogo.src = 'assets/images/logo-red@2x.png'
+                detailHeaderLogo.src = '/assets/images/logo-red@2x.png'
             }
             if (basketIcon) {
                 basketIcon.classList.remove('text-white')
@@ -231,7 +231,7 @@ export function stickyHeader() {
                 )
             }
             if (detailHeaderLogo) {
-                detailHeaderLogo.src = 'assets/images/logo@2x.png'
+                detailHeaderLogo.src = '/assets/images/logo@2x.png'
             }
             if (basketIcon) {
                 basketIcon.classList.add('text-white')
@@ -377,8 +377,8 @@ export function drawerControl() {
                 }
             })
         },
-        onShow: () => {},
-        onToggle: () => {},
+        onShow: () => { },
+        onToggle: () => { },
     }
 
     const instanceOptions = {
@@ -467,6 +467,7 @@ export function formTabControl() {
 
     if (goToDogrulamaEkrani) {
         goToDogrulamaEkrani.addEventListener('click', () => {
+            TcDogrulama();
             const musteriBilgileri =
                 document.getElementById('musteri-bilgileri')
             const musteriBilgileriTab = document.getElementById(

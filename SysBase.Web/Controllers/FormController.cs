@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Drawing.Charts;
+﻿using Azure.Core;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
@@ -11,6 +12,7 @@ using SysBase.Web.Resources;
 using SysBase.Web.ViewModels;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -100,7 +102,7 @@ namespace SysBase.Web.Controllers
             }
 
             List<ProjectField> projectFields = new List<ProjectField>();
-            projectFields = await _projectFieldService.Where(x => x.ProjectId == projectProducts[0].ProjectId && x.Visible).Include(x => x.Field).OrderBy(x => x.Field.Sequence).ToListAsync();
+            projectFields = await _projectFieldService.Where(x => x.ProjectId == projectProducts[0].ProjectId && x.Visible && x.Field.Status).Include(x => x.Field).OrderBy(x => x.Field.Sequence).ToListAsync();
 
             FormViewModel model = new FormViewModel
             {
@@ -114,7 +116,7 @@ namespace SysBase.Web.Controllers
                 Cities = await _cityService.Where(x => x.CountryId == 2).OrderBy(x => x.Name).ToListAsync(),
                 ConfigLanguageInfo = await _configLanguageInfoService.Where(c => c.Language.Code == CultureInfo.CurrentCulture.Name && c.Status).FirstOrDefaultAsync()
             };
-
+            ViewData["slug"] = slug;
             return View(model);
         }
 
@@ -349,6 +351,56 @@ namespace SysBase.Web.Controllers
                 //ThreeDHashData(string terminalID, string orderID, string amount, int currencyCode, string successUrl, string errorUrl, string type, string installmentCount, string storeKey, string hashedPassword)
                 Hash = hash
             });
+        }
+
+        [HttpPost]
+        public async Task<ResultJson> TcDogrulama(string TCKimlikNo, string Ad, string Soyad, string DogumYili)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+            // SOAP XML
+            string soapRequest = $@"<soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
+            <soap:Body>
+                <TCKimlikNoDogrula xmlns=""http://tckimlik.nvi.gov.tr/WS"">
+                    <TCKimlikNo>{TCKimlikNo}</TCKimlikNo>
+                    <Ad>{Ad}</Ad>
+                    <Soyad>{Soyad}</Soyad>
+                    <DogumYili>{DogumYili}</DogumYili>
+                </TCKimlikNoDogrula>
+            </soap:Body>
+            </soap:Envelope>";
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://tckimlik.nvi.gov.tr/service/kpspublic.asmx");
+                    // Header bilgileri
+                    request.Headers.Add("SOAPAction", "http://tckimlik.nvi.gov.tr/WS/TCKimlikNoDogrula");
+                    request.Content = new StringContent(soapRequest, Encoding.UTF8, "text/xml");
+                    // İstek gönderme
+                    HttpResponseMessage response = await client.SendAsync(request);
+                    // Yanıt okuma
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine(responseContent);
+                    // Basit bir doğrulama sonucu kontrolü
+                    if (responseContent.Contains("<TCKimlikNoDogrulaResult>true</TCKimlikNoDogrulaResult>"))
+                    {
+                        resultJson.status = "success";
+                        resultJson.message = "TC Kimlik Numarası geçerli.";
+                        resultJson.data = "true";
+                    }
+                    else
+                    {
+                        resultJson.status = "error";
+                        resultJson.message = "TC Kimlik Numarası geçersiz.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                resultJson.status = "error";
+                resultJson.message = $"Bir hata oluştu: {ex.Message}";
+            }
+            return resultJson;
         }
 
         [HttpPost]

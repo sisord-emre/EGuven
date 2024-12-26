@@ -3,7 +3,7 @@
     var emails = model.Config.Mail?.Split(';');
     CultureInfo cultureInfo = Thread.CurrentThread.CurrentUICulture;
     List<Language> languages = model.Languages.Where(x => x.Status).ToList();
-    string assetsVersiyon = "1.1";
+    string assetsVersiyon = "1.2";
     string controller = ViewContext.RouteData.Values["controller"].ToString();
 }
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-youtube"></span>
                             </a>
                         </li>
@@ -39,7 +39,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-linkedin"></span>
                             </a>
                         </li>
@@ -48,7 +48,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-instagram"></span>
                             </a>
                         </li>
@@ -57,7 +57,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-facebook"></span>
                             </a>
                         </li>
@@ -66,7 +66,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-x"></span>
                             </a>
                         </li>
@@ -85,9 +85,9 @@
                     {
                         <!-- cmp-language -->
                         <button id="languageSelectHeader"
-                                data-dropdown-toggle="dropdownLanguageHeaderMenu"
-                                class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
-                                type="button">
+                            data-dropdown-toggle="dropdownLanguageHeaderMenu"
+                            class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
+                            type="button">
                             <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                             <span class="icon-chevron-down"></span>
                         </button>
@@ -140,7 +140,7 @@
                         <div class="flex items-center gap-6 w-full sm:w-max justify-between sm:justify-normal">
                             <div class="h-10">
                                 <a href="/">
-                                    <img src="~/assets/images/@(controller == "Form" ? "logo-red@2x.png" : "logo@2x.png")" alt="E-Güven" class="w-full h-full @(controller == "Form" ? "detail-header-logo" : "")" />
+                                    <img src="/assets/images/@(controller == "Form" ? "logo-red@2x.png" : "logo@2x.png")" alt="E-Güven" class="w-full h-full @(controller == "Form" ? "detail-header-logo" : "")" />
                                 </a>
                             </div>
                             <div class="relative block xl:hidden">
@@ -168,17 +168,17 @@
                             {
                                 <div class="quick sm:ml-auto ml-0">
                                     <button type="button"
-                                            class="btn btn-common"
-                                            id="dropdownQuickActions"
-                                            data-dropdown-toggle="dropdownQuickActionsMenu">
+                                        class="btn btn-common"
+                                        id="dropdownQuickActions"
+                                        data-dropdown-toggle="dropdownQuickActionsMenu">
                                         <span class="icon-menu text-lg"></span>
                                         <span>@Localizer["Hemen Satın Al"]</span>
                                     </button>
                                     <!-- Dropdown menu -->
                                     <div id="dropdownQuickActionsMenu"
-                                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="dropdownDefaultButton">
+                                        aria-labelledby="dropdownDefaultButton">
                                             @foreach (QuickMenu item in model.QuickMenus)
                                             {
                                                 <li>
@@ -320,7 +320,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-youtube"></span>
                                     </a>
                                 </li>
@@ -329,7 +329,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-linkedin"></span>
                                     </a>
                                 </li>
@@ -338,7 +338,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-instagram"></span>
                                     </a>
                                 </li>
@@ -347,7 +347,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-facebook"></span>
                                     </a>
                                 </li>
@@ -356,7 +356,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-x"></span>
                                     </a>
                                 </li>
@@ -389,9 +389,9 @@
                         {
                             <!-- cmp-language -->
                             <button id="dropdownLanguageFooter"
-                                    data-dropdown-toggle="dropdownLanguageFooterMenu"
-                                    class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
-                                    type="button">
+                                data-dropdown-toggle="dropdownLanguageFooterMenu"
+                                class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
+                                type="button">
                                 <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                                 <span class="icon-chevron-down"></span>
                             </button>
@@ -568,12 +568,47 @@
         </a>
     </div>
 
-    <script src="~/assets/js/swiper-bundle.min.js?v=@assetsVersiyon"></script>
-    <script src="~/assets/js/aos/aos.js?v=@assetsVersiyon"></script>
+    <script src="/assets/js/swiper-bundle.min.js?v=@assetsVersiyon"></script>
+    <script src="/assets/js/aos/aos.js?v=@assetsVersiyon"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
+        document.querySelectorAll('.custem-req').forEach(function (element) {
+            element.addEventListener('change', function () {
+                this.classList.remove('custem-req');
+            });
+        });
+
+        function TcDogrulama() {
+            var TCKimlikNo = document.getElementById("TCKimlikNo").value;
+            var Ad = document.getElementById("Ad").value;
+            var Soyad = document.getElementById("Soyad").value;
+            var DogumTarihi = document.getElementById("DogumTarihi").value;
+            if (TCKimlikNo == "" || Ad == "" || Soyad == "" || DogumTarihi == "") {
+                return false;
+            }
+            DogumTarihi = DogumTarihi.split("-")[0];
+            var data = new FormData();
+            data.append("TCKimlikNo", TCKimlikNo);
+            data.append("Ad", Ad);
+            data.append("Soyad", Soyad);
+            data.append("DogumYili", DogumTarihi);
+            $.ajax({
+                type: "POST",
+                url: "/Form/s/TcDogrulama",
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    document.getElementById("kimlikdogrulandi").value = res.data;
+                },
+                error: function (jqXHR, status, errorThrown) {
+                    console.log("Result: " + status + " Status: " + jqXHR.status);
+                }
+            });
+        }
+
         function GarantiModal() {
             var e = document.getElementById("exp-date-month");
             var dateMonth = e.value;
@@ -638,20 +673,19 @@
                 success: function (res) {
                     console.log(res);
                     if (res.status == "success") {
-                        Swal.fire({
-                            text: res.message,
-                            icon: "success",
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Tamam"
-                        });
                         document.getElementById("uid").value = res.data;
                         const selectedValue = document.querySelector('input[name="OdemeTipi"]:checked').value;
-                        console.log(selectedValue); // Örneğin: 1 veya 2
                         if (selectedValue == 1) {
                             GarantiModal();
-                        } else if (selectedValue == 2) {
-                            window.location.href = "thanks?slug=" + res.data;
+                        } else if (selectedValue == 2 || selectedValue == 0) {
+                            Swal.fire({
+                                text: res.message,
+                                icon: "success",
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Tamam"
+                            });
+                            window.location.href = "/thanks?slug=" + res.data;
                         }
                     } else {
                         Swal.fire({

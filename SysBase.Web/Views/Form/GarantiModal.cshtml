@@ -47,16 +47,17 @@
     <!--Taksit Sayısı (Taksit gerekmeyen işlemlerde: "" girilmelidir.)-->
     <input type="hidden" name="txninstallmentcount" id="txninstallmentcount" value="" />
     <!--Müşteri Kart Üzerindeki Adı-->
-    <input name="cardholdername" id="cardholdername" value="@Model.cardAdSoyad" />
+    <input type="hidden" name="cardholdername" id="cardholdername" value="@Model.cardAdSoyad" />
     <!--Müşteri Kart Numarası-->
-    <input name="cardnumber" id="cardnumber" value="@Model.cardNo" />
+    <input type="hidden" name="cardnumber" id="cardnumber" value="@Model.cardNo" />
     <!--Müşteri Kartı Son Kullanma Ay-->
-    <input name="cardexpiredatemonth" id="cardexpiredatemonth" value="@Model.dateMonth" />
+    <input type="hidden" name="cardexpiredatemonth" id="cardexpiredatemonth" value="@Model.dateMonth" />
     <!--Müşteri Kartı Son Kullanma Yıl-->
-    <input name="cardexpiredateyear" id="cardexpiredateyear" value="@Model.dateYear" />
+    <input type="hidden" name="cardexpiredateyear" id="cardexpiredateyear" value="@Model.dateYear" />
     <!--Müşteri Kartı CVC Güvenlik Numarası-->
-    <input name="cardcvv2" id="cardcvv2" value="@Model.code" />
-    <button type="submit">@Localizer["Gönder"]</button>
+    <input type="hidden" name="cardcvv2" id="cardcvv2" value="@Model.code" />
+    <button type="submit" style="display:none">@Localizer["Gönder"]</button>
+    <img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">
 </form>
 <script>
     document.getElementById('garantiForm').submit();

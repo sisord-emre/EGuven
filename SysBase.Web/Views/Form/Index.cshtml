@@ -1,7 +1,6 @@
 ﻿@model FormViewModel
 @{
     ViewData["Title"] = "E-İmza";
-    var slug = Context.Request.Query["slug"].ToString();
 }
 @if (Model.ProjectProducts[0].Project.Image != null && Model.ProjectProducts[0].Project.Image != "")
 {
@@ -61,7 +60,7 @@
                                 </div>
                                 <div class="flex items-stretch gap-3">
                                     <div class="base-form-group">
-                                        <input type="text" name="slug" id="slug" placeholder="Kodunuzu girin" value="@slug" />
+                                        <input type="text" name="slug" id="slug" placeholder="Kodunuzu girin" value="@ViewData["slug"]" />
                                     </div>
                                     <button type="button" class="btn btn-common h-auto px-8" onclick="KodSecim()">@Localizer["Uygula"]</button>
                                 </div>
@@ -81,9 +80,6 @@
                                                     </div>
                                                     <div class="text-xs text-primary-dark mb-1">
                                                         @item.Product.ProductLanguageInfos[0].Description
-                                                    </div>
-                                                    <div class="text-xs text-primary-red">
-                                                        @Localizer["Otomatik Yenileme"]
                                                     </div>
                                                 </div>
                                                 <div class="bg-form-product-price h-full rounded-b-5 py-4 text-center text-primary-red w-full transition-colors duration-150 ease-in product-item-price flex flex-col items-center justify-center">
@@ -118,9 +114,11 @@
                                     @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 6))//Kişisel Bilgiler
                                     {
                                         string required = "";
+                                        string requiredRenk = "";
                                         if (item.Required)
                                         {
                                             required = "required";
+                                            requiredRenk = "custem-req";
                                         }
                                         if (item.Field.Type == "int")
                                         {
@@ -131,10 +129,10 @@
                                                         @Localizer[item.Field.Name]
                                                         @if (item.Required)
                                                         {
-                                                            <sup>*</sup>
+                                                            <sup class="custem-req-sup">*</sup>
                                                         }
                                                     </label>
-                                                    <select class="" name="@item.Field.ApiColumn" id="il" data-input-tab="musteri-bilgileri" @required>
+                                                    <select class="@requiredRenk" name="@item.Field.ApiColumn" id="il" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                         <option value="">@Localizer["Seçiniz"]</option>
                                                         @foreach (City city in Model.Cities.OrderBy(x => x.Name))
                                                         {
@@ -154,10 +152,10 @@
                                                         @Localizer[item.Field.Name]
                                                         @if (item.Required)
                                                         {
-                                                            <sup>*</sup>
+                                                            <sup class="custem-req-sup">*</sup>
                                                         }
                                                     </label>
-                                                    <select class="" name="@item.Field.ApiColumn" id="ilce" data-input-tab="musteri-bilgileri" @required>
+                                                    <select class="@requiredRenk" name="@item.Field.ApiColumn" id="ilce" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                         <option value="">@Localizer["Seçiniz"]</option>
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -173,10 +171,10 @@
                                                     @Localizer[item.Field.Name]
                                                     @if (item.Required)
                                                     {
-                                                        <sup>*</sup>
+                                                        <sup class="custem-req-sup">*</sup>
                                                     }
                                                 </label>
-                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " data-input-tab="musteri-bilgileri" @required></textarea>
+                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 @requiredRenk" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)></textarea>
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
@@ -190,10 +188,10 @@
                                                     @Localizer[item.Field.Name]
                                                     @if (item.Required)
                                                     {
-                                                        <sup>*</sup>
+                                                        <sup class="custem-req-sup">*</sup>
                                                     }
                                                 </label>
-                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" data-input-tab="musteri-bilgileri" accept="image/png, image/jpeg" @required />
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="@requiredRenk" data-input-tab="musteri-bilgileri" accept="image/png, image/jpeg" @required @Html.Raw(item.Field.OtherParams) />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
@@ -206,10 +204,10 @@
                                                     @Localizer[item.Field.Name]
                                                     @if (item.Required)
                                                     {
-                                                        <sup>*</sup>
+                                                        <sup class="custem-req-sup">*</sup>
                                                     }
                                                 </label>
-                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" class="" @required />
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" class="@requiredRenk" @required @Html.Raw(item.Field.OtherParams) />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
@@ -240,8 +238,8 @@
                                     </p>
                                 </div>
                                 <div class="mt-7">
-                                    <input type="checkbox" class="mr-2" name="Izin" id="aydinlatma-metni-kabul" value="True" required data-input-tab="musteri-bilgileri" />
-                                    <label for="aydinlatma-metni-kabul">@Localizer["Okudum, kabul ediyorum"]. <sup>*</sup></label>
+                                    <input type="checkbox" class="mr-2 custem-req" name="Izin" id="aydinlatma-metni-kabul" value="True" required data-input-tab="musteri-bilgileri" />
+                                    <label for="aydinlatma-metni-kabul">@Localizer["Okudum, kabul ediyorum"]. <sup class="custem-req-sup">*</sup></label>
                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                         @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                     </div>
@@ -256,9 +254,11 @@
                                     @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 7))//İletişim, Teslimat, Kurulum Adres Bilgileri
                                     {
                                         string required = "";
+                                        string requiredRenk = "";
                                         if (item.Required)
                                         {
                                             required = "required";
+                                            requiredRenk = "custem-req";
                                         }
                                         if (item.Field.Type == "int")
                                         {
@@ -269,10 +269,10 @@
                                                         @Localizer[item.Field.Name]
                                                         @if (item.Required)
                                                         {
-                                                            <sup>*</sup>
+                                                            <sup class="custem-req-sup">*</sup>
                                                         }
                                                     </label>
-                                                    <select class="" name="@item.Field.ApiColumn" id="il" @required>
+                                                    <select class="@requiredRenk" name="@item.Field.ApiColumn" id="il" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                         <option value="">@Localizer["Seçiniz"]</option>
                                                         @foreach (City city in Model.Cities)
                                                         {
@@ -292,10 +292,10 @@
                                                         @Localizer[item.Field.Name]
                                                         @if (item.Required)
                                                         {
-                                                            <sup>*</sup>
+                                                            <sup class="custem-req-sup">*</sup>
                                                         }
                                                     </label>
-                                                    <select class="" name="@item.Field.ApiColumn" id="ilce" @required>
+                                                    <select class="@requiredRenk" name="@item.Field.ApiColumn" id="ilce" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                         <option value="">@Localizer["Seçiniz"]</option>
                                                     </select>
                                                     <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -311,10 +311,10 @@
                                                     @Localizer[item.Field.Name]
                                                     @if (item.Required)
                                                     {
-                                                        <sup>*</sup>
+                                                        <sup class="custem-req-sup">*</sup>
                                                     }
                                                 </label>
-                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 " @required></textarea>
+                                                <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 @requiredRenk" data-input-tab="musteri-bilgileri" @required @Html.Raw(item.Field.OtherParams)></textarea>
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
@@ -328,10 +328,10 @@
                                                     @Localizer[item.Field.Name]
                                                     @if (item.Required)
                                                     {
-                                                        <sup>*</sup>
+                                                        <sup class="custem-req-sup">*</sup>
                                                     }
                                                 </label>
-                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" accept="image/png, image/jpeg" @required />
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="@requiredRenk" data-input-tab="musteri-bilgileri" accept="image/png, image/jpeg" @required @Html.Raw(item.Field.OtherParams) />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
@@ -344,10 +344,10 @@
                                                     @Localizer[item.Field.Name]
                                                     @if (item.Required)
                                                     {
-                                                        <sup>*</sup>
+                                                        <sup class="custem-req-sup">*</sup>
                                                     }
                                                 </label>
-                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="" @required />
+                                                <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="musteri-bilgileri" class="@requiredRenk" @required />
                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                     @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                 </div>
@@ -356,7 +356,7 @@
                                     }
                                 </div>
                             </fieldset>
-
+                            <input type="hidden" name="kimlikdogrulandi" id="kimlikdogrulandi" />
                             <div class="mt-11 flex items-center justify-end">
                                 <button type="button" class="btn btn-primary-red px-8" id="goToDogrulamaEkrani" disabled>
                                     @Localizer["Devam Et"]
@@ -378,8 +378,7 @@
                                         <div class="bg-white rounded-5 sr-item-shadow border border-transparent transition-colors duration-150 ease-in flex items-center flex-col justify-center gap-5 py-8 px-10 cursor-pointer"
                                              id="edevlet-logo">
                                             <figure>
-                                                <img src="assets/images/e-devlet-logo.png"
-                                                     alt="E-Devlet Logo" />
+                                                <img src="/assets/images/e-devlet-logo.png" alt="E-Devlet Logo" />
                                             </figure>
                                             <div class="text-primary-dark text-xl font-black">
                                                 @Localizer["E-DEVLET"]
@@ -411,29 +410,24 @@
                                     <div>
                                         <!-- Bireysel/Kurumsal Buttons -->
                                         <div class="fatura-tab">
-                                            <button id="bireysel-btn" class="active" type="button">
+                                            <button id="bireysel-btn" class="active" type="button" @(Model.ProjectFields.Where(x => x.Field.FieldGroupId == 8).Count() == 0 ? Html.Raw("style='display:none'") : "")>
                                                 @Localizer["BİREYSEL"]
                                             </button>
-                                            <button id="kurumsal-btn" type="button">
+                                            <button id="kurumsal-btn" type="button" @(Model.ProjectFields.Where(x => x.Field.FieldGroupId == 9).Count() == 0 ? Html.Raw("style='display:none'") : "")>
                                                 @Localizer["KURUMSAL"]
                                             </button>
                                         </div>
                                         <!-- Tab Content -->
-                                        <div id="bireysel-tab-content"
-                                             class="pt-7">
-                                            <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
-                                                <input type="radio" name="fatura-adresi-ortak" id="fatura-adresi-ortak" />
-                                                <label for="fatura-adresi-ortak">
-                                                    @Localizer["Fatura adresim teslimat adresim ile aynı"]
-                                                </label>
-                                            </div>
+                                        <div id="bireysel-tab-content" class="pt-7">
                                             <div class="grid grid-cols-1 gap-3">
                                                 @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 8))//Şirket Bilgileri
                                                 {
                                                     string required = "";
+                                                    string requiredRenk = "";
                                                     if (item.Required)
                                                     {
                                                         required = "required";
+                                                        requiredRenk = "custem-req";
                                                     }
                                                     if (item.Field.Type == "int")
                                                     {
@@ -444,10 +438,10 @@
                                                                     @Localizer[item.Field.Name]
                                                                     @if (item.Required)
                                                                     {
-                                                                        <sup>*</sup>
+                                                                        <sup class="custem-req-sup">*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="bireysel-tab-input" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="bireysel-tab-input @requiredRenk" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                                     <option value="">@Localizer["Seçiniz"]</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
@@ -467,10 +461,10 @@
                                                                     @Localizer[item.Field.Name]
                                                                     @if (item.Required)
                                                                     {
-                                                                        <sup>*</sup>
+                                                                        <sup class="custem-req-sup">*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="bireysel-tab-input" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="bireysel-tab-input @requiredRenk" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                                     <option value="">@Localizer["Seçiniz"]</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -486,10 +480,10 @@
                                                                 @Localizer[item.Field.Name]
                                                                 @if (item.Required)
                                                                 {
-                                                                    <sup>*</sup>
+                                                                    <sup class="custem-req-sup">*</sup>
                                                                 }
                                                             </label>
-                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 bireysel-tab-input" data-input-tab="odeme-bilgileri" @required></textarea>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 bireysel-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
@@ -503,10 +497,10 @@
                                                                 @Localizer[item.Field.Name]
                                                                 @if (item.Required)
                                                                 {
-                                                                    <sup>*</sup>
+                                                                    <sup class="custem-req-sup">*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required @Html.Raw(item.Field.OtherParams) />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
@@ -519,10 +513,10 @@
                                                                 @Localizer[item.Field.Name]
                                                                 @if (item.Required)
                                                                 {
-                                                                    <sup>*</sup>
+                                                                    <sup class="custem-req-sup">*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input" data-input-tab="odeme-bilgileri" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams) />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
@@ -532,21 +526,15 @@
                                             </div>
                                         </div>
                                         <div id="kurumsal-tab-content" class="hidden pt-7">
-                                            <div class="rounded-5 px-6 py-3 flex items-center gap-2 border border-tab-inactive w-max mb-7">
-                                                <input type="radio"
-                                                       name="fatura-adresi-ortak"
-                                                       id="fatura-adresi-ortak" />
-                                                <label for="fatura-adresi-ortak">
-                                                    @Localizer["Fatura adresim teslimat adresim ile aynı"]
-                                                </label>
-                                            </div>
                                             <div class="grid grid-cols-1 gap-3">
                                                 @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 9))//Fatura Bilgileri
                                                 {
                                                     string required = "";
+                                                    string requiredRenk = "";
                                                     if (item.Required)
                                                     {
                                                         required = "required";
+                                                        requiredRenk = "custem-req";
                                                     }
                                                     if (item.Field.Type == "int")
                                                     {
@@ -557,10 +545,10 @@
                                                                     @Localizer[item.Field.Name]
                                                                     @if (item.Required)
                                                                     {
-                                                                        <sup>*</sup>
+                                                                        <sup class="custem-req-sup">*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="kurumsal-tab-input" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="kurumsal-tab-input @requiredRenk" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                                     <option value="">@Localizer["Seçiniz"]</option>
                                                                     @foreach (City city in Model.Cities)
                                                                     {
@@ -580,10 +568,10 @@
                                                                     @Localizer[item.Field.Name]
                                                                     @if (item.Required)
                                                                     {
-                                                                        <sup>*</sup>
+                                                                        <sup class="custem-req-sup">*</sup>
                                                                     }
                                                                 </label>
-                                                                <select class="kurumsal-tab-input" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required>
+                                                                <select class="kurumsal-tab-input @requiredRenk" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
                                                                     <option value="">@Localizer["Seçiniz"]</option>
                                                                 </select>
                                                                 <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
@@ -599,10 +587,10 @@
                                                                 @Localizer[item.Field.Name]
                                                                 @if (item.Required)
                                                                 {
-                                                                    <sup>*</sup>
+                                                                    <sup class="custem-req-sup">*</sup>
                                                                 }
                                                             </label>
-                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 kurumsal-tab-input" data-input-tab="odeme-bilgileri" @required></textarea>
+                                                            <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 kurumsal-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)></textarea>
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
@@ -616,10 +604,10 @@
                                                                 @Localizer[item.Field.Name]
                                                                 @if (item.Required)
                                                                 {
-                                                                    <sup>*</sup>
+                                                                    <sup class="custem-req-sup">*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="kurumsal-tab-input" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="kurumsal-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required @Html.Raw(item.Field.OtherParams) />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
@@ -632,10 +620,10 @@
                                                                 @Localizer[item.Field.Name]
                                                                 @if (item.Required)
                                                                 {
-                                                                    <sup>*</sup>
+                                                                    <sup class="custem-req-sup">*</sup>
                                                                 }
                                                             </label>
-                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="odeme-bilgileri" class="kurumsal-tab-input" @required />
+                                                            <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" data-input-tab="odeme-bilgileri" class="kurumsal-tab-input @requiredRenk" @required @Html.Raw(item.Field.OtherParams) />
                                                             <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
                                                                 @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
                                                             </div>
@@ -660,10 +648,10 @@
                                                 <div class="rounded-5 px-6 py-3 flex items-center gap-6 border border-dashed border-tab-inactive w-max mb-7">
                                                     <div class="text-primary-dark text-sm font-medium max-w-20">@Localizer["Ödeme Yöntemi"]</div>
                                                     <div class="flex items-center gap-2">
-                                                        <figure><img src="assets/images/mastercard.png" alt="master card logo" /></figure>
-                                                        <figure><img src="assets/images/visa.png" alt="visa logo" /></figure>
-                                                        <figure><img src="assets/images/american-express.png" alt="american express logo" /></figure>
-                                                        <figure><img src="assets/images/discover.png" alt="discover logo" /></figure>
+                                                        <figure><img src="/assets/images/mastercard.png" alt="master card logo" /></figure>
+                                                        <figure><img src="/assets/images/visa.png" alt="visa logo" /></figure>
+                                                        <figure><img src="/assets/images/american-express.png" alt="american express logo" /></figure>
+                                                        <figure><img src="/assets/images/discover.png" alt="discover logo" /></figure>
                                                     </div>
                                                 </div>
                                                 <div class="grid grid-cols-1 gap-3">
@@ -715,8 +703,17 @@
                                             </div>
                                         </div>
                                     }
+                                    else
+                                    {
+                                        <div style="text-align:center;font-size:20px">@Localizer["Proje Koduna Özel Başvuruyu Tamamlayabilrisiniz."]</div>
+                                        <input class="hidden" type="radio" name="OdemeTipi" id="yok" value="0" style="display:none!important" checked />
+                                        <button id="kredi-kart-btn" class="active" type="button" onclick="OdemeTipSec(1)" style="display:none!important">@Localizer["KREDİ KARTI"]</button>
+                                        <button id="havale-btn" type="button" onclick="OdemeTipSec(2)" style="display:none!important">@Localizer["HAVALE"]</button>
+                                    }
                                     <input type="hidden" name="uid" id="uid" />
-                                    <button type="submit" class="btn btn-primary-red px-8 mt-10" id="submitButton">@Localizer["SİPARİŞİ TAMAMLA"]</button>
+                                    <div style="text-align:center">
+                                        <button type="submit" class="btn btn-primary-red px-8 mt-10" id="submitButton">@Localizer["SİPARİŞİ TAMAMLA"]</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -735,9 +732,8 @@
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600" style="display:none">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Static modal
                 </h3>
                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="static-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -750,7 +746,7 @@
             <div class="p-4 md:p-5 space-y-4" id="modalDiv">
             </div>
             <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600" style="display:none">
                 <button data-modal-hide="static-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">@Localizer["Kapat"]</button>
             </div>
         </div>

@@ -7,6 +7,7 @@
         public string Type { get; set; }
         public string ApiColumn { get; set; }
         public int Sequence { get; set; }
+        public string OtherParams { get; set; }
         public FieldGroup FieldGroup { get; set; }
         public List<ProjectField> ProjectFields { get; set; }
     }

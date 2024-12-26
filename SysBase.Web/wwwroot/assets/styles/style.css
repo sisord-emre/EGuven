@@ -5037,6 +5037,15 @@ select{
   border-color:rgb(240 82 82 / var(--tw-border-opacity, 1)) !important
 }
 
+.custem-req {
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(240 82 82 / var(--tw-border-opacity, 1)) !important
+}
+.custem-req-sup {
+    --tw-border-opacity: 1 !important;
+    color: rgb(240 82 82 / var(--tw-border-opacity, 1)) !important
+}
+
 .border-aside-section{
   --tw-border-opacity:1;
   border-color:rgb(236 236 236 / var(--tw-border-opacity, 1))

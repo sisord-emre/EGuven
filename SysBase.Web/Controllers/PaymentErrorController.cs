@@ -51,7 +51,8 @@ namespace SysBase.Web.Controllers
 
             if (Request.Form["procreturncode"]!="00")
             {
-                return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
+                ViewData["HataMesaji"] = "!!!!!" + Request.Form["mderrormessage"] + "!!!!!";
+                return View();
             }
             string responseHash = Request.Form.ContainsKey("hash") ? Request.Form["hash"] : "";
             char[] separator = new char[] { ':' };
@@ -85,7 +86,8 @@ namespace SysBase.Web.Controllers
                     return View();
                 }
             }
-            return Content("!!!!!" + Request.Form["mderrormessage"] + "!!!!!");
+            ViewData["HataMesaji"] = "!!!!!" + Request.Form["mderrormessage"] + "!!!!!";
+            return View();
         }
     }
 }
