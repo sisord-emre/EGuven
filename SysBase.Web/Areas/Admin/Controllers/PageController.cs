@@ -50,11 +50,18 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 model.PageLanguageInfos = await _pageLanguageInfoService.Where(x => x.PageId == model.Id).ToListAsync();
             }
 
+            // pages ve max Sequence bulma
+            var pages = await _service.ToListAsync();
+
+            var maxSequence = pages
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new PageAddViewModel { MenuPermission = menuPermission, Page = model, Languages = await _languageService.GetAllAsync() });
+            return View(new PageAddViewModel { MenuPermission = menuPermission, Page = model, MaxSequence = maxSequence, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
@@ -103,7 +110,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 TempData["ErrorMessage"] = _localizer["admin.Bilgileri Kontrol Ediniz"].Value;
             }
 
-            return View(new PageAddViewModel { MenuPermission = menuPermission, Page = model, Languages = await _languageService.GetAllAsync() });
+            // pages ve max Sequence bulma
+            var pages = await _service.ToListAsync();
+
+            var maxSequence = pages
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
+            return View(new PageAddViewModel { MenuPermission = menuPermission, Page = model, MaxSequence = maxSequence, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()

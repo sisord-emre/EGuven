@@ -1,4 +1,4 @@
-﻿@model UiLayoutViewModel
+﻿@model ContactViewModel
 @{
     ViewData["Title"] = "İletişim";
 }
@@ -159,30 +159,22 @@
                 <div class="tab-buttons border-b border-tab-inactive">
                     <button class="tab-button active py-4 md:px-14 px-2 text-sm font-extrabold text-center"
                             data-tab="sirket-bilgileri">
-                        @Localizer["Şirket Bilgileri"]
+                        @Model.CompanyInformation?.Title
                     </button>
                     <button class="tab-button py-4 md:px-14 px-2 text-sm font-extrabold text-center"
                             data-tab="hesap-numaralari">
-                        @Localizer["Hesap Numaraları"]
+                        @Model.AccountNumber?.Title
                     </button>
                 </div>
 
                 <div class="tab-content text-primary-dark text-sm pt-7">
                     <div id="sirket-bilgileri"
                          class="tab-pane active overflow-hidden">
-                        <p>
-                            @Localizer["Elektronik imza alımlarınızı satış ofislerimizden gerçekleştirebilirsiniz. Size daha iyi hizmet verebilmek için ofislerimizi randevu alarak ziyaret etmenizi rica ederiz"].
-                        </p>
+                        @Html.Raw(Model.CompanyInformation?.Content)
                     </div>
                     <div id="hesap-numaralari"
                          class="tab-pane overflow-hidden">
-                        <p>
-                            @Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde nostrum quaerat eaque culpa nesciunt reprehenderit,sapiente nihil placeat, ipsum accusamus laborum numquam quod consequatur. Impedit maiores, illo adipisci provident dolores eveniet nisi autem magnam dignissimos recusandae vel expedita molestias dicta"]
-                        </p>
-                        <br />
-                        <p>
-                            @Localizer["Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus vitae vero vel dolore nobis sapiente ex. Non fugiat aliquid excepturi!"]
-                        </p>
+                        @Html.Raw(Model.AccountNumber?.Content)
                     </div>
                 </div>
             </div>

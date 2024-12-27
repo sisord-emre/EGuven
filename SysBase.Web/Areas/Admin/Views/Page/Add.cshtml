@@ -45,7 +45,7 @@
                             <div class="row">
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
-                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@Model.Page?.Sequence" autocomplete="off" required />
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@(Model.Page?.Sequence ?? (Model.MaxSequence + 10))" autocomplete="off" required />
                                 </div>
                                 <div class="mb-3 col-md-4 col-sm-12">
                                     <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
