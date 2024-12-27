@@ -84,6 +84,7 @@ namespace SysBase.Core.Models
         public int OdemeTipi { get; set; }//1:kredikartı,2havale
         public string OdemeCevap { get; set; }
         public decimal OdemeTutar { get; set; }
+        public int SiparisKodu { get; set; }
         public ProjectProduct ProjectProduct { get; set; }
         public string IkinciKisiAdSoyad { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//sadece insert ederken çalış
