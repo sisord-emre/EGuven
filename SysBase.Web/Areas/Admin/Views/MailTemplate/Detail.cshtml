@@ -1,0 +1,48 @@
+﻿<div id="detailModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="detailModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ViewContext.RouteData.Values["controller"].ToString() @Localizer["admin.Detay"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: middle;width:27%"><b>@Localizer["admin.Kodu"]</b></td>
+                            <td>@Model.MailTemplate.Code</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle;width:27%"><b>@Localizer["admin.Başlık"]</b></td>
+                            <td>@Model.Title</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle;width:27%"><b>@Localizer["admin.Sırası"]</b></td>
+                            <td>@Model.MailTemplate.Sequence</td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle;width:27%"><b>@Localizer["admin.Durum"]</b></td>
+                            <td>
+                                @if (Model.MailTemplate.Status)
+                                {
+                                    <div class="badge rounded-pill text-bg-success">@Localizer["admin.Aktif"]</div>
+                                }
+                                else
+                                {
+                                    <div class="badge rounded-pill text-bg-danger">@Localizer["admin.Pasif"]</div>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: middle;width:27%"><b>@Localizer["admin.Kayıt Tarihi"]</b></td>
+                            <td>@Model.MailTemplate.CreatedDate</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["admin.Kapat"]</button>
+            </div>
+        </div>
+    </div>
+</div>

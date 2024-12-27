@@ -1,0 +1,150 @@
+﻿@{
+    string addUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Add";
+    string listUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "List";
+    string deleteUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Delete";
+    string detailUrl = "/" + ViewContext.RouteData.Values["area"] + "/" + ViewContext.RouteData.Values["controller"].ToString() + "/" + "Detail";
+    IEnumerable<MailTemplateLanguageInfo> mailTemplateLanguageInfos = Model.MailTemplate?.MailTemplateLanguageInfos;
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Başarılı"]</strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>@Localizer["admin.Kayıt Hatası"]</strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<section class="pc-container custom-container">
+    <div class="pc-content custom-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- [ form-element ] start -->
+            <div class="col-sm-12">
+                <!-- HTML Input Types -->
+                <div class="card">
+                    <div class="card-header custom-page-header">
+                        <h5>@Localizer["admin." + ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
+                        <div class="btn-group" role="group" aria-label="button groups">
+                            @if (Model.MenuPermission?.Add)
+                            {
+                                <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
+                            }
+                            @if (Model.MenuPermission?.List)
+                            {
+                                <button type="button" onclick="GetPage('0','@listUrl');" class="btn btn-light-primary">@Localizer["admin.Listele"]</button>
+                            }
+                        </div>
+                    </div>
+                    <form id="formPost" class="form" action="" method="post" autocomplete="off">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Sequence" class="form-label">@Localizer["admin.Sırası"]</label>
+                                    <input class="form-control" type="number" name="Sequence" id="Sequence" value="@(Model.MailTemplate?.Sequence ?? (Model.MaxSequence + 10))" autocomplete="off" required />
+                                </div>
+                                <div class="mb-3 col-md-4 col-sm-12">
+                                    <label for="Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="Status" id="Status" value="True" @(Model.MailTemplate?.Status == true ? "checked" : "") />
+                                        <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3 col-sm-12">
+                                    <div class="accordion card" id="dilBloklari">
+                                        @for (int i = 0; i < Model.Languages.Count; i++)
+                                        {
+                                            MailTemplateLanguageInfo languageInfo = null;
+                                            if (mailTemplateLanguageInfos != null)
+                                            {
+                                                languageInfo = mailTemplateLanguageInfos.Where(x => x.LanguageId == Model.Languages[i].Id).FirstOrDefault();
+                                            }
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="heading-@i">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@i" aria-expanded="false" aria-controls="collapse-@i">
+                                                        @Model.Languages[i].Name
+                                                    </button>
+                                                </h2>
+                                                <!-- classın içine "show" eklersen açık gelir ve yukarıdaki button içine aria-expanded="true" eklersen ok işareti çıkar ve button içinde collapsed clasını kaldırmalısın-->
+                                                <div id="collapse-@i" class="accordion-collapse collapse @(languageInfo?.Status == true ? "show" : "")" aria-labelledby="heading-@i" data-bs-parent="#dilBloklari">
+                                                    <div class="accordion-body">
+                                                        <input type="hidden" name="MailTemplateLanguageInfos[@i].Id" id="MailTemplateLanguageInfos[@i].Id" value="@languageInfo?.Id" />
+                                                        <input type="hidden" name="MailTemplateLanguageInfos[@i].LanguageId" id="MailTemplateLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
+                                                        <div class="row">
+                                                            <div class="mb-3 col-md-6 col-sm-12">
+                                                                <label for="MailTemplateLanguageInfos[@i].Title" class="form-label">@Localizer["admin.Başlık"]</label>
+                                                                <input class="form-control" type="text" name="MailTemplateLanguageInfos[@i].Title" id="MailTemplateLanguageInfos[@i].Title" value="@languageInfo?.Title" autocomplete="off" />
+                                                            </div>
+                                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                                <label for="MailTemplateLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" name="MailTemplateLanguageInfos[@i].Status" id="MailTemplateLanguageInfos[@i].Status" value="True" @(languageInfo?.Status == true ? "checked" : "") />
+                                                                    <label class="form-check-label" for="Status">@Localizer["admin.Aktif"]</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="MailTemplateLanguageInfos[@i].Content" class="form-label">@Localizer["admin.İçerik"]</label>
+                                                                <textarea class="editorCk form-control" name="MailTemplateLanguageInfos[@i].Content" id="MailTemplateLanguageInfos[@i].Content">@languageInfo?.Content</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <input type="hidden" name="Code" value="@Model.MailTemplate?.Code">
+                            <input type="hidden" name="Id" value="@Model.MailTemplate?.Id">
+                            <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- [ form-element ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</section>
+<partial name="/Areas/Admin/Views/Shared/_RegScripts.cshtml" />
+<script type="text/javascript">
+    $(".editorCk").each(function () {
+        let editorId = $(this).attr('id');
+        CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
+            height: '350px',
+            extraPlugins: 'forms',
+            uiColor: '#CCEAEE'
+        });
+    });
+
+    $('#formPost').submit(function (e) {
+        e.preventDefault(); //submit postu kesyoruz
+        var data = new FormData(this);
+        $(".editorCk").each(function () {
+            let editorId = $(this).attr('id');
+            data.set(editorId, CKEDITOR.instances[editorId].getData());//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir
+        });
+        $('#Pages').html('<img src="/Images/loading.gif" style="position:relative;left:50%;margin-top:10%;width:64px">');
+        $.ajax({
+            type: "POST",
+            url: "@addUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $('#Pages').html(res);
+            },
+            error: function (jqXHR, status, errorThrown) {
+                alert("Result: " + status + " Status: " + jqXHR.status);
+            }
+        });
+    });
+</script>

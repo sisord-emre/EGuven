@@ -15,21 +15,21 @@ namespace SysBase.Web.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
-    public class PageController : BaseController
+    public class MailTemplateController : BaseController
     {
-        // PageController specific dependencies
-        protected readonly IService<Page> _service;
-        protected readonly IService<PageLanguageInfo> _pageLanguageInfoService;
+        // MailTemplateController specific dependencies
+        protected readonly IService<MailTemplate> _service;
+        protected readonly IService<MailTemplateLanguageInfo> _mailTemplateLanguageInfoService;
         protected readonly IService<Language> _languageService;
-        protected readonly ILogger<PageController> _logger;
+        protected readonly ILogger<MailTemplateController> _logger;
 
-        public PageController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
-                              IService<Page> service, IService<PageLanguageInfo> pageLanguageInfoService,
-                              IService<Language> languageService, ILogger<PageController> logger)
+        public MailTemplateController(IHtmlLocalizer<SharedResource> localizer, UserManager<AppUser> userManager,
+                              IService<MailTemplate> service, IService<MailTemplateLanguageInfo> mailTemplateLanguageInfoService,
+                              IService<Language> languageService, ILogger<MailTemplateController> logger)
             : base(localizer, userManager)
         {
             _service = service;
-            _pageLanguageInfoService = pageLanguageInfoService;
+            _mailTemplateLanguageInfoService = mailTemplateLanguageInfoService;
             _languageService = languageService;
             _logger = logger;
         }
@@ -43,22 +43,29 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Page model = null;
+            MailTemplate model = null;
             if (Id != null)
             {
                 model = await _service.GetByIdAsync(Int32.Parse(Id));
-                model.PageLanguageInfos = await _pageLanguageInfoService.Where(x => x.PageId == model.Id).ToListAsync();
+                model.MailTemplateLanguageInfos = await _mailTemplateLanguageInfoService.Where(x => x.MailTemplateId == model.Id).ToListAsync();
             }
+
+            // mailTemplates ve max Sequence bulma
+            var mailTemplates = await _service.ToListAsync();
+
+            var maxSequence = mailTemplates
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
 
             //log işleme alanı     
             LogContext.PushProperty("TypeName", "List");
             _logger.LogCritical(functions.LogCriticalMessage("List", ControllerContext.ActionDescriptor.ControllerName, Id));
 
-            return View(new PageAddViewModel { MenuPermission = menuPermission, Page = model, Languages = await _languageService.GetAllAsync() });
+            return View(new MailTemplateAddViewModel { MenuPermission = menuPermission, MailTemplate = model, MaxSequence = maxSequence, Languages = await _languageService.GetAllAsync() });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Page model)
+        public async Task<IActionResult> Add(MailTemplate model)
         {
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);
             MenuPermission menuPermission = functions.MenuPermSelect(currentUser.MenuPermissions, ControllerContext.ActionDescriptor.ControllerName);
@@ -67,7 +74,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            Page isControl;
+            MailTemplate isControl;
             if (ModelState.IsValid)
             {
                 model.UpdatedDate = DateTime.Now;
@@ -103,7 +110,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 TempData["ErrorMessage"] = _localizer["admin.Bilgileri Kontrol Ediniz"].Value;
             }
 
-            return View(new PageAddViewModel { MenuPermission = menuPermission, Page = model, Languages = await _languageService.GetAllAsync() });
+            // mailTemplates ve max Sequence bulma
+            var mailTemplates = await _service.ToListAsync();
+
+            var maxSequence = mailTemplates
+                .DefaultIfEmpty()
+                .Max(x => x?.Sequence ?? 0);
+
+            return View(new MailTemplateAddViewModel { MenuPermission = menuPermission, MailTemplate = model, MaxSequence = maxSequence, Languages = await _languageService.GetAllAsync() });
         }
 
         public async Task<IActionResult> List()
@@ -121,7 +135,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             LogContext.PushProperty("TypeName", ControllerContext.ActionDescriptor.ActionName);
             _logger.LogCritical(functions.LogCriticalMessage(ControllerContext.ActionDescriptor.ActionName, ControllerContext.ActionDescriptor.ControllerName));
 
-            return View(new PageListViewModel { MenuPermission = menuPermission, PageLanguageInfos = await _pageLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.Page).ToListAsync() });
+            return View(new MailTemplateListViewModel { MenuPermission = menuPermission, MailTemplateLanguageInfos = await _mailTemplateLanguageInfoService.Where(x => x.Language.Code == langCode.ToString()).Include(x => x.MailTemplate).ToListAsync() });
         }
 
         public async Task<IActionResult> Detail(string Id = null)
@@ -130,7 +144,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
             {
                 var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
                 var langCode = rqf.RequestCulture.Culture;
-                return View(await _pageLanguageInfoService.Where(x => x.Page.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.Page).FirstOrDefaultAsync());
+                return View(await _mailTemplateLanguageInfoService.Where(x => x.MailTemplate.Id == Int32.Parse(Id) && x.Language.Code == langCode.ToString()).Include(x => x.MailTemplate).FirstOrDefaultAsync());
             }
 
             //log işleme alanı
@@ -154,7 +168,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
 
             if (Id != null)
             {
-                Page item = await _service.GetByIdAsync(Int32.Parse(Id));
+                MailTemplate item = await _service.GetByIdAsync(Int32.Parse(Id));
                 if (item != null)
                 {
                     await _service.RemoveAsync(item);
