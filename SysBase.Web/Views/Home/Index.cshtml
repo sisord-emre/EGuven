@@ -50,6 +50,8 @@
 </div>
 
 <!-- Duyurular -->
+@if (Model.Announcements != null && Model.Announcements.Count > 0)
+{
 <section class="news" data-aos="fade-up">
     <div class="container">
         <div class="flex items-center gap-4 py-3 border-b border-primary-gray">
@@ -58,11 +60,11 @@
             </div>
             <div class="news-slider">
                 <div class="news-slider-wrapper">
-                    @foreach (AnnouncementLanguageInfo item in Model.Announcements)
+                    @foreach (var item in Model.Announcements)
                     {
                         <div class="news-slider-slide">
                             <a href="javascript:;"
-                           class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
+                                class="text-primary-dark dark:text-white text-sm flex items-center gap-1 h-full w-full">
                                 <div class="line-clamp-1">
                                     @item.Description
                                 </div>
@@ -74,6 +76,9 @@
         </div>
     </div>
 </section>
+}
+
+
 
 <!-- Ürünler -->
 <section class="products mt-10" data-aos="fade-up">

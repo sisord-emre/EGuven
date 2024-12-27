@@ -112,13 +112,23 @@
 
     function handleSelectionChange() {
         const Id = document.getElementById('HomeProductSequenceId').value;
+
+        // Kullanıcı onayı alın
+        const userConfirmed = confirm("İşlem yapmak istiyor musunuz?");
+
+        if (!userConfirmed) {
+            // Kullanıcı işlemi iptal etti, işlem yapılmaz
+            return;
+        }
+
+        // AJAX işlemi
         $.ajax({
             type: "POST",
             url: "/Admin/HomeProduct/HomeProductSequenceAdd",
             data: { 'Id': Id },
             success: function (res) {
                 if (res.status == "success") {
-                    GetPage('0', '@listUrl')
+                    GetPage('0', '@listUrl');
                 } else {
                     alert(res.message);
                 }
@@ -128,6 +138,7 @@
             }
         });
     }
+
 
     function dataDetail(Id) {
         document.getElementById("detay-" + Id).disabled = true;
