@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using CrmService;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -81,27 +82,50 @@ namespace SysBase.Web.Controllers
             model.Status = false;
             await _formService.AddAsync(model);
 
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://192.168.127.25:5558/Web2.svc");
-            request.Headers.Add("SOAPAction", "http://tempuri.org/IWeb2/SendPINPUKMailbyTCNO");
-            var content = new StringContent("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <soap:Header/>\r\n  <soap:Body>\r\n    <FormIletisim xmlns=\"http://tempuri.org/\">\r\n      <fir>\r\n        <Name>" + model.Name + "</Name>\r\n        <Tcno>" + model.Tcno + "</Tcno>\r\n        <Subject>" + model.Subject + "</Subject>\r\n        <Phone>" + model.Phone + "</Phone>\r\n        <Email>" + model.Email + "</Email>\r\n        <Type>" + model.Type + "</Type>\r\n        <Message>" + model.Message + "</Message>\r\n      </fir>\r\n      <token>TEST_TOKEN</token>\r\n      <pass>EgVn2016</pass>\r\n    </FormIletisim>\r\n  </soap:Body>\r\n</soap:Envelope>\r\n", null, "text/xml");
-            request.Content = content;
-            var response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            string res = await response.Content.ReadAsStringAsync();
-            if (res.Contains("Şifreniz Cep Telefonunuza Gönderilmiştir."))
-            {
-                resultJson.status = "success";
-                resultJson.message = "Şifreniz Cep Telefonunuza Gönderilmiştir.";
 
-                model.Status = true;
-                model.UpdatedDate = DateTime.Now;
-                await _formService.UpdateAsync(model);
-            }
-            else
+            // Servis istemcisini oluşturun
+            var client = new Web2Client(Web2Client.EndpointConfiguration.BasicHttpBinding_IWeb2);
+            try
             {
-                resultJson.status = "error";
-                resultJson.message = "Cep Telefonu ve TC No Uyumsuzdur.";
+                // FormIletisimRequest nesnesini oluşturun
+                var formRequest = new FormIletisimRequest
+                {
+                    Email = model.Email,
+                    Message = model.Message,
+                    Name = model.Name,
+                    Phone = model.Phone,
+                    Subject = model.Subject,
+                    Tcno = model.Tcno,
+                    Type = model.Type
+                };
+                // SOAP isteğini yapın
+                var response = await client.FormIletisimAsync(formRequest, "2", "EgVn2016");
+                // Yanıtı gösterin
+                Debug.WriteLine($"Result: {response}");
+                if (response.Contains("Kaydınız Alınmıştır"))
+                {
+                    resultJson.status = "success";
+                    resultJson.message = response;
+                    model.Status = true;
+                    model.UpdatedDate = DateTime.Now;
+                    await _formService.UpdateAsync(model);
+                }
+                else
+                {
+                    resultJson.status = "error";
+                    resultJson.message = response;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda çıktı
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+                // İstemciyi kapat
+                if (client.State == System.ServiceModel.CommunicationState.Opened)
+                    await client.CloseAsync();
             }
 
             return resultJson;

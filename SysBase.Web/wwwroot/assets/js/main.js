@@ -468,28 +468,6 @@ export function formTabControl() {
     if (goToDogrulamaEkrani) {
         goToDogrulamaEkrani.addEventListener('click', () => {
             TcDogrulama();
-            const musteriBilgileri =
-                document.getElementById('musteri-bilgileri')
-            const musteriBilgileriTab = document.getElementById(
-                'musteri-bilgileri-tab'
-            )
-            const dogrulamaEkrani = document.getElementById('dogrulama-ekrani')
-            const dogrulamaEkraniTab = document.getElementById(
-                'dogrulama-ekrani-tab'
-            )
-
-            if (formValidation()) {
-                goToDogrulamaEkrani.removeAttribute('disabled')
-            }
-
-            dogrulamaEkrani.classList.add('active')
-            dogrulamaEkraniTab.classList.add('active')
-            musteriBilgileri.classList.remove('active')
-            musteriBilgileriTab.classList.remove('active')
-            musteriBilgileriTab.classList.add(
-                'cursor-not-allowed',
-                'pointer-events-none'
-            )
         })
     }
 
@@ -514,6 +492,7 @@ export function formTabControl() {
             )
         })
     }
+
 
     const eDevletLogo = document.getElementById('edevlet-logo')
     const vipLogo = document.getElementById('vip-logo')
@@ -684,7 +663,7 @@ export const videoPlayerShow = () => {
     }
 }
 
-export const formValidation = () => {
+export var formValidation = () => {
     const tabs = ['musteri-bilgileri', 'odeme-bilgileri']
     const buttons = {
         'musteri-bilgileri': document.getElementById('goToDogrulamaEkrani'),

@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using CrmService;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SysBase.Web.Controllers
 {
@@ -133,9 +135,15 @@ namespace SysBase.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ResultJson> Kayit(ApiBasvuruRequest model, IFormFile Dosya, string[] UrunList)
+        public async Task<ResultJson> Kayit(ApiBasvuruRequest model, IFormFile Dosya, string[] UrunList, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
         {
             ResultJson resultJson = new ResultJson { status = "error" };
+            string resCT = await functions.CloudflareTurnstile(cfTurnstileResponse);
+            if (resCT != "1")
+            {
+                resultJson.message = resCT;
+                return resultJson;
+            }
             ApiBasvuruRequest isControl;
             try
             {
@@ -364,6 +372,65 @@ namespace SysBase.Web.Controllers
                 Hash = hash
             });
         }
+
+        [HttpPost]
+        public async Task<ResultJson> CrmTcKontrol(string TCKimlikNo, string Tel)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+
+            var client = new Web2Client(Web2Client.EndpointConfiguration.BasicHttpBinding_IWeb2);
+            try
+            {
+                string response = await client.SMSCodeForMobileAsync("token", TCKimlikNo, Regex.Replace(Tel, @"[^\d]", ""));
+                // Yanıtı gösterin
+                Debug.WriteLine($"Result: {response}");
+                if (response.Contains("Success"))
+                {
+                    resultJson.status = "success";
+                    if (response.Split(" ").Length > 1 && response.Split(" ")[1] != null && response.Split(" ")[1] != "")
+                    {
+                        HttpContext.Session.SetString("SmsKod", GVPOSHelper.Sha512(response.Split(" ")[1]));
+                        resultJson.data = GVPOSHelper.Sha512(response.Split(" ")[1]);
+                    }
+                }
+                else
+                {
+                    resultJson.status = "error";
+                    resultJson.message = response.Replace("error ", "");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda çıktı
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
+            finally
+            {
+                // İstemciyi kapat
+                if (client.State == System.ServiceModel.CommunicationState.Opened)
+                    await client.CloseAsync();
+            }
+            return resultJson;
+        }
+
+        [HttpPost]
+        public async Task<ResultJson> SmsKodDogrula(string kod)
+        {
+            ResultJson resultJson = new ResultJson { status = "error" };
+            string hasKod = GVPOSHelper.Sha512(kod);
+            if (hasKod == HttpContext.Session.GetString("SmsKod"))
+            {
+                resultJson.status = "success";
+                resultJson.message = "Sms Kodu Doğrulandı";
+            }
+            else
+            {
+                resultJson.status = "error";
+                resultJson.message = "Sms Kodu Doğrulanamadı";
+            }
+            return resultJson;
+        }
+
 
         [HttpPost]
         public async Task<ResultJson> TcDogrulama(string TCKimlikNo, string Ad, string Soyad, string DogumYili)

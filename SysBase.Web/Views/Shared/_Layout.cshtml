@@ -30,7 +30,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-youtube"></span>
                             </a>
                         </li>
@@ -39,7 +39,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-linkedin"></span>
                             </a>
                         </li>
@@ -48,7 +48,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-instagram"></span>
                             </a>
                         </li>
@@ -57,7 +57,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-facebook"></span>
                             </a>
                         </li>
@@ -66,7 +66,7 @@
                     {
                         <li>
                             <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                               class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                           class="flex items-center justify-center rounded-full border border-black dark:border-white p-1 text-black dark:text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                 <span class="icon-x"></span>
                             </a>
                         </li>
@@ -85,9 +85,9 @@
                     {
                         <!-- cmp-language -->
                         <button id="languageSelectHeader"
-                                data-dropdown-toggle="dropdownLanguageHeaderMenu"
-                                class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
-                                type="button">
+                            data-dropdown-toggle="dropdownLanguageHeaderMenu"
+                            class="btn dark:text-white py-1 px-2 shadow-none rounded-full border border-primary-dark dark:border-white text-xs"
+                            type="button">
                             <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                             <span class="icon-chevron-down"></span>
                         </button>
@@ -168,17 +168,17 @@
                             {
                                 <div class="quick sm:ml-auto ml-0">
                                     <button type="button"
-                                            class="btn btn-common"
-                                            id="dropdownQuickActions"
-                                            data-dropdown-toggle="dropdownQuickActionsMenu">
+                                        class="btn btn-common"
+                                        id="dropdownQuickActions"
+                                        data-dropdown-toggle="dropdownQuickActionsMenu">
                                         <span class="icon-menu text-lg"></span>
                                         <span>@Localizer["Hemen Satın Al"]</span>
                                     </button>
                                     <!-- Dropdown menu -->
                                     <div id="dropdownQuickActionsMenu"
-                                         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                                            aria-labelledby="dropdownDefaultButton">
+                                        aria-labelledby="dropdownDefaultButton">
                                             @foreach (QuickMenu item in model.QuickMenus)
                                             {
                                                 <li>
@@ -320,7 +320,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Youtube)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-youtube"></span>
                                     </a>
                                 </li>
@@ -329,7 +329,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Linkedin)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-linkedin"></span>
                                     </a>
                                 </li>
@@ -338,7 +338,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Instagram)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-instagram"></span>
                                     </a>
                                 </li>
@@ -347,7 +347,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Facebook)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-facebook"></span>
                                     </a>
                                 </li>
@@ -356,7 +356,7 @@
                             {
                                 <li>
                                     <a href="@Html.Raw(model.Config.Twitter)" target="_blank"
-                                       class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
+                                   class="flex items-center justify-center rounded-full border border-white p-1 text-white hover:bg-red-600 transition-colors duration-150 ease-in hover:text-white">
                                         <span class="icon-x"></span>
                                     </a>
                                 </li>
@@ -389,9 +389,9 @@
                         {
                             <!-- cmp-language -->
                             <button id="dropdownLanguageFooter"
-                                    data-dropdown-toggle="dropdownLanguageFooterMenu"
-                                    class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
-                                    type="button">
+                                data-dropdown-toggle="dropdownLanguageFooterMenu"
+                                class="btn shadow-none bg-primary-dark text-white rounded-full border border-white py-1 px-2 text-xs"
+                                type="button">
                                 <span>@languages.Where(x=>x.Code==cultureInfo.Name).FirstOrDefault().Name</span>
                                 <span class="icon-chevron-down"></span>
                             </button>
@@ -654,25 +654,167 @@
                 return false;
             }
             DogumTarihi = DogumTarihi.split("-")[0];
-            var data = new FormData();
-            data.append("TCKimlikNo", TCKimlikNo);
-            data.append("Ad", Ad);
-            data.append("Soyad", Soyad);
-            data.append("DogumYili", DogumTarihi);
-            $.ajax({
-                type: "POST",
-                url: "/Form/s/TcDogrulama",
-                data: data,
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    document.getElementById("kimlikdogrulandi").value = res.data;
+
+            Swal.fire({
+                title: "Doğrulanıyor",
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                confirmButtonText: "Tamam",
+                didOpen: () => {
+                    Swal.showLoading();
+                    var data = new FormData();
+                    data.append("TCKimlikNo", TCKimlikNo);
+                    data.append("Ad", Ad);
+                    data.append("Soyad", Soyad);
+                    data.append("DogumYili", DogumTarihi);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Form/s/TcDogrulama",
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (res) {
+                            Swal.hideLoading();
+                            if (res.status == "success") {
+                                document.getElementById("kimlikdogrulandi").value = res.data;
+                                Swal.update({
+                                    title: res.message
+                                });
+                                CrmTcKontrol();
+                            } else {
+                                Swal.update({
+                                    icon: "warning",
+                                    title: res.message
+                                });
+                            }
+                        },
+                        error: function (jqXHR, status, errorThrown) {
+                            Swal.hideLoading();
+                            Swal.update({
+                                icon: "warning",
+                                title: "Tc Servisi Cevap Vermiyor Tekrar Deneyiniz"
+                            });
+                            alert("Result: " + status + " Status: " + jqXHR.status);
+                        }
+                    });
                 },
-                error: function (jqXHR, status, errorThrown) {
-                    console.log("Result: " + status + " Status: " + jqXHR.status);
+                willClose: () => {
+                    Swal.hideLoading()
                 }
+            }).then((result) => {
+                Swal.hideLoading()
             });
         }
+
+        async function CrmTcKontrol() {
+            var TCKimlikNo = document.getElementById("TCKimlikNo").value;
+            var Tel = "";
+            if (document.getElementById("CepTelefonu") != null) {
+                Tel = document.getElementById("CepTelefonu").value;
+            }
+            if (Tel == "" && document.getElementById("Telefon") != null) {
+                Tel = document.getElementById("Telefon").value;
+            }
+            if (TCKimlikNo == "" || Tel == "") {
+                return false;
+            }
+            Swal.fire({
+                title: "Crm Doğrulanıyor",
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                confirmButtonText: "Tamam",
+                didOpen: async () => { // Burayı async yaptık
+                    Swal.showLoading();
+                    var data = new FormData();
+                    data.append("TCKimlikNo", TCKimlikNo);
+                    data.append("Tel", Tel);
+                    try {
+                        const res = await $.ajax({
+                            type: "POST",
+                            url: "/Form/s/CrmTcKontrol",
+                            data: data,
+                            contentType: false,
+                            processData: false
+                        });
+                        Swal.hideLoading();
+                        if (res.status == "success") {
+                            if (res.data == "" || res.data == null) {
+                                Swal.close();
+                                IletisimDevamButton();
+                            } else {
+                                const { value: kod } = await Swal.fire({
+                                    input: "text",
+                                    inputLabel: "Sms Doğrulama Kodunu Giriniz",
+                                    inputPlaceholder: "Sms Kodu",
+                                    confirmButtonText: "Tamam",
+                                });
+                                if (kod) {
+                                    var dataSub = new FormData();
+                                    dataSub.append("kod", kod);
+                                    const resSub = await $.ajax({
+                                        type: "POST",
+                                        url: "/Form/s/SmsKodDogrula",
+                                        data: dataSub,
+                                        contentType: false,
+                                        processData: false
+                                    });
+                                    if (resSub.status == "success") {
+                                        Swal.close();
+                                        IletisimDevamButton();
+                                    } else {
+                                        Swal.update({
+                                            icon: "warning",
+                                            title: res.message
+                                        });
+                                    }
+                                }
+                            }
+                        } else {
+                            Swal.update({
+                                icon: "warning",
+                                title: res.message
+                            });
+                        }
+                    } catch (error) {
+                        Swal.hideLoading();
+                        alert("Bir hata oluştu: " + error.status);
+                    }
+                },
+                willClose: () => {
+                    Swal.hideLoading();
+                }
+            }).then((result) => {
+                Swal.hideLoading();
+            });
+        }
+
+
+        function IletisimDevamButton() {
+                document.getElementById('musteri-bilgileri')
+            const musteriBilgileriTab = document.getElementById(
+                'musteri-bilgileri-tab'
+            )
+            const dogrulamaEkrani = document.getElementById('dogrulama-ekrani')
+            const dogrulamaEkraniTab = document.getElementById(
+                'dogrulama-ekrani-tab'
+            )
+
+            /*
+            if (formValidation()) {
+                goToDogrulamaEkrani.removeAttribute('disabled')
+            }
+            */
+
+            dogrulamaEkrani.classList.add('active')
+            dogrulamaEkraniTab.classList.add('active')
+            musteriBilgileri.classList.remove('active')
+            musteriBilgileriTab.classList.remove('active')
+            musteriBilgileriTab.classList.add(
+                'cursor-not-allowed',
+                'pointer-events-none'
+            )
+        }
+
 
         function GarantiModal() {
             var e = document.getElementById("exp-date-month");
