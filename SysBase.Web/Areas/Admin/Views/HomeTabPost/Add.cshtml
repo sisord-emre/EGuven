@@ -107,10 +107,22 @@
 
             @if (Model.HomeTabPost?.Id != 0 && Model.HomeTabPost?.Id != null)
             {
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">@Localizer["admin.Home Tab Post Detay Listele"]</h4>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body card-dashboard" id="subUnitList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title" id="basic-layout-colored-form-control">Home Tab Post Detay Ekle</h4>
+                            <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Home Tab Post Detay Ekle"]</h4>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body">
@@ -160,18 +172,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Home Tab Post Detay Listele</h4>
-                        </div>
-                        <div class="card-content collapse show">
-                            <div class="card-body card-dashboard" id="subUnitList">
                             </div>
                         </div>
                     </div>
@@ -247,6 +247,8 @@
             success: function (res) {
                 if (res.status == "success") {
                     document.getElementById("subUnitPost").reset();
+                    document.getElementById("HomeTabPostLanguageInfoId").selectedIndex = 0;
+                    document.getElementById("Id").value = null;
                     $(".editorCk2").each(function () {
                         let editorId2 = $(this).attr('id');
                         data.set("Body", CKEDITOR.instances[editorId2].setData(""));//ckeditor kullanılacağı zaman açılır 'ckeditor' yazan kısmı post keyidir

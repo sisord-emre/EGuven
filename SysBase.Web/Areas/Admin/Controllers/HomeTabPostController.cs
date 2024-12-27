@@ -194,6 +194,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 if (model.Id != 0)
                 {
                     // Güncelleme işlemi
+                    model.UpdatedDate = DateTime.Now;
                     isControl = await _homeTabPostLanguageInfoContentService.UpdateAsync(model);
 
 

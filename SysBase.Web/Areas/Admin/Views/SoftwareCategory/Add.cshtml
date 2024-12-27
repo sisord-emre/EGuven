@@ -155,7 +155,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Software Category Detay Listele</h4>
+                            <h4 class="card-title">@Localizer["admin.Software Category Detay Listele"]</h4>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body card-dashboard" id="subUnitList">
@@ -167,7 +167,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title" id="basic-layout-colored-form-control">Software Category Detay Ekle</h4>
+                            <h4 class="card-title" id="basic-layout-colored-form-control">@Localizer["admin.Software Category Detay Ekle"]</h4>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body">
@@ -178,6 +178,21 @@
                                                 <label for="Title" class="form-label">@Localizer["admin.Başlık"]</label>
                                                 <input class="form-control" type="text" name="Title" id="Title" value="" autocomplete="off" required />
                                             </div>
+
+                                            <div class="mb-3 col-md-3 col-sm-12">
+                                                <label for="SoftwareCategoryLanguageInfoId" class="form-label">@Localizer["admin.İlgili Yazı"]</label>
+                                                <select class="select2 form-control block" name="SoftwareCategoryLanguageInfoId" id="SoftwareCategoryLanguageInfoId" required>
+                                                    <option value="">@Localizer["admin.Seçiniz"]</option>
+                                                    @if (pageLanguageInfos != null)
+                                                    {
+                                                        foreach (var item in pageLanguageInfos)
+                                                        {
+                                                            <option value="@item.Id">@item.SubTitle</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+
                                             <div class="mb-3 col-md-3 col-sm-12">
                                                 <label for="SoftwareCategoryLanguageInfoContentSequence" class="form-label">@Localizer["admin.Sırası"]</label>
                                                 <input class="form-control" type="number" name="Sequence" id="SoftwareCategoryLanguageInfoContentSequence" value="" autocomplete="off" required />
@@ -197,7 +212,6 @@
                                             </div>
                                         </div>
                                         <div class="card-footer text-center">
-                                            <input type="hidden" name="SoftwareCategoryLanguageInfoId" id="SoftwareCategoryLanguageInfoId" value="@Model.SoftwareCategory?.Id" />
                                             <input type="hidden" name="Id" id="IdSubItem" value="" />
                                             <button type="submit" class="btn btn-success me-2">@Localizer["admin.Kayıt"]</button>
                                         </div>
@@ -278,6 +292,7 @@
             success: function (res) {
                 if (res.status == "success") {
                     document.getElementById("IdSubItem").value="";
+                    document.getElementById("SoftwareCategoryLanguageInfoId").selectedIndex = 0;
                     document.getElementById("subUnitPost").reset();
                     $(".editorCk2").each(function () {
                         let editorId2 = $(this).attr('id');

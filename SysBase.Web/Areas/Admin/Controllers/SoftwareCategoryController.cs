@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.InkML;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -219,6 +217,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 SoftwareCategoryLanguageInfoContent isControl;
                 if (model.Id != 0)
                 {
+                    model.UpdatedDate = DateTime.Now;
                     // Güncelleme işlemi
                     isControl = await _softwareCategoryLanguageInfoContentService.UpdateAsync(model);
 
