@@ -220,9 +220,9 @@
                                                         <input type="hidden" name="ConfigLanguageInfos[@i].Id" id="ConfigLanguageInfos[@i].Id" value="@languageInfo?.Id" />
                                                         <input type="hidden" name="ConfigLanguageInfos[@i].LanguageId" id="ConfigLanguageInfos[@i].LanguageId" value="@Model.Languages[i].Id" />
                                                         <div class="row">
-                                                            <div class="mb-3 col-md-6 col-sm-12">
-                                                                <label for="ConfigLanguageInfos[@i].RemittanceEftInformation" class="form-label">@Localizer["admin.Havale Eft Bilgisi"]</label>
-                                                                <input class="form-control" type="text" name="ConfigLanguageInfos[@i].RemittanceEftInformation" id="ConfigLanguageInfos[@i].RemittanceEftInformation" value="@languageInfo?.RemittanceEftInformation" autocomplete="off" />
+                                                            <div class="mb-3 col-md-12 col-sm-12">
+                                                                <label for="ConfigLanguageInfos[@i].RemittanceEftInformation" class="form-label">@Localizer["admin.İçerik"]</label>
+                                                                <textarea class="editorCk form-control" name="ConfigLanguageInfos[@i].RemittanceEftInformation" id="ConfigLanguageInfos[@i].RemittanceEftInformation">@languageInfo?.RemittanceEftInformation</textarea>
                                                             </div>
                                                             <div class="mb-3 col-md-6 col-sm-12">
                                                                 <label for="ConfigLanguageInfos[@i].Status" class="form-label">@Localizer["admin.Durum"]</label>

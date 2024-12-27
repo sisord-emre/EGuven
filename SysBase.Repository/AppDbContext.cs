@@ -71,6 +71,8 @@ namespace SysBase.Repository
         public DbSet<ProductLanguageInfo> ProductLanguageInfos { get; set; }
         public DbSet<UserTable> UserTables { get; set; }
         public DbSet<ConfigLanguageInfo> ConfigLanguageInfos { get; set; }
+        public DbSet<MailTemplate> MailTemplates { get; set; }
+        public DbSet<MailTemplateLanguageInfo> MailTemplateLanguageInfos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
