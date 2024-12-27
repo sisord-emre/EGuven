@@ -74,6 +74,7 @@ namespace SysBase.Repository
         public DbSet<MailTemplate> MailTemplates { get; set; }
         public DbSet<MailTemplateLanguageInfo> MailTemplateLanguageInfos { get; set; }
         public DbSet<Media> Medias { get; set; }
+        public DbSet<Route> Routes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());//Configuration ve seeds lerin çalışması için
