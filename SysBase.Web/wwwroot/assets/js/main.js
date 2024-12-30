@@ -109,6 +109,50 @@ export function heroSlider() {
 }
 
 export function newsSlider() {
+  const sliderWrapper = document.querySelector('.news-slider-wrapper');
+  const slides = document.querySelectorAll('.news-slider-slide');
+
+  // Eğer sliderWrapper veya slides bulunmazsa, fonksiyonu durdur
+  if (!sliderWrapper || slides.length === 0) {
+    console.warn('news-slider-wrapper veya news-slider-slide bulunamadı.');
+    return;
+  }
+
+  const slideHeight = slides[0].offsetHeight;
+  let currentIndex = 0;
+  let sliderInterval;
+
+  const firstSlideClone = slides[0].cloneNode(true);
+  sliderWrapper.appendChild(firstSlideClone);
+
+  function startSlider() {
+    sliderInterval = setInterval(() => {
+      currentIndex++;
+      sliderWrapper.style.transition = 'transform 0.5s ease-in-out';
+      sliderWrapper.style.transform = `translateY(-${slideHeight * currentIndex}px)`;
+
+      if (currentIndex >= slides.length) {
+        setTimeout(() => {
+          sliderWrapper.style.transition = 'none';
+          sliderWrapper.style.transform = 'translateY(0)';
+          currentIndex = 0;
+        }, 500);
+      }
+    }, 3000);
+  }
+
+  function stopSlider() {
+    clearInterval(sliderInterval);
+  }
+
+  startSlider();
+
+  sliderWrapper.addEventListener('mouseover', stopSlider);
+  sliderWrapper.addEventListener('mouseout', startSlider);
+}
+
+/*
+export function newsSlider() {
     const sliderWrapper = document.querySelector('.news-slider-wrapper')
     const slides = document.querySelectorAll('.news-slider-slide')
     const slideHeight = slides[0].offsetHeight
@@ -143,6 +187,7 @@ export function newsSlider() {
     sliderWrapper.addEventListener('mouseover', stopSlider)
     sliderWrapper.addEventListener('mouseout', startSlider)
 }
+*/
 
 export function videoSlider() {
     const swiper = new Swiper('.video-slider', {
