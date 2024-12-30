@@ -49,10 +49,11 @@
     </div>
 </div>
 
+<section class="news" data-aos="fade-up">
 <!-- Duyurular -->
 @if (Model.Announcements != null && Model.Announcements.Count > 0)
 {
-<section class="news" data-aos="fade-up">
+
     <div class="container">
         <div class="flex items-center gap-4 py-3 border-b border-primary-gray">
             <div class="text-primary-red font-bold text-sm">
@@ -75,10 +76,8 @@
             </div>
         </div>
     </div>
-</section>
 }
-
-
+</section>
 
 <!-- Ürünler -->
 <section class="products mt-10" data-aos="fade-up">

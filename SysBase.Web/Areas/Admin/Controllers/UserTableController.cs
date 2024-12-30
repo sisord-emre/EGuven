@@ -31,9 +31,9 @@ namespace SysBase.Web.Areas.Admin.Controllers
         public async Task<IActionResult> UserTableAdd(int menuId, string data)
         {
             // menuId ve data kontrolü
-            if (menuId <= 0 || string.IsNullOrWhiteSpace(data))
+            if (menuId <= 0)
             {
-                return Json(new { success = false, message = "Geçersiz parametreler: menuId ve data kontrol ediniz." });
+                return Json(new { success = false, message = "Geçersiz parametreler: menuId kontrol ediniz." });
             }
 
             AppUser currentUser = await _userManager.GetUserAsync(HttpContext.User);

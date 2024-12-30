@@ -1,4 +1,6 @@
-﻿namespace SysBase.Core.Models
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+
+namespace SysBase.Core.Models
 {
     public class Blog : BaseEntity
     {

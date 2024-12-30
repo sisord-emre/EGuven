@@ -13,6 +13,7 @@ namespace SysBase.Core.Models
         public string Code { get; set; }
         public int Sequence { get; set; }
         public bool FooterVisibility { get; set; }
+        public bool DeleteStatus { get; set; }
         public List<PageLanguageInfo> PageLanguageInfos { get; set; }
     }
 }
