@@ -40,6 +40,7 @@
     <Folder Include="wwwroot\Images\Software\" />
     <Folder Include="wwwroot\Images\SectoralReference\" />
     <Folder Include="wwwroot\Images\Slider\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>
