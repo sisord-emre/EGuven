@@ -28,7 +28,12 @@
 <section class="mt-10 is-ortaklarimiz">
     <div class="container">
         <div class="grid gap-3 py-14 md:px-32 px-10" style="text-align:center;font-size: 30px;">
-            <p>Bilgileriniz Alınmıştır En Kısa Sürede Sizin İle İletişime Geçilecektir.</p>
+            <h3>@Localizer["Sipariş No"]:@Model.ApiBasvuruRequest.SiparisKodu </h3>
+            <p>@Localizer["Bilgileriniz Alınmıştır En Kısa Sürede Sizin İle İletişime Geçilecektir."]</p>
+            @if (Model.ApiBasvuruRequest.OdemeTipi == 2)
+            {
+                <p class="py-4">@Html.Raw(Model.HavaleEft.Content)</p>
+            }
         </div>
     </div>
 </section>

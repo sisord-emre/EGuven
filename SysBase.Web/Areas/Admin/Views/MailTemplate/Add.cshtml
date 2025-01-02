@@ -30,7 +30,7 @@
                     <div class="card-header custom-page-header">
                         <h5>@Localizer["admin." + ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Yeni Ekle/Düzenle"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
-                            @if (Model.MenuPermission?.Add)
+                            @if (false)
                             {
                                 <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
                             }

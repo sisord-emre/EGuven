@@ -15,7 +15,7 @@
                     <div class="card-header custom-page-header">
                         <h5>@Localizer["admin." + ViewContext.RouteData.Values["controller"].ToString()] @Localizer["admin.Listele"]</h5>
                         <div class="btn-group" role="group" aria-label="button groups">
-                            @if (Model.MenuPermission?.Add)
+                            @if (false)
                             {
                                 <button type="button" onclick="GetPage('0','@addUrl');" class="btn btn-light-primary">@Localizer["admin.Yeni Ekle"]</button>
                             }
@@ -64,7 +64,7 @@
                                                     {
                                                         <button type="button" onclick="GetPage('0','@addUrl','@item.MailTemplate.Id');" class="btn btn-success edit-button">@Localizer["admin.Düzenle"]</button>
                                                     }
-                                                    @if (Model.MenuPermission?.Delete)
+                                                    @if (false)
                                                     {
                                                         <button type="button" onclick="dataDelete('0','@item.MailTemplate.Id');" class="btn btn-danger">@Localizer["admin.Sil"]</button>
                                                     }

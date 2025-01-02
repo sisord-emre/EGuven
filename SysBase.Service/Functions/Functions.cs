@@ -5,18 +5,47 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SysBase.Core.Models;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Helpers;
-using System.Web.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SysBase.Service.Functions
 {
     public class Functions
     {
+        ResultJson resultJson = new ResultJson();
         public Functions()
         {
+        }
+
+        public async Task<ResultJson> SendMail(Config config, Mail mail)
+        {
+            SmtpClient smtpClient = new SmtpClient(config.MailHost)
+            {
+                Port = config.MailPort, // Yandex Mail için SMTP portu
+                Credentials = new NetworkCredential(config.Mail, config.MailPassword), // Gönderen e-posta ve şifre
+                EnableSsl = true // SSL kullanarak güvenli bağlantı
+            };
+            MailMessage mailMessage = new MailMessage(config.Mail, mail.Email, mail.Subject, mail.Message);
+            mailMessage.IsBodyHtml = true;
+            try
+            {
+                smtpClient.Send(mailMessage);
+                resultJson.status = "success";
+                resultJson.message = "Form Bilgileri Alınmıştır. İlginiz İçin Teşekkürler.";
+            }
+            catch (Exception ex)
+            {
+                resultJson.status = "error";
+                resultJson.message = ex.Message;
+            }
+            finally
+            {
+                smtpClient.Dispose();
+            }
+
+            return resultJson;
         }
 
         public async Task<string> CloudflareTurnstile(string token)

@@ -92,7 +92,7 @@
                                                     <div class="text-xl font-bold">
                                                         @item.Amount TL
                                                     </div>
-                                                    @if (item.Product.Tax!=0)
+                                                    @if (item.Product.Tax != 0)
                                                     {
                                                         <div class="text-xs">
                                                             @Localizer["KDV Hariç"]
@@ -243,7 +243,7 @@
                                                             <label for="e-posta-gorulme">
                                                                 @Localizer["E-posta adresimin sertifika içerisinde görülmesini istiyorum"].
                                                             </label>
-                                                            <input type="checkbox" class="ml-2" />
+                                                            <input type="checkbox" name="EmailAdresiSertifikadaGorulsun" id="EmailAdresiSertifikadaGorulsun" value="True" class="ml-2" />
                                                         </div>
                                                     </div>
                                                 }
@@ -256,16 +256,10 @@
                                 </div>
                                 <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4">
                                     <div class="font-bold mb-4">
-                                        @Localizer["ELEKTRONİK BİLGİ GÜVENLİĞİ A.Ş. KİŞİSEL VERİLERİN İŞLENMESİNE İLİŞKİN AYDINLATMA METNİ"]
+                                        @Model.AydinlatmaMetni.Title
                                     </div>
                                     <p class="text-sm mb-4">
-                                        @Localizer["Aydınlatma Metni, Elektronik Bilgi Güvenliği Anonim Şirketi (“Şirket”) tarafından Şirket’in müşterilerinin 6698 sayılı Kişisel Verilerin Korunması Kanunu (“Kanun”) kapsamında kişisel verilerinin Şirket tarafından işlenmesine ilişkin olarak aydınlatılması amacıyla hazırlanmıştır"].
-                                    </p>
-                                    <p class="text-sm mb-4">
-                                        @Localizer["Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, dolores iure earum dolor fugiat eius voluptatibus perspiciatis dicta a itaque"]
-                                    </p>
-                                    <p class="text-sm mb-4">
-                                        @Localizer["Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi cumque quam, soluta, sed perferendis explicabo neque hic exercitationem culpa vitae, rem dolorum inventore eveniet minima ipsa. Quod qui ea mollitia esse, minima autem architecto, debitis facilis eligendi cupiditate ipsam delectus nostrum eveniet possimus doloribus alias dolorum ducimus ratione eius voluptates velit excepturi exercitationem? Atque iure, quasi repellendus doloremque omnis sed accusamus ea, soluta praesentium recusandae tenetur sit, beatae ipsam odit nam cupiditate dolorem facere dolor iste commodi officiis ratione. Natus, dolore quod eveniet esse culpa odio non doloremque porro vitae, debitis fuga voluptate et illum nemo illo rem consectetur possimus!"]
+                                        @Html.Raw(Model.AydinlatmaMetni.Content)
                                     </p>
                                 </div>
                                 <div class="mt-7" style="text-align: right;">
@@ -422,7 +416,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-stretch justify-center gap-5 mt-10">
-                                    <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri">@Localizer["Ödemeye devam et"]</button>
+                                    <button type="button" class="btn btn-primary-red px-8" id="goToOdemeBilgileri" onclick="SozlemsmeBilgileri()">@Localizer["Ödemeye devam et"]</button>
                                 </div>
                             </div>
                         </div>
@@ -664,6 +658,118 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mt-7 mb-7">
+                                        <div style="text-align: right;">
+                                            <input type="checkbox" class="mr-2" name="fatura-bilgileri-ayni" id="fatura-bilgileri-ayni" value="True" />
+                                            <label for="fatura-bilgileri-ayni">@Localizer["Fatura bilgilerim ve adres bilgilerim aynı"].</label>
+                                        </div>
+                                        <div class="grid grid-cols-1 gap-3" id="faturaEkBilgiDiv">
+                                            @foreach (ProjectField item in Model.ProjectFields.Where(x => x.Field.FieldGroupId == 10))//Şirket Bilgileri
+                                            {
+                                                string required = "";
+                                                string requiredRenk = "";
+                                                if (item.Required)
+                                                {
+                                                    required = "required";
+                                                    requiredRenk = "custem-req";
+                                                }
+                                                if (item.Field.Type == "int")
+                                                {
+                                                    if (item.Field.Name == "İl")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup class="custem-req-sup">*</sup>
+                                                                }
+                                                            </label>
+                                                            <select class="bireysel-tab-input @requiredRenk" name="@item.Field.ApiColumn" id="il" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
+                                                                <option value="">@Localizer["Seçiniz"]</option>
+                                                                @foreach (City city in Model.Cities)
+                                                                {
+                                                                    <option value="@city.Name">@city.Name</option>
+                                                                }
+                                                            </select>
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                                            </div>
+                                                        </div>
+
+                                                    }
+                                                    if (item.Field.Name == "İlçe")
+                                                    {
+                                                        <div class="base-form-group">
+                                                            <label for="@item.Field.ApiColumn">
+                                                                @Localizer[item.Field.Name]
+                                                                @if (item.Required)
+                                                                {
+                                                                    <sup class="custem-req-sup">*</sup>
+                                                                }
+                                                            </label>
+                                                            <select class="bireysel-tab-input @requiredRenk" name="@item.Field.ApiColumn" id="ilce" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)>
+                                                                <option value="">@Localizer["Seçiniz"]</option>
+                                                            </select>
+                                                            <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                                @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                                else if (item.Field.Type == "textarea")
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup class="custem-req-sup">*</sup>
+                                                            }
+                                                        </label>
+                                                        <textarea name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" cols="30" rows="5" class="!h-32 bireysel-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams)></textarea>
+                                                        <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                            @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                else if (item.Field.Type == "file")
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup class="custem-req-sup">*</sup>
+                                                            }
+                                                        </label>
+                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" accept="image/png, image/jpeg" @required @Html.Raw(item.Field.OtherParams) />
+                                                        <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                            @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="base-form-group">
+                                                        <label for="@item.Field.ApiColumn">
+                                                            @Localizer[item.Field.Name]
+                                                            @if (item.Required)
+                                                            {
+                                                                <sup class="custem-req-sup">*</sup>
+                                                            }
+                                                        </label>
+                                                        <input type="@item.Field.Type" name="@item.Field.ApiColumn" id="@item.Field.ApiColumn" class="bireysel-tab-input @requiredRenk" data-input-tab="odeme-bilgileri" @required @Html.Raw(item.Field.OtherParams) />
+                                                        <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                                            @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+
                                     @if (Model.ProjectFields[0].Project.PaymetForm)
                                     {
                                         <input class="hidden" type="radio" name="OdemeTipi" id="kredikart" value="1" checked />
@@ -674,7 +780,7 @@
                                                 <button id="kredi-kart-btn" class="active" type="button" onclick="OdemeTipSec(1)">@Localizer["KREDİ KARTI"]</button>
                                                 <button id="havale-btn" type="button" onclick="OdemeTipSec(2)">@Localizer["HAVALE"]</button>
                                             </div><!-- Tab Content -->
-                                            <div id="kredi-kart-tab-content" class="pt-7">   
+                                            <div id="kredi-kart-tab-content" class="pt-7">
                                                 <div class="grid grid-cols-1 gap-3">
                                                     <div class="base-form-group"><label for="card-ad-soyad">@Localizer["Kartın üzerindeki ad"]</label><input type="text" placeholder="" id="card-ad-soyad" value="" required /></div>
                                                     <div class="base-form-group"><label for="card-no">@Localizer["Kart Numarası"]</label><input type="text" placeholder="0000 0000 0000 0000" id="card-no" value="" required /></div>
@@ -716,7 +822,7 @@
                                             </div>
                                             <div id="havale-tab-content" class="hidden pt-7">
                                                 <div class="text-primary-dark text-sm">
-                                                    <p class="py-4">@Model.ConfigLanguageInfo?.RemittanceEftInformation.</p>
+                                                    <p class="py-4">@Html.Raw(Model.HavaleEft.Content)</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -728,6 +834,37 @@
                                         <button id="kredi-kart-btn" class="active" type="button" onclick="OdemeTipSec(1)" style="display:none!important">@Localizer["KREDİ KARTI"]</button>
                                         <button id="havale-btn" type="button" onclick="OdemeTipSec(2)" style="display:none!important">@Localizer["HAVALE"]</button>
                                     }
+                                    <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4">
+                                        <div class="font-bold mb-4">
+                                            @Model.OnBilgilendirme.Title
+                                        </div>
+                                        <p class="text-sm mb-4">
+                                            @Html.Raw(Model.OnBilgilendirme.Content)
+                                        </p>
+                                    </div>
+                                    <div class="mt-7" style="text-align: right;">
+                                        <input type="checkbox" class="mr-2 custem-req" name="onbilgilendirme" id="onbilgilendirme-metni-kabul" value="True" required />
+                                        <label for="onbilgilendirme-metni-kabul">@Localizer["Okudum, kabul ediyorum"]. <sup class="custem-req-sup">*</sup></label>
+                                        <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                            @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                        </div>
+                                    </div>
+                                    <div class="rounded-5 bg-form-product-price py-6 px-8 text-primary-dark max-h-[150px] overflow-auto mt-4" id="mesafeliSatis">
+                                        <div class="font-bold mb-4">
+                                            @Model.MesafeliSatis.Title
+                                        </div>
+                                        <p class="text-sm mb-4">
+                                            @Html.Raw(Model.MesafeliSatis.Content)
+                                        </p>
+                                        <textarea name="MesafeliSatis" id="MesafeliSatis" style="display:none"></textarea>
+                                    </div>
+                                    <div class="mt-7" style="text-align: right;">
+                                        <input type="checkbox" class="mr-2 custem-req" name="mesafelisatis" id="mesafelisatis-metni-kabul" value="True" required />
+                                        <label for="mesafelisatis-metni-kabul">@Localizer["Okudum, kabul ediyorum"]. <sup class="custem-req-sup">*</sup></label>
+                                        <div class="text-xs text-primary-red italic font-semibold error-msg hidden">
+                                            @Localizer["Zorunlu alan lütfen boş bırakmayınız"].
+                                        </div>
+                                    </div>
                                     <input type="hidden" name="uid" id="uid" />
                                     <div class="text-center">
                                         <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" style="transform:scale(0.77);-webkit-transform:scale(0.77);"></div>
@@ -773,6 +910,36 @@
         </div>
     </div>
 </div>
+
+<button data-modal-target="aydinlatma-modal" data-modal-toggle="aydinlatma-modal" id="aydinlatmaButton" style="display:none" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"></button>
+<!-- Main modal -->
+<div id="aydinlatma-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    @Model.AydinlatmaMetni.Title
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="aydinlatma-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">@Localizer["Kapat"]</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4">
+                @Html.Raw(Model.AydinlatmaMetni.Content)
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="aydinlatma-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">@Localizer["Kapat"]</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="module">
     import {
         stickyHeader,
@@ -797,4 +964,11 @@
             duration: 800,
         })
     })
+</script>
+<script>
+    window.onload = (event) => {
+        setTimeout(function () {
+            document.getElementById("aydinlatmaButton").click();
+        }, 1000);
+    };
 </script>

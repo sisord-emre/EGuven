@@ -574,6 +574,127 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
+        function SozlemsmeBilgileri() {
+            var metin = document.getElementById("mesafeliSatis").innerHTML;
+            var adsoyad = "";
+            var tcno = "";
+            var eposta = "";
+            var telefon = "";
+            var adres = "";
+            var faturaadres = "";
+            var paket = document.getElementById("paketAdi").innerHTML;
+
+            if ($("input[data-id='ad']") != null && $("input[data-id='soyad']") != null) {
+                adsoyad = $("input[data-id='ad']").val() + " " + $("input[data-id='soyad']").val();
+            }
+            if ($("input[data-id='tcno']") != null) {
+                tcno = $("input[data-id='tcno']").val();
+            }
+            if ($("input[data-id='eposta']") != null) {
+                eposta = $("input[data-id='eposta']").val();
+            }
+            if (document.getElementById("CepTelefonu") != null) {
+                telefon = document.getElementById("CepTelefonu").value;
+            }
+            if (telefon == "" && document.getElementById("Telefon") != null) {
+                telefon = document.getElementById("Telefon").value;
+            }
+            if ($("textarea[data-id='adres']") != null) {
+                adres = $("textarea[data-id='adres']").val();
+            }
+            adres = $("textarea[data-id='adres']").val();
+            var toplamtutar = document.getElementById("toplamtutar").innerHTML;
+            const now = new Date();
+            var tarih = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            if ($("textarea[data-id='faturaAdres']") != null) {
+                faturaadres = $("textarea[data-id='faturaAdres']").val();
+            }
+            const degistir = {
+                adsoyad: adsoyad,
+                tcno: tcno,
+                eposta: eposta,
+                adres: adres,
+                telefon: telefon,
+                faturaadres: faturaadres,
+                tarih: tarih,
+                paket: paket,
+                toplamtutar: toplamtutar
+            };
+            var yeniSozlesme=MetinDegistir(metin, degistir);
+            document.getElementById("mesafeliSatis").innerHTML = yeniSozlesme;
+            document.getElementById("MesafeliSatis").innerHTML = yeniSozlesme;
+        }
+
+        function MetinDegistir(template, replacements) {
+            return template.replace(/{{(.*?)}}/g, (match, key) => replacements[key.trim()] || match);
+        }
+
+        $("#fatura-bilgileri-ayni").change(function () {
+            var secim = document.getElementById("fatura-bilgileri-ayni").checked;
+            if (secim) {
+                document.getElementById("faturaEkBilgiDiv").style.display = "none";
+            } else {
+                document.getElementById("faturaEkBilgiDiv").style.display = "grid";
+            }
+        });
+
+        $("#bireysel-btn").click(function () {
+            setTimeout(function () {
+                $("input[data-id='ad']").trigger('keyup');
+                $("input[data-id='soyad']").trigger('keyup');
+                $("input[data-id='tcno']").trigger('keyup');
+                $("select[data-id='il']").trigger('change');
+                $("select[data-id='ilce']").trigger('change');
+                $("textarea[data-id='adres']").trigger('keyup');
+            }, 100);
+        });
+
+        $("#kurumsal-btn").click(function () {
+            setTimeout(function () {
+                $("select[data-id='il']").trigger('change');
+                $("select[data-id='ilce']").trigger('change');
+                $("textarea[data-id='adres']").trigger('keyup');
+            }, 100);
+        });
+
+        $("input[data-id='ad']").keyup(function () {
+            let value = $(this).val();
+            $("input[data-id='faturaBireyselAd']").val(value);
+        });
+
+        $("input[data-id='soyad']").keyup(function () {
+            let value = $(this).val();
+            $("input[data-id='faturaBireyselSoyad']").val(value);
+        });
+
+        $("input[data-id='tcno']").keyup(function () {
+            let value = $(this).val();
+            $("input[data-id='faturaBireyselTcNo']").val(value);
+        });
+
+        var ilceVal = "";
+        $("select[data-id='il']").change(function () {
+            let value = $(this).val();
+            $("select[data-id='faturaIl']").val(value).trigger('change');
+            setTimeout(function () {
+                if (ilceVal != null && ilceVal != "") {
+                    $("textarea[data-id='ilce']").val(ilceVal).trigger('change');
+                }
+            }, 500);
+        });
+
+        $("select[data-id='ilce']").change(function () {
+            if ($(this).val() != null) {
+                ilceVal = $(this).val();
+            }
+            $("select[data-id='faturaIlce']").val(ilceVal).trigger('change');
+        });
+
+        $("textarea[data-id='adres']").keyup(function () {
+            let value = $(this).val();
+            $("textarea[data-id='faturaAdres']").val(value);
+        });
+
         $("#card-no").on("input", function () {
             let value = $(this).val();
             value = value.replace(/\D/g, '');
@@ -646,6 +767,8 @@
         });
 
         function TcDogrulama() {
+            IletisimDevamButton();
+            return false;//testlerden sonra bu iki satırı kaldır
             var TCKimlikNo = document.getElementById("TCKimlikNo").value;
             var Ad = document.getElementById("Ad").value;
             var Soyad = document.getElementById("Soyad").value;
@@ -738,10 +861,12 @@
                         });
                         Swal.hideLoading();
                         if (res.status == "success") {
-                            if (res.data == "" || res.data == null) {
+                            if (typeof res.data === 'undefined' || res.data == "" || res.data == null) {
                                 Swal.close();
                                 IletisimDevamButton();
+                                console.log("xx");
                             } else {
+                                console.log("yy");
                                 const { value: kod } = await Swal.fire({
                                     input: "text",
                                     inputLabel: "Sms Doğrulama Kodunu Giriniz",
@@ -777,6 +902,7 @@
                         }
                     } catch (error) {
                         Swal.hideLoading();
+                        console.log(error);
                         alert("Bir hata oluştu: " + error.status);
                     }
                 },
@@ -790,7 +916,8 @@
 
 
         function IletisimDevamButton() {
-                document.getElementById('musteri-bilgileri')
+            var musteriBilgileri = document.getElementById('musteri-bilgileri')
+
             const musteriBilgileriTab = document.getElementById(
                 'musteri-bilgileri-tab'
             )
@@ -1020,6 +1147,7 @@
                 return false;
             }
             $('#ilce').empty();
+            $("input[data-id='faturaIlce']").empty();
             $.ajax({
                 type: "POST",
                 url: "/Form/s/IlIlce",
@@ -1028,6 +1156,7 @@
                 },
                 success: function (data) {
                     $('#ilce').append(data);
+                    $("select[data-id='faturaIlce']").append(data);
                 }
             });
         });

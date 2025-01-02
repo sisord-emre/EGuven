@@ -19,7 +19,7 @@ namespace SysBase.Web.Controllers
         protected readonly IService<FooterMenu> _footerMenuService;
         protected readonly IService<Language> _languageService;
         protected readonly IService<QuickMenu> _quickMenuService;
-        protected readonly IService<PageLanguageInfo> _PageLanguageInfoService;
+        protected readonly IService<PageLanguageInfo> _pageLanguageInfoService;
 
         public PageDetailController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
             ILogger<PageDetailController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
@@ -31,7 +31,7 @@ namespace SysBase.Web.Controllers
             _footerMenuService = footerMenuService;
             _quickMenuService = quickMenuService;
             _languageService = languageService;
-            _PageLanguageInfoService = PageLanguageInfoService;
+            _pageLanguageInfoService = PageLanguageInfoService;
         }
 
 
@@ -49,7 +49,7 @@ namespace SysBase.Web.Controllers
             uiLayoutViewModel.QuickMenus = _quickMenuService.Where(x => x.Status && x.Language.Code == CultureInfo.CurrentCulture.Name).OrderBy(x => x.Sequence).ToList();
 
             // PageLanguageInfo öğesini önce bir değişkene atayın
-            PageLanguageInfo PageLanguageInfo = await _PageLanguageInfoService
+            PageLanguageInfo PageLanguageInfo = await _pageLanguageInfoService
                 .Where(x => x.Status && x.Slug == Slug && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Page.Status)
                 .FirstOrDefaultAsync();
 

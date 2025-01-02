@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace SysBase.Core.Models
 {
@@ -86,6 +88,9 @@ namespace SysBase.Core.Models
         public decimal OdemeTutar { get; set; }
         public int SiparisKodu { get; set; }
         public bool CrmGonderim { get; set; }
+        [AllowHtml]
+        [DataType(DataType.MultilineText)]
+        public string MesafeliSatis { get; set; }
         public ProjectProduct ProjectProduct { get; set; }
         public string IkinciKisiAdSoyad { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//sadece insert ederken çalış

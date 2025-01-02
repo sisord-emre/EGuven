@@ -10,5 +10,9 @@ namespace SysBase.Web.ViewModels
         public ConfigLanguageInfo ConfigLanguageInfo { get; set; }
         public Company Company{ get; set; }
         public CompanyInvoice CompanyInvoice { get; set; }
+        public PageLanguageInfo AydinlatmaMetni { get; set; }
+        public PageLanguageInfo HavaleEft { get; set; }
+        public PageLanguageInfo OnBilgilendirme { get; set; }
+        public PageLanguageInfo MesafeliSatis { get; set; }
     }
 }

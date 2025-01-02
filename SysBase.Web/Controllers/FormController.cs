@@ -36,10 +36,11 @@ namespace SysBase.Web.Controllers
         protected readonly IService<ConfigLanguageInfo> _configLanguageInfoService;
         protected readonly IService<Company> _companyService;
         protected readonly IService<CompanyInvoice> _companyInvoiceService;
+        protected readonly IService<PageLanguageInfo> _pageLanguageInfoService;
 
         public FormController(IHtmlLocalizer<SharedResource> localizer, IService<Config> service,
            ILogger<FormController> logger, IService<SiteMenu> siteMenuService, IService<FooterMenu> footerMenuService,
-           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService, IService<ApiBasvuruRequest> apiBasvuruRequestService, IService<ConfigLanguageInfo> configLanguageInfoService, IService<CompanyInvoice> companyInvoiceService, IService<Company> companyService)
+           IService<Language> languageService, IService<QuickMenu> quickMenuService, IService<ProjectProduct> projectProductService, IService<ProjectField> projectFieldService, IService<City> cityService, IService<County> countyService, IService<ApiBasvuruRequest> apiBasvuruRequestService, IService<ConfigLanguageInfo> configLanguageInfoService, IService<CompanyInvoice> companyInvoiceService, IService<Company> companyService, IService<PageLanguageInfo> pageLanguageInfoService)
           : base(localizer, service)
         {
             _logger = logger;
@@ -55,6 +56,7 @@ namespace SysBase.Web.Controllers
             _configLanguageInfoService = configLanguageInfoService;
             _companyInvoiceService = companyInvoiceService;
             _companyService = companyService;
+            _pageLanguageInfoService = pageLanguageInfoService;
         }
 
         public async Task<IActionResult> Index(string slug)
@@ -129,13 +131,17 @@ namespace SysBase.Web.Controllers
                 ConfigLanguageInfo = await _configLanguageInfoService.Where(c => c.Language.Code == CultureInfo.CurrentCulture.Name && c.Status).FirstOrDefaultAsync(),
                 Company = await _companyService.Where(c => c.Id == projectProducts[0].Project.CompanyId && c.Status).FirstOrDefaultAsync(),
                 CompanyInvoice = companyInvoice,
+                AydinlatmaMetni = await _pageLanguageInfoService.Where(x => x.Status && x.Page.Code == "44316b9d0dfa45168b2bed9435b3f7ce" && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Page.Status).FirstOrDefaultAsync(),
+                HavaleEft = await _pageLanguageInfoService.Where(x => x.Status && x.Page.Code == "303ac68194e84761b3b4ed91958a2451" && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Page.Status).FirstOrDefaultAsync(),
+                OnBilgilendirme = await _pageLanguageInfoService.Where(x => x.Status && x.Page.Code == "bbbdb13fc0b94b8682906b0da0492aeb" && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Page.Status).FirstOrDefaultAsync(),
+                MesafeliSatis = await _pageLanguageInfoService.Where(x => x.Status && x.Page.Code == "4a6fb246a430437ea076bc586d878a3f" && x.Language.Code == CultureInfo.CurrentCulture.Name && x.Status && x.Page.Status).FirstOrDefaultAsync()
             };
             ViewData["slug"] = slug;
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ResultJson> Kayit(ApiBasvuruRequest model, IFormFile Dosya, string[] UrunList, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
+        public async Task<ResultJson> Kayit(ApiBasvuruRequest model,string Ad, string Soyad, IFormFile Dosya, string[] UrunList, [FromForm(Name = "cf-turnstile-response")] string cfTurnstileResponse)
         {
             ResultJson resultJson = new ResultJson { status = "error" };
             string resCT = await functions.CloudflareTurnstile(cfTurnstileResponse);
@@ -179,9 +185,18 @@ namespace SysBase.Web.Controllers
                     "          </urun>";
                 }
 
+                //sipariş kodu ilerletildi
+                Config config = _service.Where(x => x.Id == 1).FirstOrDefault();
+                int siparisKodu = config.SiparisKodu + 1;
+                config.SiparisKodu = siparisKodu;
+                await _service.UpdateAsync(config);
+
                 model.ProjectProductId = urunArray[0];
                 model.Uid = Guid.NewGuid().ToString("N");
                 model.OdemeTutar = (toplamFiyat + toplamKdv);
+                model.SiparisKodu = siparisKodu;
+                model.AdSoyad = Ad + " " + Soyad;
+
                 isControl = await _apiBasvuruRequestService.AddAsync(model);
                 if (isControl.Id != 0)
                 {
@@ -199,12 +214,12 @@ namespace SysBase.Web.Controllers
                     }
 
                     resultJson.status = "success";
-                    resultJson.message = _localizer["admin.Kayıt İşlemi Başarıyle Gerçekleşmiştir."].Value;
+                    resultJson.message = _localizer["Kayıt İşlemi Başarıyle Gerçekleşmiştir."].Value;
                     resultJson.data = model.Uid;
                 }
                 else
                 {
-                    resultJson.message = _localizer["admin.Bilgileri Kontrol Ediniz"].Value;
+                    resultJson.message = _localizer["Bilgileri Kontrol Ediniz"].Value;
                 }
             }
             catch (Exception ex)
@@ -256,7 +271,117 @@ namespace SysBase.Web.Controllers
                     "            <fiyat>" + (projectProduct.Amount + (projectProduct.Amount / 100 * projectProduct.Product.Tax)) + "</fiyat> <!--fiyat double--> " +
                     "          </urun>";
             }
+            string odemeSekli = "Kredi Kartı";
+            if (model.OdemeTipi==2)
+            {
+                odemeSekli = "Havale";
+            }
 
+            var client = new Web2Client(Web2Client.EndpointConfiguration.BasicHttpBinding_IWeb2);
+            try
+            {
+                // basvururequest nesnesi oluşturuluyor
+                var request = new basvururequest
+                {
+                    Aciklama = model.Aciklama,
+                    AdSoyad = model.AdSoyad,
+                    Avukat = false,
+                    CepTelefonu = model.CepTelefonu,
+                    DeliveryType = "Standard",
+                    DogumTarihi = DogumTarihi,
+                    DogumYeri = "",
+                    Durum = 1,
+                    EmailAdresiSertifikadaGorulsun = model.EmailAdresiSertifikadaGorulsun.ToString(),
+                    Eposta = model.Eposta,
+                    FaturaAdresiCepTelefonu = model.Telefon,
+                    FaturaAdresiDetay = model.FaturaAdresiDetay,
+                    FaturaAdresiFax = model.FaturaAdresiFax,
+                    FaturaAdresiIl = model.FaturaAdresiIl,
+                    FaturaAdresiIlce = model.FaturaAdresiIlce,
+                    FaturaAdresiPostaKodu = model.PostaKodu,
+                    FaturaAdresiTelefon = model.Telefon,
+                    Fax = model.FaturaAdresiFax,
+                    FirmaUnvani = model.FirmaUnvani,
+                    GizliSoru = "",
+                    IPAdresi = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                    Il = model.Il,
+                    Ilce = model.Ilce,
+                    KayitID = model.Uid,
+                    KurulumAdresiCepTelefonu = "",
+                    KurulumAdresiDetay = "",
+                    KurulumAdresiFax = "",
+                    KurulumAdresiIl = "",
+                    KurulumAdresiIlce = "",
+                    KurulumAdresiPostaKodu = "",
+                    KurulumAdresiTelefon = "",
+                    OdemeMiktari = (projectProduct.Amount + (projectProduct.Amount / 100 * projectProduct.Product.Tax)).ToString(),
+                    OdemeSekli = odemeSekli,
+                    PdfErisimToken = "",
+                    PostaKodu = model.PostaKodu,
+                    ProjeAdi = projectProduct.Project.Code,
+                    SiparisAdi = model.SiparisAdi,
+                    Sirket = model.FirmaUnvani,
+                    SonKullanmaTarihi = DateTime.Now.AddYears(projectProduct.Product.Year).ToString("dd.MM.yyyy"),
+                    TCKimlikNo = model.TCKimlikNo,
+                    TCSeriNo = model.TCSeriNo,
+                    Telefon = model.Telefon,
+                    Teslimat_Adresi = model.TeslimatAdresi,
+                    Uyruk = model.Uyruk,
+                    VergiDairesi = model.VergiDairesi,
+                    VergiNo = model.VergiNo,
+                    Yil = projectProduct.Product.Year.ToString(),
+                    emuhurkisi = "",
+                    emuhurtc = "",
+                    emuhurvergidairesi = "",
+                    emuhurvergiil = "",
+                    emuhurvergino = "",
+                    guvenliksozcugu = model.GuvenlikSozcugu,
+                    ikincikisiadsoyad = "",
+                    ikincikisitc = "",
+                    ilkKullanmaTarihi = DateTime.Now.ToString("dd.MM.yyyy"),
+                    isedevlet = true,
+                    istest = false,
+                    izin = model.Izin,
+                    kanal = "",
+                    kepadres = "",
+                    kimlikdogrulandi = true,
+                    kurulumVarMi = false,
+                    kvkonaytik = "true",
+                    nvidogrulama = "true",
+                    onaytik = "true",
+                    pasaportno = model.TCKimlikNo,
+                    pass = "EgVn2016",
+                    urunler = new urun[]
+                    {
+                        new urun {
+                            adet = 1,
+                            fiyat = (projectProduct.Amount + (projectProduct.Amount / 100 * projectProduct.Product.Tax)),
+                            urunad = projectProduct.Product.ProductLanguageInfos[0].Title,
+                            urunkod =projectProduct.Product.Id.ToString()
+                        },
+                    },
+                };
+                // CRMSATIS servisine istek gönderiliyor
+                var response = await client.CRMSATISAsync(request);
+                // Yanıt ekrana yazdırılıyor
+                Debug.WriteLine("CRM SATIŞ Yanıtı:");
+                Debug.WriteLine($"CRM ID: {response.CRMID}");
+                Debug.WriteLine($"Hata Mesajı: {response.errormessage}");
+                Debug.WriteLine($"Durum: {response.status}");
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda çıktı
+                Debug.WriteLine($"Hata: {ex.Message}");
+            }
+            finally
+            {
+                // İstemciyi kapat
+                if (client.State == System.ServiceModel.CommunicationState.Opened)
+                    await client.CloseAsync();
+            }
+
+            /*//ESKİ KOD
             var client = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "http://192.168.127.25:5558/Web2.svc");
             request.Headers.Add("SOAPAction", "http://tempuri.org/IWeb2/CRMSATIS");
@@ -332,11 +457,12 @@ namespace SysBase.Web.Controllers
             var response = await client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             string result = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(result);
-
+            Debug.WriteLine(result);
+            */
             if (false)
             {
-                await _apiBasvuruRequestService.RemoveAsync(model);
+                model.CrmGonderim = true;
+                await _apiBasvuruRequestService.UpdateAsync(model);
             }
         }
 
@@ -485,7 +611,7 @@ namespace SysBase.Web.Controllers
         [HttpPost]
         public async Task<String> IlIlce(string il)
         {
-            string selectOptionList = "<option>" + _localizer["admin.Seçiniz"].Value + "</option>";
+            string selectOptionList = "<option>" + _localizer["Seçiniz"].Value + "</option>";
             foreach (County item in await _countyService.Where(x => x.City.Name == il).OrderBy(x => x.Name).ToListAsync())
             {
                 selectOptionList += "<option value='" + item.Name + "'>" + item.Name + "</option>";
