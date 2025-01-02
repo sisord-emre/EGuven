@@ -6748,3 +6748,33 @@ select{
     font-weight: 500;
     opacity: 1;
 }
+
+@media (max-width: 767px) {
+    .ctitle {
+        width: 132px;
+        padding-left: 20px;
+        font-size: 14px;
+    }
+
+    .items {
+        height: 110px;
+    }
+
+    .item {
+        width: 132px;
+        padding: 10px;
+        font-size: 13px;
+        white-space: normal;
+    }
+
+   .credential {
+        width: calc(100% + 60px);
+        width: -webkit-calc(100% + 60px);
+        padding-left: 30px;
+        margin-left: -30px;
+        overflow: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+   }
+}
