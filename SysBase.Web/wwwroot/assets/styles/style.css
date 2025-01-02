@@ -6699,3 +6699,52 @@ select{
 .rtl\:space-x-reverse:where([dir="rtl"], [dir="rtl"] *) > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse:1
 }
+
+
+.ctitles {
+    font-size: 0;
+    background-color: #2c2c2c;
+}
+
+.ctitle {
+    display: inline-block;
+    vertical-align: top;
+    width: 469px;
+    height: 100%;
+    padding:10px;
+    color: #e5e5e5;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    background-color: #2c2c2c;
+}
+
+.items {
+    height: auto;
+    font-size: 0;
+    background-color: #fdfdfd;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.item {
+    display: inline-block;
+    vertical-align: top;
+    width: 469px;
+    height: auto;
+    padding: 20px;
+    color: #666666;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    background-color: #fdfdfd;
+    border-left: 1px solid #eaeaea;
+}
+
+.adownload {
+    display: inline-block;
+    margin-top: 5px;
+    color: #d1111c;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 1;
+}

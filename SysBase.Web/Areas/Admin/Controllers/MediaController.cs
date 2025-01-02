@@ -66,7 +66,7 @@ namespace SysBase.Web.Areas.Admin.Controllers
                 return Content("<div class='alert alert-danger alert-dismissible fade show' role='alert'><strong>" + _localizer["admin.Menü Erişim Yetkiniz Bulunmamaktadır."].Value + "</strong></div>");
             }
 
-            string[] allowedExtensions = { ".exe", ".zip", ".rar", ".gif", ".png", ".jpeg", ".jpg", ".pdf", ".doc", ".docx", ".crl"};   
+            string[] allowedExtensions = { ".exe", ".zip", ".rar", ".gif", ".png", ".jpeg", ".jpg", ".pdf", ".doc", ".docx", ".crl", ".crt" };   
             if (File != null && File.Length > 0)
             {
                 model.File = await functions.FileUpload(File, "Media", Guid.NewGuid().ToString("N"), allowedExtensions);
