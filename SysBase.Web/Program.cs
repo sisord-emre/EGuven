@@ -54,16 +54,15 @@ builder.Services.Configure<IdentityOptions>(opt =>
 //cookie ve login page configure
 builder.Services.ConfigureApplicationCookie(opt =>
 {
-    var cookieBuilder = new CookieBuilder();
-    cookieBuilder.Name = "AppCookie";
-    opt.LoginPath = new PathString("/Admin/Login");
-    opt.LogoutPath = new PathString("/Admin/Home/LogOut");
-    opt.Cookie = cookieBuilder;
-    opt.ExpireTimeSpan = TimeSpan.FromDays(30);
-    opt.SlidingExpiration = true;
+    opt.Cookie.Name = "AppCookie"; // Cookie adý
+    opt.LoginPath = "/Admin/Login"; // Giriþ sayfasý yolu
+    opt.LogoutPath = "/Admin/Home/LogOut"; // Çýkýþ sayfasý yolu
+    opt.ExpireTimeSpan = TimeSpan.FromDays(30); // Cookie süresi
+    opt.SlidingExpiration = true; // Süre uzatma
 });
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+builder.Services.AddHttpContextAccessor(); // HttpContext'e eriþim
+builder.Services.AddControllersWithViews(); // MVC desteði
 
 
 SqlColumn userNameColumn = new SqlColumn

@@ -2,6 +2,11 @@
     CKEDITOR.config.allowedContent = true;
     CKEDITOR.config.autoParagraph = false;
     CKEDITOR.dtd.$removeEmpty['i'] = false;
+
+    // Boş span etiketlerinin kaldırılmasını engelle
+    CKEDITOR.dtd.$removeEmpty['span'] = false;
+    // Span etiketi ve belirli sınıflara izin verme
+    CKEDITOR.config.extraAllowedContent = 'span[class](*)';
 }
 //hangi inputa yazılacak ise o input id parametre gönserilir ör:onkeyup="toSeo('kategorilerAdi','kategorilerSeo')"
 function toSeo(metininput, seoinput) {
