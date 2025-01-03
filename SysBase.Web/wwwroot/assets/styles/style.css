@@ -6827,3 +6827,25 @@ select{
         flex: 0 1 100%; /* 1 sütun */
     }
 }
+
+
+.page table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.page table tr td {
+    width: 40%;
+    padding: 10px 10px;
+    border: 1px solid #eaeaea;
+}
+
+.page table tr td:first-child {
+    width: 20%;
+}
+
+.page table tr td p {
+    width: auto;
+    margin-bottom: 0;
+    line-height: 22px;
+}
