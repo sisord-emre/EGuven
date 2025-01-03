@@ -6778,3 +6778,52 @@ select{
         white-space: nowrap;
    }
 }
+
+.cbox02B {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Kartlar arasındaki boşluk */
+    justify-content: center;
+}
+
+.citem {
+    flex: 0 1 calc(33.333% - 16px); /* 3 sütun */
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #f9f9f9;
+}
+
+.citemD {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.citemA {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+.citemB {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 16px;
+}
+
+.citemC {
+    font-size: 14px;
+}
+
+@media (max-width: 767px) {
+    .citem {
+        flex: 0 1 calc(50% - 16px); /* 2 sütun */
+    }
+}
+
+@media (max-width: 480px) {
+    .citem {
+        flex: 0 1 100%; /* 1 sütun */
+    }
+}
