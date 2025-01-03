@@ -6849,3 +6849,54 @@ select{
     margin-bottom: 0;
     line-height: 22px;
 }
+
+.cbox021 {
+    vertical-align: top;
+    padding-top: 17px;
+}
+
+.cbox021 p {
+    margin-bottom: 25px;
+    line-height: 26px;
+}
+
+.cbox021 p a {
+    text-decoration: underline;
+    color: #d1111c;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.cbox021 p span {
+    color: #4c4c4c;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.cbox021 img {
+    height: auto;
+    margin: 65px 0 60px 101px;
+}
+
+.cbox021 ul {
+    margin-bottom: 20px;
+}
+
+.cbox021 ul li {
+    line-height: 20px;
+    margin-bottom: 5px;
+}
+
+.cbox021 ul li:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 9px;
+    left: -10px;
+    width: 4px;
+    height: 4px;
+    background-color: #4c4c4c;
+    border-radius: 100%;
+}
