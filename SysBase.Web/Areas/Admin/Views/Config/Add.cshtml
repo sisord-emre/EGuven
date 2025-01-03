@@ -259,7 +259,9 @@
         CKEDITOR.replace(editorId, { //ckeditor kullanıldığında açılır
             height: '350px',
             extraPlugins: 'forms',
-            uiColor: '#CCEAEE'
+            uiColor: '#CCEAEE',
+            filebrowserUploadUrl: '/Admin/FileUpload/UploadImage',
+            filebrowserUploadMethod: 'form'
         });
     });
 

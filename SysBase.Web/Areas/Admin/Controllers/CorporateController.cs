@@ -81,6 +81,14 @@ namespace SysBase.Web.Areas.Admin.Controllers
                         }
                     }
                 }
+                else if (model.Id != 0)
+                {
+                    var existing = await _corporateLanguageInfoService.Where(b => b.CorporateId == model.Id).AsNoTracking().FirstOrDefaultAsync();
+                    for (int i = 0; i < model.CorporateLanguageInfos.Count; i++)
+                    {
+                        model.CorporateLanguageInfos[i].Media = existing.Media;  // Eski resim tekrar set ediliyor
+                    }
+                }
 
                 isControl = await _service.UpdateAsync(model);
 
