@@ -422,4 +422,8 @@
   <data name="admin.Api Kod"><value>Api Kod</value></data>
   <data name="admin.Home Tab Post"><value>Ana Sayfa Sekmesi Yazı</value></data>
   <data name="admin.Mail Template"><value>Mail Template</value></data>
+  <data name="admin.Software Category Detay Listele"><value>Yazılım Kategorisi Detay Listele</value></data>
+  <data name="admin.Software Category Detay Ekle"><value>Yazılım Kategorisi Detay Ekle</value></data>
+  <data name="admin.Home Tab Post Detay Listele"><value>Ana Sayfa Tab Post Detay Listele</value></data>
+  <data name="admin.Home Tab Post Detay Ekle"><value>Ana Sayfa Tab Post Detay Ekle</value></data>
   </root>
