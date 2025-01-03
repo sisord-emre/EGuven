@@ -399,4 +399,27 @@
   <data name="admin.HomeTabPost"><value>Ana Sayfa Tab Post</value></data>
   <data name="admin.Havale Eft Bilgisi"><value>Havale Eft Bilgisi</value></data>
   <data name="admin.Icon"><value>Icon</value></data>
+  <data name="admin.MailTemplate"><value>Mail Template</value></data>
+  <data name="admin.Mail Template Ekle"><value>Mail Template Ekle</value></data>
+  <data name="admin.Mail Template Listele"><value>Mail Template Listele</value></data>
+  <data name="admin.Media"><value>Dosya</value></data>
+  <data name="admin.Media Ekle"><value>Dosya Ekle</value></data>
+  <data name="admin.Media Listele"><value>Dosya Listele</value></data>
+  <data name="admin.Route"><value>Route</value></data>
+  <data name="admin.Route Ekle"><value>Route Ekle</value></data>
+  <data name="admin.Route Listele"><value>Route Listele</value></data>
+  <data name="admin.Url1"><value>Url 1</value></data>
+  <data name="admin.Url2"><value>Url 2</value></data>
+  <data name="admin.Status Code"><value>Durum Kodu</value></data>
+  <data name="admin.Fatura Bilgileri (Bireysel)"><value>Fatura Bilgileri (Bireysel)</value></data>
+  <data name="admin.Tc No"><value>Tc No</value></data>
+  <data name="admin.TCSeriNo"><value>TC Seri No</value></data>
+  <data name="admin.Güvenlik Sözcüğü"><value>Güvenlik Sözcüğü</value></data>
+  <data name="admin.Fatura Bilgileri (Kurumsal)"><value>Fatura Bilgileri (Kurumsal)</value></data>
+  <data name="admin.Fatura Adres Bilgileri"><value>Fatura Adres Bilgileri</value></data>
+  <data name="admin.Form Paket Üstü Yazıları"><value>Form Paket Üstü Yazıları</value></data>
+  <data name="admin.Software Category"><value>Yazılım Kategorisi</value></data>
+  <data name="admin.Api Kod"><value>Api Kod</value></data>
+  <data name="admin.Home Tab Post"><value>Ana Sayfa Sekmesi Yazı</value></data>
+  <data name="admin.Mail Template"><value>Mail Template</value></data>
   </root>
